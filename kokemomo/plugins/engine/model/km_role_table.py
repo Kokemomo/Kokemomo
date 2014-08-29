@@ -41,7 +41,7 @@ class KMRole(Base):
     id = Column(String, primary_key=True)
     name = Column(String)
     target = Column(String)
-    is_allow = Column(BooleanType)
+    is_allow = Column(String)
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
