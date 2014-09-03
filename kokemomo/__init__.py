@@ -46,7 +46,7 @@ app.mount('/application', application)
 app = SessionMiddleware(app, session_opts)
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-VERSION = "0.4.1"
+VERSION = "0.5.0"
 print("KOKEMOMO ver." + VERSION)
 
 
