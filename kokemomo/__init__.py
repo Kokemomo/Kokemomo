@@ -13,16 +13,16 @@ from beaker.middleware import SessionMiddleware
 
 from kokemomo.lib.bottle import route, run as runner, request, response, redirect, template, get, url
 from kokemomo.lib.bottle import static_file, default_app
-from kokemomo.plugins.engine.model.km_parameter_table import get_session, find_all, delete, update
+from kokemomo.plugins.engine.model.km_parameter_table import get_session, find_all, delete, update, KMParameter
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 from kokemomo.plugins.engine.controller.km_exception import log, KMException
 from kokemomo.plugins.login.controller.km_access_check import check_login
-from kokemomo.plugins.engine.model.km_user_table import get_session as user_get_session, find_all as user_find_all, delete as user_delete, update as user_update
-
+from kokemomo.plugins.engine.model.km_user_table import get_session as user_get_session, find_all as user_find_all, delete as user_delete, update as user_update, KMUser
 
 #from kokemomo.plugins.engine.utils.km_auth import auth
 
 from kokemomo.plugins.login import login
+from kokemomo.plugins.common_entry import common_entry
 from kokemomo.plugins import subapp
 import application
 
@@ -41,12 +41,13 @@ app = default_app()
 from kokemomo.plugins import fb_login
 app.mount('/subapp', subapp)
 app.mount('/login', login)
-app.mount('/fb-login', fb_login)
+app.mount('/fb_login', fb_login)
 app.mount('/application', application)
+app.mount('/common_entry', common_entry)
 app = SessionMiddleware(app, session_opts)
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-VERSION = "0.5.0"
+VERSION = "0.6.0"
 print("KOKEMOMO ver." + VERSION)
 
 
@@ -146,7 +147,10 @@ def save_parameter():
             if json_data[key] == "":
                 delete(key, session)  # delete
             else:
-                update(key, json_data[key], session)
+                parameter = KMParameter()
+                parameter.key = key
+                parameter.json = json_data[key]
+                update(parameter, session)
     session.close()
 
 
@@ -209,7 +213,10 @@ def save_user():
             if json_data[id] == "":
                 user_delete(id, session)  # delete
             else:
-                user_update(id, "", json_data[id], "", 0, "", session)
+                user = KMUser()
+                user.id = id
+                user.password = json_data[id]
+                user_update(user, session)
     session.close()
 
 

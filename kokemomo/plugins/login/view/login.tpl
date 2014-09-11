@@ -22,7 +22,7 @@
 
         <script src='{{url("static_js", filename="communication.js")}}'></script>
         <script src='{{url("login_static_js", filename="login.js")}}'></script>
-        <link href='{{url("login_static_css", filename="custom.css")}}' rel="stylesheet">
+        <link href='{{url("login_static_css", filename="login.css")}}' rel="stylesheet">
     </head>
     <body>
         <section class="container">
@@ -31,8 +31,11 @@
                     <div class="jumbotron top_space">
                         <h1>Login</h1>
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Username" id="user_id">
-                            <input type="text" class="form-control" placeholder="Password" id="password">
+                            <div class="form-group" id="input_form">
+                                <label class="control-label hidden" for="user_id" id="error_label">Input with error</label>
+                                <input type="text" class="form-control" placeholder="Username" id="user_id">
+                                <input type="text" class="form-control" placeholder="Password" id="password">
+                            </div>
                             <p><a class="btn btn-primary btn-lg top_space" role="button" id="login">Login</a></p>
                             <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
                             </fb:login-button>

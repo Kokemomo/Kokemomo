@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from sqlalchemy.schema import Column
-from sqlalchemy import create_engine, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from types import *
-import datetime
+from kokemomo.plugins.engine.utils.km_model_utils import *
 
 __author__ = 'hiroki'
 
@@ -46,31 +41,10 @@ class KMRole(Base):
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
     def __repr__(self):
-        if self.id is None:
-            self.id = ''
-        if self.name is None:
-            self.name = ''
-        if self.target is None:
-            self.target = ''
-        if self.is_allow is None:
-            self.is_allow = ''
-        if self.create_at is None:
-            self.create_at = ''
-        if self.update_at is None:
-            self.update_at = ''
-        return "KMRole<%s, %s, %s, %s, %s, %s, %s>" % (
-            self.id, self.name, self.target, self.is_allow, str(self.create_at), str(self.update_at))
+        return create_repr_str(self)
 
     def get_json(self):
-        json = '{"id":"' +  str(self.id) + '"'
-        if self.name is not None:
-            json += ', "name":"' + self.name + '"'
-        if self.target is not None:
-            json += ', "target":"' + self.target + '"'
-        if self.is_allow is not None:
-            json += ', "is_allow":"' + self.is_allow + '"'
-        json += '}'
-        return json
+        return create_json(self)
 
 def get_session():
     """
@@ -109,42 +83,23 @@ def find_all(session):
     return result
 
 
-def add(id, name, target, is_allow, session):
+def add(role, session):
     """
     Add the role.
-    :param id: role id
-    :param name:  role name
-    :param target:  role target
-    :param is_allow:  role is allow
+    :param role: role model
     :param session: session
     """
-    role = KMRole()
-    role.id = id
-    role.name = name
-    role.target = target
-    role.is_allow = is_allow
     session.add(role)
     session.commit()
 
 
-def update(id, name, target, is_allow, session):
+def update(role, session):
     """
     Update the role.
-    :param id: role id
-    :param name:  role name
-    :param target:  role target
-    :param is_allow:  role is allow
+    :param role: role model
     :param session: session
     """
-    fetch_object = session.query(KMRole).filter(KMRole.id == id).first()
-    if type(fetch_object) is NoneType:
-        add(id, name, target, is_allow, session)
-    else:
-        role_update = fetch_object
-        role_update.name = name
-        role_update.target = target
-        role_update.is_allow = is_allow
-        session.add(role_update)
+    session.merge(role)
     session.commit()
 
 

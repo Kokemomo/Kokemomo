@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-__author__ = 'hiroki-m'
+__author__ = 'hiroki'
 
 import uuid
 
