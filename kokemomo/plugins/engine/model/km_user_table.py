@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from sqlalchemy.schema import Column
-from sqlalchemy import create_engine, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from types import *
-import datetime
+from kokemomo.plugins.engine.utils.km_model_utils import *
 
 __author__ = 'hiroki'
 
@@ -50,41 +45,10 @@ class KMUser(Base):
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
     def __repr__(self):
-        if self.id is None:
-            self.id = ''
-        if self.name is None:
-            self.name = ''
-        if self.password is None:
-            self.password = ''
-        if self.mail_address is None:
-            self.mail_address = ''
-        if self.group_id is None:
-            self.group_id = ''
-        if self.group_id is None:
-            self.group_id = ''
-        if self.role_id is None:
-            self.role_id = ''
-        if self.create_at is None:
-            self.create_at = ''
-        if self.update_at is None:
-            self.update_at = ''
-        return "KMUser<%s, %s, %s, %s, %s, %s, %s, %s>" % (
-            self.id, self.name, self.password, self.mail_address, self.group_id, self.role_id, str(self.create_at), str(self.update_at))
+        return create_repr_str(self)
 
     def get_json(self):
-        json = '{"id":"' +  str(self.id) + '"'
-        if self.name is not None:
-            json += ', "name":"' + self.name + '"'
-        if self.password is not None:
-            json += ', "password":"' + self.password + '"'
-        if self.mail_address is not None:
-            json += ', "mail_address":"' + self.mail_address + '"'
-        if self.group_id is not None:
-            json += ', "group_id":"' + self.group_id + '"'
-        if self.role_id is not None:
-            json += ', "role_id":"' + self.role_id + '"'
-        json += '}'
-        return json
+        return create_json(self)
 
 def get_session():
     """
@@ -122,51 +86,25 @@ def find_all(session):
         result.append(user)
     return result
 
-
-def add(id, name, password, mail_address, group_id, role_id, session):
+def add(user, session):
     """
     Add the user.
-    :param id: user id
-    :param name:  user name
-    :param password:  user password
-    :param mail_address:  user mail address
-    :param group_id:  user group id
-    :param role_id:  user role id
+    :param user: user model.
     :param session: session
+    :return:
     """
-    user = KMUser()
-    user.id = id
-    user.name = name
-    user.password = password
-    user.mail_address = mail_address
-    user.group_id = group_id
-    user.role_id = role_id
     session.add(user)
     session.commit()
 
 
-def update(id, name, password, mail_address, group_id, role_id, session):
+def update(user, session):
     """
     Update the user.
-    :param id: user id
-    :param name:  user name
-    :param password:  user password
-    :param mail_address:  user mail address
-    :param group_id:  user group id
-    :param role_id:  user role id
+    :param user: user model.
     :param session: session
+    :return:
     """
-    fetch_object = session.query(KMUser).filter(KMUser.id == id).first()
-    if type(fetch_object) is NoneType:
-        add(id, name, password, mail_address, group_id, role_id, session)
-    else:
-        user_update = fetch_object
-        user_update.name = name
-        user_update.password = password
-        user_update.mail_address = mail_address
-        user_update.group_id = group_id
-        user_update.role_id = role_id
-        session.add(user_update)
+    session.merge(user)
     session.commit()
 
 
@@ -179,3 +117,4 @@ def delete(id, session):
     fetch_object = session.query(KMUser).filter_by(id=id).one()
     session.delete(fetch_object)
     session.commit()
+

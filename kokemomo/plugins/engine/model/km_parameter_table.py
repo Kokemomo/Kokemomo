@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from sqlalchemy.schema import Column
-from sqlalchemy import create_engine, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from types import *
-import datetime
+from kokemomo.plugins.engine.utils.km_model_utils import *
 
 """
 It is the accessor to generic parameters table to be used in the KOKEMOMO.
@@ -42,27 +37,10 @@ class KMParameter(Base):
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
     def __repr__(self):
-        if self.id is None:
-            self.id = ''
-        if self.key is None:
-            self.key = ''
-        if self.json is None:
-            self.json = ''
-        if self.create_at is None:
-            self.create_at = ''
-        if self.update_at is None:
-            self.update_at = ''
-        return "KMParameter<%d, %s, %s, %s, %s>" % (
-            self.id, self.key, self.json, str(self.create_at), str(self.update_at))
+        return create_repr_str(self)
 
     def get_json(self):
-        json = '{"id":"' +  str(self.id) + '"'
-        if self.key is not None:
-            json += ', "key":"' + self.key + '"'
-        if self.json is not None:
-            json += ', "json":' + self.json + ''
-        json += '}'
-        return json
+        return create_json(self)
 
 
 def get_session():
@@ -102,42 +80,31 @@ def find_all(session):
     return result
 
 
-def add(key, json, session):
+def add(parameter, session):
     """
     Add the parameter.
-    :param key: parameter key name
-    :param json:  parameter data
+    :param parameter: parameter model
     :param session: session
     """
-    parameter = KMParameter()
-    parameter.key = key
-    parameter.json = json
     session.add(parameter)
     session.commit()
 
 
-def update(key, json, session):
+def update(parameter, session):
     """
     Update the parameter.
-    :param key: parameter key name
-    :param json: parameter data
+    :param parameter: parameter model
     :param session: session
     """
-    fetch_object = session.query(KMParameter).filter(KMParameter.key == key).first()
-    if type(fetch_object) is NoneType:
-        add(key, json, session)
-    else:
-        param_update = fetch_object
-        param_update.json = json
-        session.add(param_update)
+    session.merge(parameter)
     session.commit()
 
 
 def delete(key, session):
     """
     Delete the parameter.
-    :param key: parameter key name
-    :param session: session
+    :param key: parameter key name.
+    :param session: session.
     """
     fetch_object = session.query(KMParameter).filter_by(key=key).one()
     session.delete(fetch_object)

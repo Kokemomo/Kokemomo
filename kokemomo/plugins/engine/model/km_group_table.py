@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from sqlalchemy.schema import Column
-from sqlalchemy import create_engine, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from types import *
-import datetime
+from kokemomo.plugins.engine.utils.km_model_utils import *
 
 __author__ = 'hiroki'
 
@@ -44,27 +39,10 @@ class KMGroup(Base):
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
     def __repr__(self):
-        if self.id is None:
-            self.id = ''
-        if self.name is None:
-            self.name = ''
-        if self.parent_id is None:
-            self.parent_id = ''
-        if self.create_at is None:
-            self.create_at = ''
-        if self.update_at is None:
-            self.update_at = ''
-        return "KMGroup<%s, %s, %s, %s, %s>" % (
-            self.id, self.name, self.parent_id, str(self.create_at), str(self.update_at))
+        return create_repr_str(self)
 
     def get_json(self):
-        json = '{"id":"' +  str(self.id) + '"'
-        if self.name is not None:
-            json += ', "name":"' + self.name + '"'
-        if self.parent_id is not None:
-            json += ', "parent_id":"' + self.parent_id + '"'
-        json += '}'
-        return json
+        return create_json(self)
 
 def get_session():
     """
@@ -103,38 +81,23 @@ def find_all(session):
     return result
 
 
-def add(id, name, parent_id, session):
+def add(group, session):
     """
     Add the group
-    :param id: group id
-    :param name:  group name
-    :param parent_id:  group parent id
+    :param group: group model
     :param session: session
     """
-    group = KMGroup()
-    group.id = id
-    group.name = name
-    group.parent_id = parent_id
     session.add(group)
     session.commit()
 
 
-def update(id, name, parent_id, session):
+def update(group, session):
     """
     Update the group.
-    :param id: group id
-    :param name: group name
-    :param parent_id: group parent id
+    :param group: group model
     :param session: session
     """
-    fetch_object = session.query(KMGroup).filter(KMGroup.id == id).first()
-    if type(fetch_object) is NoneType:
-        add(id, name, parent_id, session)
-    else:
-        group_update = fetch_object
-        group_update.name = name
-        group_update.parent_id = parent_id
-        session.add(group_update)
+    session.merge(group)
     session.commit()
 
 

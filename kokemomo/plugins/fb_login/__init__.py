@@ -3,7 +3,7 @@
 
 from kokemomo import app
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
-from kokemomo.plugins.login.controller.km_auth import auth, RESULT_SUCCESS
+from kokemomo.plugins.login.controller.km_user_manager import auth, RESULT_SUCCESS
 from bottle.ext import auth
 from bottle.ext.auth.decorator import login
 from bottle.ext.auth.social.facebook import Facebook, UserDenied
@@ -15,7 +15,7 @@ import logging
 from kokemomo.plugins.fb_login.controller.km_auth import create_session, RESULT_FAIL, RESULT_SUCCESS, get_fb_code
 import os
 
-__author__ = 'hiroki-m'
+__author__ = 'hiroki'
 
 
 """
@@ -38,18 +38,17 @@ app.install(plugin)
 
 #logging.basicConfig(filename='login.log', level=logging.INFO)
 
-@route('/fb_login/js/<filename>', name='login_static_js')
+@route('/fb_login/js/<filename>', name='fb_login_static_js')
 def fb_login_js_static(filename):
     """
     set javascript files.
     :param filename: javascript file name.
     :return: static path.
     """
-    print("login static javascript load.")
     return static_file(filename, root='kokemomo/plugins/fb_login/view/resource/js')
 
 
-@route('/fb_login/css/<filename>', name='login_static_css')
+@route('/fb_login/css/<filename>', name='fb_login_static_css')
 def fb_login_css_static(filename):
     """
     set css files.
@@ -59,7 +58,7 @@ def fb_login_css_static(filename):
     return static_file(filename, root='kokemomo/plugins/fb_login/view/resource/css')
 
 
-@route('/fb_login/img/<filename>', name='login_static_img')
+@route('/fb_login/img/<filename>', name='fb_login_static_img')
 def fb_login_img_static(filename):
     """
     set image files.
@@ -70,7 +69,6 @@ def fb_login_img_static(filename):
 
 @app.route('/fb_login')
 def fb_login_top(auth):
-    logging.info(request.environ)
     return template('kokemomo/plugins/fb_login/view/login', url=url) # TODO: パス解決を修正する
 
 @app.route('/fb_login_auth')

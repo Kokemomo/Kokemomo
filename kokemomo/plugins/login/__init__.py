@@ -2,7 +2,7 @@
 #  coding:utf-8
 
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
-from kokemomo.plugins.login.controller.km_auth import auth, RESULT_SUCCESS
+from kokemomo.plugins.login.controller.km_user_manager import auth, RESULT_SUCCESS
 
 __author__ = 's.hirota'
 
@@ -15,7 +15,6 @@ def login_js_static(filename):
     :param filename: javascript file name.
     :return: static path.
     """
-    print("login static javascript load.")
     return static_file(filename, root='kokemomo/plugins/login/view/resource/js')
 
 

@@ -5,3 +5,7 @@ h1 {
 top_space {
     margin-top: 2em;
 }
+
+.hidden {
+    display: none;
+}
