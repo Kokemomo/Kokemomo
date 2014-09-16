@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 #  coding:utf-8
-from bsddb.dbtables import _columns_key
-
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.common_entry.controller.km_entry import get_columns, get_title, entry
 
