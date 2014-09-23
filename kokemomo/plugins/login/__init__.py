@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#  coding:utf-8
+# -*- coding: utf-8 -*-
 
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.login.controller.km_user_manager import auth, RESULT_SUCCESS
