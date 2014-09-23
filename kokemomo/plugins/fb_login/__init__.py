@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#  coding:utf-8
+# -*- coding: utf-8 -*-
 
 from kokemomo import app
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect

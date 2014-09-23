@@ -34,11 +34,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                      <li><a id="/engine/user">ユーザー</a></li>
-                      <li><a id="/engine/parameter">パラメータ</a></li>
-                      <li><a id="/engine/file">ファイル</a></li>
-                      <li><a id="/engine/plugin">プラグイン</a></li>
-                      <li><a id="/engine/log">ログ</a></li>
+                      <li><a href="/engine/user">ユーザー</a></li>
+                      <li><a href="/engine/parameter">パラメータ</a></li>
+                      <li><a href="/engine/file">ファイル</a></li>
+                      <li><a href="/engine/plugin">プラグイン</a></li>
+                      <li><a href="/engine/log">ログ</a></li>
                     </ul>
                 </li>
                 </ul>
