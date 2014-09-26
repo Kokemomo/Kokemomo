@@ -23,7 +23,7 @@ __license__ = 'MIT'
 # This is why we parse the commandline parameters here but handle them later
 if __name__ == '__main__':
     from optparse import OptionParser
-    _cmd_parser = OptionParser(usage="usage: %prog [options] package.module:subapp")
+    _cmd_parser = OptionParser(usage="usage: %prog [options] package.module:app")
     _opt = _cmd_parser.add_option
     _opt("--version", action="store_true", help="show version number.")
     _opt("-b", "--bind", metavar="ADDRESS", help="bind socket to ADDRESS.")
@@ -521,7 +521,7 @@ class Bottle(object):
         #: A :class:`ResourceManager` for application files
         self.resources = ResourceManager()
 
-        #: A :class:`ConfigDict` for subapp specific configuration.
+        #: A :class:`ConfigDict` for app specific configuration.
         self.config = ConfigDict()
         self.config.autojson = autojson
 
@@ -584,7 +584,7 @@ class Bottle(object):
     def merge(self, routes):
         ''' Merge the routes of another :class:`Bottle` application or a list of
             :class:`Route` objects into this application. The routes keep their
-            'owner', meaning that the :data:`Route.subapp` attribute is not
+            'owner', meaning that the :data:`Route.app` attribute is not
             changed. '''
         if isinstance(routes, Bottle):
             routes = routes.routes
@@ -653,7 +653,7 @@ class Bottle(object):
         return urljoin(urljoin('/', scriptname), location)
 
     def add_route(self, route):
-        ''' Add a route object, but do not change the :data:`Route.subapp`
+        ''' Add a route object, but do not change the :data:`Route.app`
             attribute.'''
         self.routes.append(route)
         self.router.add(route.rule, route.method, route, name=route.name)
@@ -663,7 +663,7 @@ class Bottle(object):
               apply=None, skip=None, **config):
         """ A decorator to bind a function to a request URL. Example::
 
-                @subapp.route('/hello/:name')
+                @app.route('/hello/:name')
                 def hello(name):
                     return 'Hello %s' % name
 
@@ -753,7 +753,7 @@ class Bottle(object):
 
     def _handle(self, environ):
         try:
-            environ['bottle.subapp'] = self
+            environ['bottle.app'] = self
             request.bind(environ)
             response.bind()
             route, args = self.router.match(environ)
@@ -910,7 +910,7 @@ class BaseRequest(object):
         self.environ = {} if environ is None else environ
         self.environ['bottle.request'] = self
 
-    @DictProperty('environ', 'bottle.subapp', read_only=True)
+    @DictProperty('environ', 'bottle.app', read_only=True)
     def app(self):
         ''' Bottle application handling this request. '''
         raise RuntimeError('This request is not connected to an application.')
@@ -1089,7 +1089,7 @@ class BaseRequest(object):
 
     @property
     def url(self):
-        """ The full request URI including hostname and scheme. If your subapp
+        """ The full request URI including hostname and scheme. If your app
             lives behind a reverse proxy or load balancer and you get confusing
             results, make sure that the ``X-Forwarded-Host`` header is set
             correctly. """
@@ -2337,7 +2337,7 @@ def auth_basic(check, realm="private", text="Access denied"):
 # They all refer to the current default application.
 
 def make_default_app_wrapper(name):
-    ''' Return a callable that relays calls to the current default subapp. '''
+    ''' Return a callable that relays calls to the current default app. '''
     @functools.wraps(getattr(Bottle, name))
     def wrapper(*a, **ka):
         return getattr(app(), name)(*a, **ka)
@@ -3247,7 +3247,7 @@ response = LocalResponse()
 #: A thread-safe namespace. Not used by Bottle.
 local = threading.local()
 
-# Initialize subapp stack (create first empty Bottle subapp)
+# Initialize app stack (create first empty Bottle app)
 # BC: 0.6.4 and needed for run()
 app = default_app = AppStack()
 app.push()
