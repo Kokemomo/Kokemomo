@@ -28,18 +28,24 @@ function send(type, url, value, callbackFunc, option){
 //    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     request.send(value);
     request.onreadystatechange = function() {
-        switch(request.readyState){
-            case 4: // complete
-                var result = "";
-                if(request.responseText != ""){
-                    console.log("res:" + request.responseText);
-                    try{
-                        result = JSON.parse(request.responseText);
-                    }catch(e){
-                        result = request.responseText;
-                    }
+        switch(request.status){
+            case 500:
+                location.href = "/engine/error";
+                break;
+            default:
+                switch(request.readyState){
+                    case 4: // complete
+                        var result = "";
+                        if(request.responseText != ""){
+                            try{
+                                result = JSON.parse(request.responseText);
+                            }catch(e){
+                                result = request.responseText;
+                            }
+                        }
+                        callbackFunc(request.status, result, option);
+                        break;
                 }
-                callbackFunc(request.status, result, option);
                 break;
         }
     }
@@ -54,7 +60,7 @@ function getUserId(){
     if(cookieStr != ''){
         var cookies = cookieStr.split(";");
         for(var i=0; i<cookies.length; i++){
-            var cookie = cookies[i].replace(/\s+/g, "").split('=');
+            var cookie = cookies[i].replace(/¥s+/g, "").split('=');
             if(cookie[0]=='user_id'){
                 result = cookie[1];
             }

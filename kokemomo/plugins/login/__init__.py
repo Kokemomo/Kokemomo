@@ -3,6 +3,7 @@
 
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.login.controller.km_user_manager import auth, RESULT_SUCCESS
+from kokemomo.plugins.engine.controller.km_exception import log
 
 __author__ = 's.hirota'
 
@@ -45,6 +46,7 @@ def login():
 
 
 @route('/login/auth', method='POST')
+@log
 def login_auth():
     for login_info in request.forms:
         login_args = login_info.split(':')

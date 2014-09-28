@@ -205,3 +205,7 @@ def load_admin(filename):
         return template('kokemomo/plugins/engine/view/file', dirs=dir_list, files=files, url=url) # TODO: パス解決を改修
     else:
         return template('kokemomo/plugins/engine/view/' + filename, url=url) # TODO: パス解決を改修
+
+@route('/engine/error')
+def engine_error():
+    return "An error has occurred. Please contact the server administrator."

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
+from kokemomo.plugins.engine.utils.config import get_database_setting
 
 __author__ = 'hiroki'
 
@@ -51,7 +52,7 @@ def get_session():
     get database session.
     :return: session
     """
-    sql_url = 'sqlite:///data.db'
+    sql_url = get_database_setting('engine')['url']
     engine = create_engine(sql_url, encoding='utf-8', echo=True)
     Base.metadata.create_all(engine)
     return sessionmaker(bind=engine)()
