@@ -35,7 +35,9 @@ def log(callback):
             logging.error("An error has occurred in the kokemomo.")
             logging.error(traceback.format_exc())
             logging.error(kme.msg)
+            raise  kme
         except Exception as e:
             logging.error("An error has occurred in the application.")
             logging.error(traceback.format_exc())
+            raise  e
     return wrapper

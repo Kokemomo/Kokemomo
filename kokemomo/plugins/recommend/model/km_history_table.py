@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from sqlalchemy.schema import Column
-from sqlalchemy import create_engine, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from types import *
-import datetime
+from kokemomo.plugins.engine.utils.config import get_database_setting
+from kokemomo.plugins.engine.utils.km_model_utils import *
 
 __author__ = 'hiroki'
 
@@ -46,38 +42,17 @@ class KMHistory(Base):
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
     def __repr__(self):
-        if self.id is None:
-            self.id = ''
-        if self.user_id is None:
-            self.user_id = ''
-        if self.contents is None:
-            self.contents = ''
-        if self.count is None:
-            self.count = ''
-        if self.create_at is None:
-            self.create_at = ''
-        if self.update_at is None:
-            self.update_at = ''
-        return "KMHistory<%s, %s, %s, %s, %s>" % (
-            self.id, self.user_id, self.count, str(self.create_at), str(self.update_at))
+        return create_repr_str(self)
 
     def get_json(self):
-        json = '{"id":"' +  str(self.id) + '"'
-        if self.user_id is not None:
-            json += ', "user_id":"' + self.user_id + '"'
-        if self.contents is not None:
-            json += ', "contents":"' + self.contents + '"'
-        if self.count is not None:
-            json += ', "count":"' + self.count + '"'
-        json += '}'
-        return json
+        return create_json(self)
 
 def get_session():
     """
     get database session.
     :return: session
     """
-    sql_url = 'sqlite:///data.db'
+    sql_url = get_database_setting('engine')['url']
     engine = create_engine(sql_url, encoding='utf-8', echo=True)
     Base.metadata.create_all(engine)
     return sessionmaker(bind=engine)()
@@ -112,42 +87,23 @@ def find_list(number_of_weeks, session):
     return result
 
 
-def add(id, user_id, contents, count, session):
+def add(history, session):
     """
     Add the history
-    :param id: history id
-    :param user_id:  history user_id
-    :param contents:  history contents
-    :param count:  history count
+    :param history: history model
     :param session: session
     """
-    history = KMHistory()
-    history.id = id
-    history.user_id = user_id
-    history.contents = contents
-    history.count = count
     session.add(history)
     session.commit()
 
 
-def update(id, user_id, contents, count, session):
+def update(history, session):
     """
     Update the history.
-    :param id: history id
-    :param user_id:  history user_id
-    :param contents:  history contents
-    :param count:  history count
+    :param history: history
     :param session: session
     """
-    fetch_object = session.query(KMHistory).filter(KMHistory.id == id).first()
-    if type(fetch_object) is NoneType:
-        add(id, user_id, contents, count, session)
-    else:
-        history_update = fetch_object
-        history_update.user_id = user_id
-        history_update.contents = contents
-        history_update.count = count
-        session.add(history_update)
+    session.merge(history)
     session.commit()
 
 
