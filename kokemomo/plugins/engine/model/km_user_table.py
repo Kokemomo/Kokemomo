@@ -56,7 +56,7 @@ def get_session():
     get database session.
     :return: session
     """
-    sql_url = get_database_setting('engine')['url']
+    sql_url = get_database_setting('engine')
     engine = create_engine(sql_url, encoding='utf-8', echo=True)
     Base.metadata.create_all(engine)
     return sessionmaker(bind=engine)()
