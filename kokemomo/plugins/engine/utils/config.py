@@ -27,7 +27,9 @@ def get_database_setting(name):
     port = None
     schema = None
     charset = None
-    if not __config_data:
+    if section_name in __config_data:
+        return __config_data[section_name]
+    else:
         ini_file_path = os.path.abspath(os.curdir) + '/setting/kokemomo.ini'
         if os.path.exists(ini_file_path):
             config = ConfigParser.SafeConfigParser()
@@ -72,5 +74,5 @@ def get_database_setting(name):
                     if charset is not None:
                         database_schema += '?charset='
                         database_schema += charset
-                    __config_data['url'] = database_schema
-    return __config_data
+                    __config_data[section_name] = database_schema
+    return __config_data[section_name]
