@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.utils.config import get_database_setting
+from kokemomo.plugins.engine.controller.km_db_manager import Base
+from sqlalchemy.types import Text
 
 """
 It is the accessor to generic parameters table to be used in the KOKEMOMO.
@@ -26,14 +27,12 @@ def search_parameter():
 
 -------------------------------------------------------------------
 """
-Base = declarative_base()
-
 
 class KMParameter(Base):
     __tablename__ = 'km_parameter'
     id = Column(Integer, autoincrement=True, primary_key=True)
-    key = Column(String)
-    json = Column(String)
+    key = Column(String(50))
+    json = Column(Text())
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
@@ -42,17 +41,6 @@ class KMParameter(Base):
 
     def get_json(self):
         return create_json(self)
-
-
-def get_session():
-    """
-    get database session.
-    :return: session
-    """
-    sql_url = get_database_setting('engine')
-    engine = create_engine(sql_url, encoding='utf-8', echo=True)
-    Base.metadata.create_all(engine)
-    return sessionmaker(bind=engine)()
 
 
 def find(key, session):

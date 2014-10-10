@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from kokemomo.plugins.engine.utils.config import get_database_setting
 from kokemomo.plugins.engine.utils.km_model_utils import *
+from kokemomo.plugins.engine.controller.km_db_manager import Base
+from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
 
@@ -9,7 +10,7 @@ __author__ = 'hiroki'
 It is the accessor to history table to be used in the KOKEMOMO.
 [Table Layouts]
     id:Integer
-    user_id:Integer
+    user_id:String
     contents:String
     count:Integer
     create_at:DateTime(Automatic Updates)
@@ -29,15 +30,13 @@ def search_parameter():
 
 -------------------------------------------------------------------
 """
-Base = declarative_base()
-
 
 class KMHistory(Base):
-    __tablename__ = 'km_group'
-    id = Column(String, primary_key=True)
-    user_id = Column(String)
-    contents = Column(String)
-    count = Column(String)
+    __tablename__ = 'km_history'
+    id = Column(String(10), primary_key=True)
+    user_id = Column(String(10))
+    contents = Column(Text())
+    count = Column(Integer)
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
@@ -47,15 +46,6 @@ class KMHistory(Base):
     def get_json(self):
         return create_json(self)
 
-def get_session():
-    """
-    get database session.
-    :return: session
-    """
-    sql_url = get_database_setting('engine')['url']
-    engine = create_engine(sql_url, encoding='utf-8', echo=True)
-    Base.metadata.create_all(engine)
-    return sessionmaker(bind=engine)()
 
 def find(user_id, session):
     """

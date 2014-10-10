@@ -2,8 +2,9 @@
 # -*- coding:utf-8 -*-
 
 from functools import wraps
-from kokemomo.plugins.engine.model.km_user_table import get_session as get_user_session, find as find_user
-from kokemomo.plugins.engine.model.km_role_table import get_session as get_role_session, find as find_role
+from kokemomo.plugins.engine.model.km_user_table import find as find_user
+from kokemomo.plugins.engine.model.km_role_table import find as find_role
+from kokemomo.plugins.engine.controller.km_db_manager import *
 
 """
 Access check class for KOKEMOMO.
@@ -13,6 +14,8 @@ It provides as a decorator each check processing.
 """
 
 __author__ = 'hiroki'
+
+db_manager = KMDBManager("engine")
 
 def access_check(request):
     """
@@ -26,11 +29,11 @@ def access_check(request):
             if hasattr(request, "cookies"):
                 user_id = request.cookies.user_id
                 if user_id is not u'':
-                    session = get_user_session()
+                    session = db_manager.get_session()
                     user = find_user(user_id, session)
                     user_id = user.id
                     session.close()
-                    session = get_role_session()
+                    session = db_manager.get_session()
                     role = find_role(user_id, session)
                     session.close()
                     if check_target(request, role):

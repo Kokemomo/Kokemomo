@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.utils.config import get_database_setting
+from kokemomo.plugins.engine.controller.km_db_manager import Base
 
 __author__ = 'hiroki'
 
 """
 It is the accessor to user table to be used in the KOKEMOMO.
 [Table Layouts]
-    id:Integer
+    id:String
     name:String
     password:String
     mail_address:String
-    group_id:String
-    role_id:String
+    group_id:Integer
+    role_id:Integer
     create_at:DateTime(Automatic Updates)
     update_at:DateTime(Automatic Updates)
 
@@ -31,17 +31,15 @@ def search_parameter():
 
 -------------------------------------------------------------------
 """
-Base = declarative_base()
-
 
 class KMUser(Base):
     __tablename__ = 'km_user'
-    id = Column(String, primary_key=True)
-    name = Column(String)
-    password = Column(String)
-    mail_address = Column(String)
-    group_id = Column(String)
-    role_id = Column(String)
+    id = Column(String(10), primary_key=True)
+    name = Column(String(50))
+    password = Column(String(10))
+    mail_address = Column(String(30))
+    group_id = Column(Integer)
+    role_id = Column(Integer)
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
@@ -50,16 +48,6 @@ class KMUser(Base):
 
     def get_json(self):
         return create_json(self)
-
-def get_session():
-    """
-    get database session.
-    :return: session
-    """
-    sql_url = get_database_setting('engine')
-    engine = create_engine(sql_url, encoding='utf-8', echo=True)
-    Base.metadata.create_all(engine)
-    return sessionmaker(bind=engine)()
 
 
 def find(id, session):

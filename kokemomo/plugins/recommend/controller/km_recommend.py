@@ -5,7 +5,8 @@ __author__ = 'hiroki'
 
 import sys
 
-from kokemomo.plugins.recommend.model.km_history_table import get_session, find, find_list, update
+from kokemomo.plugins.recommend.model.km_history_table import find, find_list, update
+from kokemomo.plugins.engine.controller.km_db_manager import *
 
 """
 Reccomend class for Kokemomo CMS.
@@ -44,6 +45,8 @@ user01 is similar!
 
 """
 
+db_manager = KMDBManager("engine")
+
 def get_recommend(user_id, columns):
     """
     Based on the history list, get the recommended level for the given user.
@@ -52,7 +55,7 @@ def get_recommend(user_id, columns):
     :param columns: columns
     :return:recommend dictionary
     """
-    session = get_session()
+    session = db_manager.get_session()
     history_list = find_list(10, session) # TODO: 期限を設定ファイルに抜き出し
     # Generate a user record that becomes a condition.
     user_record = create_user_record(user_id, history_list, columns)

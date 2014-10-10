@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.utils.config import get_database_setting
+from kokemomo.plugins.engine.controller.km_db_manager import Base
+from sqlalchemy.types import Boolean
 
 __author__ = 'hiroki'
 
@@ -29,15 +30,13 @@ def search_parameter():
 
 -------------------------------------------------------------------
 """
-Base = declarative_base()
-
 
 class KMRole(Base):
     __tablename__ = 'km_role'
-    id = Column(String, primary_key=True)
-    name = Column(String)
-    target = Column(String)
-    is_allow = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    target = Column(String(100))
+    is_allow = Column(Boolean)
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
@@ -46,16 +45,6 @@ class KMRole(Base):
 
     def get_json(self):
         return create_json(self)
-
-def get_session():
-    """
-    get database session.
-    :return: session
-    """
-    sql_url = get_database_setting('engine')
-    engine = create_engine(sql_url, encoding='utf-8', echo=True)
-    Base.metadata.create_all(engine)
-    return sessionmaker(bind=engine)()
 
 
 def find(id, session):

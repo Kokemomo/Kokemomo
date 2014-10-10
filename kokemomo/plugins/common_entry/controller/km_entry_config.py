@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from kokemomo.plugins.engine.model.km_user_table import KMUser, get_session, add
+from kokemomo.plugins.engine.model.km_user_table import KMUser, add
 
 __author__ = 'hiroki'
 
@@ -26,12 +26,10 @@ def get_name():
     """
     return "ユーザー登録"
 
-def entry_model(model):
+def entry_model(model, session):
     """
     entry model.
     :param model:
     :return:
     """
-    session = get_session()
     add(model, session)
-    session.close()
