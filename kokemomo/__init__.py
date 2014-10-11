@@ -34,7 +34,7 @@ app.mount('/application', application)
 app.mount('/common_entry', common_entry)
 app = SessionMiddleware(app, session_opts)
 
-VERSION = "0.6.4"
+VERSION = "0.6.5"
 print("KOKEMOMO ver." + VERSION)
 
 

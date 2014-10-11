@@ -12,3 +12,10 @@ div.background {
     font-size:0.1em;
     padding:0px;
 }
+
+.column_delete {
+    width:5%;
+}
+.column_normal {
+    width: 10%;
+}
