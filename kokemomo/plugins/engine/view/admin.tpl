@@ -20,7 +20,7 @@
         <![endif]-->
         <script src='{{url("static_js", filename="communication.js")}}'></script>
         <script src='{{url("static_js", filename="admin.js")}}'></script>
-        <link href='{{url("static_css", filename="custom.css")}}' rel="stylesheet">
+        <link href='{{url("static_css", filename="admin.css")}}' rel="stylesheet">
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -29,23 +29,39 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                 <ul class="nav navbar-nav">
-                <li class="active"><a href="/engine/admin">Admin</a></li>
+                <li class="active"><a href="/engine">Admin</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                      <li><a href="/engine/user">ユーザー</a></li>
-                      <li><a href="/engine/parameter">パラメータ</a></li>
-                      <li><a href="/engine/file">ファイル</a></li>
-                      <li><a href="/engine/plugin">プラグイン</a></li>
-                      <li><a href="/engine/log">ログ</a></li>
+                      <li><a href="/engine?type=user">ユーザー</a></li>
+                      <li><a href="/engine?type=group">グループ</a></li>
+                      <li><a href="/engine?type=role">ロール</a></li>
+                      <li><a href="/engine?type=parameter">パラメータ</a></li>
+                      <li><a href="/engine?type=file">ファイル</a></li>
+                      <li><a href="/engine?type=plugin">プラグイン</a></li>
+                      <li><a href="/engine?type=log">ログ</a></li>
                     </ul>
                 </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
 
-        <section class="container">
-            <p>Information</p>
-        </section>
+        % if type == 'info':
+            % include kokemomo/plugins/engine/view/info
+        % elif type == 'user':
+            % include kokemomo/plugins/engine/view/user
+        % elif type == 'group':
+            % include kokemomo/plugins/engine/view/group
+        % elif type == 'role':
+            % include kokemomo/plugins/engine/view/role
+        % elif type == 'parameter':
+            % include kokemomo/plugins/engine/view/parameter
+        % elif type == 'file':
+            % include kokemomo/plugins/engine/view/file dirs=dirs, files=files
+        % elif type == 'plugin':
+            % include kokemomo/plugins/engine/view/plugin
+        % elif type == 'log':
+            % include kokemomo/plugins/engine/view/log
+        % end
     </body>
 </html>
