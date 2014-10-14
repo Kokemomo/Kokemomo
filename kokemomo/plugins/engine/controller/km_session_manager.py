@@ -13,3 +13,7 @@ def add_session(request, user_id, value):
 def get_session(request, user_id):
     session = request.environ.get('beaker.session')
     return session[user_id]
+
+def close_session(request, user_id):
+    session = request.environ.get('beaker.session')
+    session[user_id] = u''

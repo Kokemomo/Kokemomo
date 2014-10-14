@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, logging, json
-from kokemomo.lib.bottle import route, run as runner, request, response, redirect, template, get, url
-from kokemomo.lib.bottle import static_file, default_app
+import os
+import logging
+import json
+
+from kokemomo.lib.bottle import route, request, redirect, template, url
+from kokemomo.lib.bottle import static_file
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
-from kokemomo.plugins.engine.controller.km_exception import log, KMException
+from kokemomo.plugins.engine.controller.km_exception import log
 from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.model.km_user_table import find_all as user_find_all, delete as user_delete, update as user_update, KMUser
 from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_all, delete as group_delete, update as group_update, KMGroup
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
-from kokemomo.plugins.login.controller.km_access_check import check_login
+from kokemomo.plugins.engine.controller.km_access_check import check_login
+
 
 __author__ = 'hiroki'
 
@@ -59,6 +63,7 @@ def img_static(filename):
 @check_login(request)
 def load():
     type = request.params.get('type', default='info')
+    user_id = request.cookies['user_id']
     dirs = []
     files = []
     if type == "file":
@@ -70,7 +75,7 @@ def load():
         for file_name in files:
             if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
                 files.remove(file_name)
-    return template('kokemomo/plugins/engine/view/admin', url=url, type=type, dirs=dirs, files=files) # TODO: パス解決を改修
+    return template('kokemomo/plugins/engine/view/admin', url=url, user_id=user_id, type=type, dirs=dirs, files=files) # TODO: パス解決を改修
 
 
 @route('/engine/error')

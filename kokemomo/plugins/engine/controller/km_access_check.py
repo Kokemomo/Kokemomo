@@ -51,7 +51,9 @@ def check_target(request, role):
 def check_login(request):
     """
     Check to see if it is logged.
-    :param request:
+    :param request:var ui = HtmlService.createHtmlOutputFromFile('sidebar')
+      .setTitle('sidebar');
+
     :return:
     """
     def _check_login(callback):

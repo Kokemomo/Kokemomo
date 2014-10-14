@@ -21,8 +21,8 @@
         <![endif]-->
 
         <script src='{{url("static_js", filename="communication.js")}}'></script>
-        <script src='{{url("login_static_js", filename="login.js")}}'></script>
-        <link href='{{url("login_static_css", filename="login.css")}}' rel="stylesheet">
+        <script src='{{url("static_js", filename="login.js")}}'></script>
+        <link href='{{url("static_css", filename="login.css")}}' rel="stylesheet">
     </head>
     <body>
         <section class="container">

@@ -3,10 +3,15 @@
 
 __author__ = 'hiroki'
 
-import uuid, logging, os
+import uuid
+import logging
+import os
+
+from bottle_auth.core.auth import FacebookGraphMixin, HTTPRedirect
+
 from kokemomo import app
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
-from kokemomo.plugins.login.controller.km_login import auth, RESULT_SUCCESS
+from kokemomo.plugins.engine.controller.km_login import auth, RESULT_SUCCESS
 from kokemomo.plugins.engine.controller.km_session_manager import add_session
 from bottle.ext import auth
 from bottle.ext.auth.decorator import login
