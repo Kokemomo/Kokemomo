@@ -32,8 +32,6 @@ def access_check(request):
                     session = db_manager.get_session()
                     user = find_user(user_id, session)
                     user_id = user.id
-                    session.close()
-                    session = db_manager.get_session()
                     role = find_role(user_id, session)
                     session.close()
                     if check_target(request, role):
@@ -64,7 +62,7 @@ def check_login(request):
                 session = request.environ.get('beaker.session')
                 if user_id is not u'' or session is not None:
                     login_info = user_id in session
-                    if login_info:
+                    if login_info and session[user_id] is not u'':
                         return callback(*args, **kwargs)
                 return "<p>Not Logged!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
         return wrapper

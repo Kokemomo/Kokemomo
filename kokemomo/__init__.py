@@ -32,7 +32,7 @@ app.mount('/application', application)
 app.mount('/common_entry', common_entry)
 app = SessionMiddleware(app, session_opts)
 
-VERSION = "0.6.6"
+VERSION = "0.6.7"
 print("KOKEMOMO ver." + VERSION)
 
 
@@ -41,7 +41,7 @@ def top():
     """
     redirect to /engine url.
     """
-    redirect('/engine')
+    redirect('/engine/login')
 
 
 def app_run():

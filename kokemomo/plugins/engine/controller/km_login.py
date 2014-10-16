@@ -27,26 +27,26 @@ test_password2 = "admin2"
 
 db_manager = KMDBManager("engine")
 
-@route('/login')
+@route('/engine/login')
 def login():
     return template('kokemomo/plugins/engine/view/login', url=url) # TODO: パス解決を修正する
 
 
-@route('/login/auth', method='POST')
+@route('/engine/login/auth', method='POST')
 @log
 def login_auth():
     for login_info in request.forms:
         login_args = login_info.split(':')
-        print(login_args)
     result = auth(request, response, login_args[0], login_args[1])
     return result
 
 
-@route('/logout')
+@route('/engine/logout')
 @log
 def logout():
     user_id = request.cookies['user_id']
     close_session(request, user_id)
+    response.delete_cookie('user_id') # TODO ver.0.11だと削除できない？
     return template('kokemomo/plugins/engine/view/login', url=url) # TODO: パス解決を修正する
 
 
@@ -58,7 +58,6 @@ def auth(request, response, id, password):
         user_password = user.password
         if user_password is password:
             # create web_session
-            print("authenticate success!")
             result = RESULT_SUCCESS
 
     # テスト用
@@ -70,6 +69,9 @@ def auth(request, response, id, password):
     if result == RESULT_SUCCESS:
         session_id = get_session_id()
         add_session(request, id, session_id)
+        paths = request.path.split('/')
+        path = '/' + paths[1] + '/'
+        response.set_cookie('user_id', id, path=path)
     session.close()
     return result
 
