@@ -58,7 +58,7 @@ def img_static(filename):
     return static_file(filename, root='kokemomo/plugins/engine/view/resource/img')
 
 
-@route('/engine')
+@route('/engine/admin')
 @log
 @check_login(request)
 def load():
@@ -258,7 +258,7 @@ def upload():
     with open(save_path, "wb") as open_file:
         open_file.write(file_obj.file.read())
         logging.info("file upload. name=" + save_path);
-    redirect("/engine")
+    redirect("/engine/admin")
 
 
 @route('/engine/file/remove', method='POST')

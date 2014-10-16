@@ -4,7 +4,7 @@ $(document).ready(function(){
 	$("#login").click(function(){
 	    user_id = $('#user_id').val();
 	    var loginInfo = user_id + ":" + $('#password').val();
-	    send(SendType[2], '/login/auth', loginInfo , login);
+	    send(SendType[2], '/engine/login/auth', loginInfo , login);
 	});
 
 });
@@ -14,8 +14,7 @@ function login(status, json){
         console.log("logine success!" + json);
         switch(json){
             case 'SUCCESS':
-                location.href = "/engine";
-                document.cookie = "user_id=" + user_id;
+                location.href = "/engine/admin";
                 break;
             case 'FAIL':
                 $("#error_label").removeClass('hidden');

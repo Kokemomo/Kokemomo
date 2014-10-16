@@ -33,19 +33,19 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                          <li><a href="/engine?type=user">ユーザー</a></li>
-                          <li><a href="/engine?type=group">グループ</a></li>
-                          <li><a href="/engine?type=role">ロール</a></li>
-                          <li><a href="/engine?type=parameter">パラメータ</a></li>
-                          <li><a href="/engine?type=file">ファイル</a></li>
-                          <li><a href="/engine?type=plugin">プラグイン</a></li>
-                          <li><a href="/engine?type=log">ログ</a></li>
+                          <li><a href="/engine/admin?type=user">ユーザー</a></li>
+                          <li><a href="/engine/admin?type=group">グループ</a></li>
+                          <li><a href="/engine/admin?type=role">ロール</a></li>
+                          <li><a href="/engine/admin?type=parameter">パラメータ</a></li>
+                          <li><a href="/engine/admin?type=file">ファイル</a></li>
+                          <li><a href="/engine/admin?type=plugin">プラグイン</a></li>
+                          <li><a href="/engine/admin?type=log">ログ</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">{{user_id}}さん</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/engine/logout">Logout</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
