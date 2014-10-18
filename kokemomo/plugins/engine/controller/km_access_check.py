@@ -43,7 +43,18 @@ def access_check(request):
 
 
 def check_target(request, role):
-    pass # TODO: ロールのtargetとURLのチェック処理の実装
+    paths = request.path.split('/')
+    path = '/' + paths[1]
+    is_target = False
+    if len(paths) > 1 and role.target == path: # application scope
+        is_target = True
+    elif len(paths) > 3 and role.target == (path + '/' + paths[2]): # function scope
+        is_target = True
+    elif len(paths) > 5 and role.target == (path + '/' + paths[2] + '/' + paths[3]): # sub function scope
+        is_target = True
+    if is_target and not role.is_allow:
+        return False
+    return True
 
 
 def check_login(request):
