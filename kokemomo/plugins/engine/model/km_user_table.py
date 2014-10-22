@@ -82,8 +82,11 @@ def add(user, session):
     :param session: session
     :return:
     """
-    session.add(user)
-    session.commit()
+    try:
+        session.add(user)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def update(user, session):
@@ -93,8 +96,11 @@ def update(user, session):
     :param session: session
     :return:
     """
-    session.merge(user)
-    session.commit()
+    try:
+        session.merge(user)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def delete(id, session):
@@ -104,6 +110,9 @@ def delete(id, session):
     :param session: session
     """
     fetch_object = session.query(KMUser).filter_by(id=id).one()
-    session.delete(fetch_object)
-    session.commit()
+    try:
+        session.delete(fetch_object)
+        session.commit()
+    except Exception:
+        session.rollback()
 

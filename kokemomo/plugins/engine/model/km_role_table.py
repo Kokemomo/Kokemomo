@@ -79,8 +79,11 @@ def add(role, session):
     :param role: role model
     :param session: session
     """
-    session.add(role)
-    session.commit()
+    try:
+        session.add(role)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def update(role, session):
@@ -89,8 +92,11 @@ def update(role, session):
     :param role: role model
     :param session: session
     """
-    session.merge(role)
-    session.commit()
+    try:
+        session.merge(role)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def delete(id, session):
@@ -100,5 +106,8 @@ def delete(id, session):
     :param session: session
     """
     fetch_object = session.query(KMRole).filter_by(id=id).one()
-    session.delete(fetch_object)
-    session.commit()
+    try:
+        session.delete(fetch_object)
+        session.commit()
+    except Exception:
+        session.rollback()

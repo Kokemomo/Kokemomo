@@ -17,8 +17,8 @@ class KMDBManager():
     def initialize_session(self, name):
         sql_url = get_database_setting(name)
         engine = create_engine(sql_url, encoding='utf-8', echo=True)
-        self.Session = sessionmaker(bind=engine)()
+        self.Session = sessionmaker(bind=engine)
         Base.metadata.create_all(engine)
 
     def get_session(self):
-        return self.Session
+        return self.Session()
