@@ -187,7 +187,6 @@ function search(status, json, option){
                     parameterRowCount = count;
                     break;
             }
-            count++;
         }
     }
 }

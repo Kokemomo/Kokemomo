@@ -83,8 +83,11 @@ def add(history, session):
     :param history: history model
     :param session: session
     """
-    session.add(history)
-    session.commit()
+    try:
+        session.add(history)
+        session.commit()
+    except Exception:
+        session.roleback()
 
 
 def update(history, session):
@@ -93,8 +96,11 @@ def update(history, session):
     :param history: history
     :param session: session
     """
-    session.merge(history)
-    session.commit()
+    try:
+        session.merge(history)
+        session.commit()
+    except Exception:
+        session.roleback()
 
 
 def delete(id, session):
@@ -104,5 +110,8 @@ def delete(id, session):
     :param session: session
     """
     fetch_object = session.query(KMHistory).filter_by(id=id).one()
-    session.delete(fetch_object)
-    session.commit()
+    try:
+        session.delete(fetch_object)
+        session.commit()
+    except Exception:
+        session.roleback()

@@ -76,8 +76,11 @@ def add(group, session):
     :param group: group model
     :param session: session
     """
-    session.add(group)
-    session.commit()
+    try:
+        session.add(group)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def update(group, session):
@@ -86,8 +89,11 @@ def update(group, session):
     :param group: group model
     :param session: session
     """
-    session.merge(group)
-    session.commit()
+    try:
+        session.merge(group)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def delete(id, session):
@@ -97,5 +103,8 @@ def delete(id, session):
     :param session: session
     """
     fetch_object = session.query(KMGroup).filter_by(id=id).one()
-    session.delete(fetch_object)
-    session.commit()
+    try:
+        session.delete(fetch_object)
+        session.commit()
+    except Exception:
+        session.rollback()

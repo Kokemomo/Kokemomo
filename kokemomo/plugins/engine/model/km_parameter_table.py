@@ -75,8 +75,11 @@ def add(parameter, session):
     :param parameter: parameter model
     :param session: session
     """
-    session.add(parameter)
-    session.commit()
+    try:
+        session.add(parameter)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def update(parameter, session):
@@ -85,8 +88,11 @@ def update(parameter, session):
     :param parameter: parameter model
     :param session: session
     """
-    session.merge(parameter)
-    session.commit()
+    try:
+        session.merge(parameter)
+        session.commit()
+    except Exception:
+        session.rollback()
 
 
 def delete(key, session):
@@ -96,5 +102,8 @@ def delete(key, session):
     :param session: session.
     """
     fetch_object = session.query(KMParameter).filter_by(key=key).one()
-    session.delete(fetch_object)
-    session.commit()
+    try:
+        session.delete(fetch_object)
+        session.commit()
+    except Exception:
+        session.rollback()
