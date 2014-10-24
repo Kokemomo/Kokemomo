@@ -78,8 +78,9 @@ def add(parameter, session):
     try:
         session.add(parameter)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e
 
 
 def update(parameter, session):
@@ -91,8 +92,9 @@ def update(parameter, session):
     try:
         session.merge(parameter)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e
 
 
 def delete(key, session):
@@ -105,5 +107,6 @@ def delete(key, session):
     try:
         session.delete(fetch_object)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e

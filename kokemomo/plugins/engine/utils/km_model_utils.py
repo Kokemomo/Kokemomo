@@ -22,6 +22,8 @@ def create_repr_str(model):
     for column in model.__table__.c:
         value = getattr(model, column.name)
         if value is None:
+            if type(value) is unicode:
+                value = value.encode('utf-8')
             value = ''
         result += (column.name + '="' + str(value) + '",')
     result = result[0:-1] + ')>'
@@ -32,6 +34,8 @@ def create_json(model):
     for column in model.__table__.c:
         value = getattr(model, column.name)
         if value is not None:
+            if type(value) is unicode:
+                value = value.encode('utf-8')
             try:
                 # json形式の値の場合はダブルクォートをつけない
                 json.loads(str(value))

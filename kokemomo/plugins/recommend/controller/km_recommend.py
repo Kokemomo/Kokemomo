@@ -55,22 +55,24 @@ def get_recommend(user_id, columns):
     :param columns: columns
     :return:recommend dictionary
     """
-    session = db_manager.get_session()
-    history_list = find_list(10, session) # TODO: 期限を設定ファイルに抜き出し
-    # Generate a user record that becomes a condition.
-    user_record = create_user_record(user_id, history_list, columns)
-    # Comparison with history.
-    check_list = {}
-    for history in history_list:
-        if history.user_id is not user_id and not history.user_id in check_list:
-            check_list[history.user_id] = create_user_record(history.user_id, history_list, columns)
-    session.close()
-    # Check similarity.
-    result = {}
-    for target in check_list:
-        target = target.encode('utf-8') # TODO: 文字コードを設定ファイルに抜き出し
-        similarity = jaccard(user_record, check_list[target])
-        result[target]=similarity
+    try:
+        session = db_manager.get_session()
+        history_list = find_list(10, session) # TODO: 期限を設定ファイルに抜き出し
+        # Generate a user record that becomes a condition.
+        user_record = create_user_record(user_id, history_list, columns)
+        # Comparison with history.
+        check_list = {}
+        for history in history_list:
+            if history.user_id is not user_id and not history.user_id in check_list:
+                check_list[history.user_id] = create_user_record(history.user_id, history_list, columns)
+        # Check similarity.
+        result = {}
+        for target in check_list:
+            target = target.encode('utf-8') # TODO: 文字コードを設定ファイルに抜き出し
+            similarity = jaccard(user_record, check_list[target])
+            result[target]=similarity
+    finally:
+        session.close()
     return result
 
 def create_user_record(user_id, history_list, columns):

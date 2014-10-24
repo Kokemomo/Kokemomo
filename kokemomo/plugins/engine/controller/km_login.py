@@ -52,27 +52,29 @@ def logout():
 
 def auth(request, response, id, password):
     result = RESULT_FAIL
-    session = db_manager.get_session()
-    user = find(id, session)
-    if user is not None:
-        user_password = user.password
-        if user_password is password:
-            # create web_session
+    try:
+        session = db_manager.get_session()
+        user = find(id, session)
+        if user is not None:
+            user_password = user.password
+            if user_password is password:
+                # create web_session
+                result = RESULT_SUCCESS
+
+        # テスト用
+        if id == test_user and password == test_password:
+            result = RESULT_SUCCESS
+        if id == test_user2 and password == test_password2:
             result = RESULT_SUCCESS
 
-    # テスト用
-    if id == test_user and password == test_password:
-        result = RESULT_SUCCESS
-    if id == test_user2 and password == test_password2:
-        result = RESULT_SUCCESS
-
-    if result == RESULT_SUCCESS:
-        session_id = get_session_id()
-        add_session(request, id, session_id)
-        paths = request.path.split('/')
-        path = '/' + paths[1] + '/'
-        response.set_cookie('user_id', id, path=path)
-    session.close()
+        if result == RESULT_SUCCESS:
+            session_id = get_session_id()
+            add_session(request, id, session_id)
+            paths = request.path.split('/')
+            path = '/' + paths[1] + '/'
+            response.set_cookie('user_id', id, path=path)
+    finally:
+        session.close()
     return result
 
 def get_session_id():

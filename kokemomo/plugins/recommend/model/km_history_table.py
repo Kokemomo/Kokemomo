@@ -86,8 +86,9 @@ def add(history, session):
     try:
         session.add(history)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.roleback()
+        raise e
 
 
 def update(history, session):
@@ -99,8 +100,9 @@ def update(history, session):
     try:
         session.merge(history)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.roleback()
+        raise e
 
 
 def delete(id, session):
@@ -113,5 +115,6 @@ def delete(id, session):
     try:
         session.delete(fetch_object)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.roleback()
+        raise e
