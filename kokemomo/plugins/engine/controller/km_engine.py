@@ -94,22 +94,24 @@ def save_user():
     Format: 'keyName':{"hoge":"fuga"}
 
     """
-    session = db_manager.get_session()
-    for save_user in request.forms:
-        json_data = json.loads(save_user.decode('utf-8'))
-        for id in json_data:
-            if json_data[id] == "":
-                user_delete(id, session)  # delete
-            else:
-                user = KMUser()
-                user.id = id
-                user.name = json_data[id]["name"]
-                user.password = json_data[id]["password"]
-                user.mail_address = json_data[id]["mail_address"]
-                user.group_id = json_data[id]["group_id"]
-                user.role_id = json_data[id]["role_id"]
-                user_update(user, session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        for save_user in request.forms:
+            json_data = json.loads(save_user.decode('utf-8'))
+            for id in json_data:
+                if json_data[id] == "":
+                    user_delete(id, session)  # delete
+                else:
+                    user = KMUser()
+                    user.id = id
+                    user.name = json_data[id]["name"]
+                    user.password = json_data[id]["password"]
+                    user.mail_address = json_data[id]["mail_address"]
+                    user.group_id = json_data[id]["group_id"]
+                    user.role_id = json_data[id]["role_id"]
+                    user_update(user, session)
+    finally:
+        session.close()
 
 
 @route('/engine/user/search')
@@ -119,9 +121,11 @@ def search_user():
     Find all the user.
     :return: users.
     """
-    session = db_manager.get_session()
-    result = user_find_all(session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        result = user_find_all(session)
+    finally:
+        session.close()
     return create_result_4_array(result)
 
 
@@ -136,19 +140,21 @@ def save_group():
     Format: 'keyName':{"hoge":"fuga"}
 
     """
-    session = db_manager.get_session()
-    for save_group in request.forms:
-        json_data = json.loads(save_group.decode('utf-8'))
-        for id in json_data:
-            if json_data[id] == "":
-                group_delete(id, session)  # delete
-            else:
-                group = KMGroup()
-                group.id = id
-                group.name = json_data[id]["name"]
-                group.parent_id = json_data[id]["parent_id"]
-                group_update(group, session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        for save_group in request.forms:
+            json_data = json.loads(save_group.decode('utf-8'))
+            for id in json_data:
+                if json_data[id] == "":
+                    group_delete(id, session)  # delete
+                else:
+                    group = KMGroup()
+                    group.id = id
+                    group.name = json_data[id]["name"]
+                    group.parent_id = json_data[id]["parent_id"]
+                    group_update(group, session)
+    finally:
+        session.close()
 
 
 @route('/engine/group/search')
@@ -158,9 +164,11 @@ def search_group():
     Find all the group.
     :return: groups.
     """
-    session = db_manager.get_session()
-    result = group_find_all(session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        result = group_find_all(session)
+    finally:
+        session.close()
     return create_result_4_array(result)
 
 
@@ -175,20 +183,22 @@ def save_role():
     Format: 'keyName':{"hoge":"fuga"}
 
     """
-    session = db_manager.get_session()
-    for save_group in request.forms:
-        json_data = json.loads(save_group.decode('utf-8'))
-        for id in json_data:
-            if json_data[id] == "":
-                role_delete(id, session)  # delete
-            else:
-                role = KMRole()
-                role.id = id
-                role.name = json_data[id]["name"]
-                role.target = json_data[id]["target"]
-                role.is_allow = json_data[id]["is_allow"]
-                role_update(role, session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        for save_group in request.forms:
+            json_data = json.loads(save_group.decode('utf-8'))
+            for id in json_data:
+                if json_data[id] == "":
+                    role_delete(id, session)  # delete
+                else:
+                    role = KMRole()
+                    role.id = id
+                    role.name = json_data[id]["name"]
+                    role.target = json_data[id]["target"]
+                    role.is_allow = json_data[id]["is_allow"]
+                    role_update(role, session)
+    finally:
+        session.close()
 
 
 @route('/engine/role/search')
@@ -198,9 +208,11 @@ def search_role():
     Find all the role.
     :return: roles.
     """
-    session = db_manager.get_session()
-    result = role_find_all(session)
-    session.close()
+    try:
+        session = db_manager.get_session()
+        result = role_find_all(session)
+    finally:
+        session.close()
     return create_result_4_array(result)
 
 
@@ -215,18 +227,20 @@ def engine_save_parameter():
     Format: 'keyName':{"hoge":"fuga"}
 
     """
-    session = db_manager.get_session()
-    for save_params in request.forms:
-        json_data = json.loads(save_params.decode('utf-8'))
-        for key in json_data:
-            if json_data[key] == "":
-                delete_parameter(key, session)  # delete
-            else:
-                parameter = KMParameter()
-                parameter.key = key
-                parameter.json = json_data[key]
-                update_parameter(parameter, session)
-    session.commit()
+    try:
+        session = db_manager.get_session()
+        for save_params in request.forms:
+            json_data = json.loads(save_params.decode('utf-8'))
+            for key in json_data:
+                if json_data[key] == "":
+                    delete_parameter(key, session)  # delete
+                else:
+                    parameter = KMParameter()
+                    parameter.key = key
+                    parameter.json = json_data[key]
+                    update_parameter(parameter, session)
+    finally:
+        session.commit()
 
 
 @route('/engine/parameter/search', method='GET')
@@ -236,9 +250,11 @@ def engine_search_parameter():
     Find all the parameters.
     :return: parameters.
     """
-    session = db_manager.get_session()
-    result = find_parameter(session)
-    session.commit()
+    try:
+        session = db_manager.get_session()
+        result = find_parameter(session)
+    finally:
+        session.commit()
     return create_result_4_array(result)
 
 ## File

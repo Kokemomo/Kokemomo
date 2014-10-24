@@ -29,15 +29,17 @@ def access_check(request):
             if hasattr(request, "cookies"):
                 user_id = request.cookies.user_id
                 if user_id is not u'':
-                    session = db_manager.get_session()
-                    user = find_user(user_id, session)
-                    user_id = user.id
-                    role = find_role(user_id, session)
-                    session.close()
-                    if check_target(request, role):
-                        return callback(*args, **kwargs)
-                    else:
-                        return "<p>Access is not allowed!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
+                    try:
+                        session = db_manager.get_session()
+                        user = find_user(user_id, session)
+                        user_id = user.id
+                        role = find_role(user_id, session)
+                        if check_target(request, role):
+                            return callback(*args, **kwargs)
+                        else:
+                            return "<p>Access is not allowed!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
+                    finally:
+                        session.close()
         return wrapper
     return _access_check
 

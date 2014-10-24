@@ -82,8 +82,9 @@ def add(role, session):
     try:
         session.add(role)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e
 
 
 def update(role, session):
@@ -95,8 +96,9 @@ def update(role, session):
     try:
         session.merge(role)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e
 
 
 def delete(id, session):
@@ -109,5 +111,6 @@ def delete(id, session):
     try:
         session.delete(fetch_object)
         session.commit()
-    except Exception:
+    except Exception as e:
         session.rollback()
+        raise e
