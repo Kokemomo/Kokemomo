@@ -76,3 +76,27 @@ def get_database_setting(name):
                         database_schema += charset
                     __config_data[section_name] = database_schema
     return __config_data[section_name]
+
+def get_database_pool_setting(name):
+    '''
+    get database pool setting.
+    :param name: section name
+    :return: config object
+    '''
+    section_name = 'Database_Pool_' + name
+    settings = {}
+    if section_name in __config_data:
+        return __config_data[section_name]
+    else:
+        ini_file_path = os.path.abspath(os.curdir) + '/setting/kokemomo.ini'
+        if os.path.exists(ini_file_path):
+            config = ConfigParser.SafeConfigParser()
+            config.read(ini_file_path)
+            for section in config.sections():
+                if section == section_name :
+                    for option in config.options(section):
+                        if option == 'recycle':
+                            recycle = config.get(section, option)
+                            settings['recycle'] = recycle
+                    __config_data[section_name] = settings
+    return __config_data[section_name]
