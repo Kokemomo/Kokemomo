@@ -11,6 +11,7 @@
                             <tr>
                                 <td class="column_delete">削除</td>
                                 <td class="column_normal">ID</td>
+                                <td class="column_normal">ユーザーID</td>
                                 <td class="column_normal">ユーザー名</td>
                                 <td class="column_normal">パスワード</td>
                                 <td class="column_normal">メールアドレス</td>
