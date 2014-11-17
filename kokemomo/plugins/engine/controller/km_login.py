@@ -57,7 +57,7 @@ def auth(request, response, id, password):
         user = find(id, session)
         if user is not None:
             user_password = user.password
-            if user_password is password:
+            if user_password == password:
                 # create web_session
                 result = RESULT_SUCCESS
 
