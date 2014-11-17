@@ -98,6 +98,7 @@ function createSaveData(prefix, count){
                 }else{
                     var user = {};
                     user["id"] = key;
+                    user["user_id"] = $("#" + prefix + "_user_id_" + i).val();
                     user["name"] = $("#" + prefix + "_name_" + i).val();
                     user["password"] = $("#" + prefix + "_password_" + i).val();
                     user["mail_address"] =$("#" + prefix + "_mail_address_" + i).val();
@@ -157,6 +158,7 @@ function search(status, json, option){
             switch(prefix){
                 case "km_user":
                     $("#" + prefix + "_id_" + count).val(json['result'][i]['id']);
+                    $("#" + prefix + "_user_id_" + count).val(json['result'][i]['user_id']);
                     $("#" + prefix + "_name_" + count).val(json['result'][i]['name']);
                     $("#" + prefix + "_password_" + count).val(json['result'][i]['password']);
                     $("#" + prefix + "_mail_address_" + count).val(json['result'][i]['mail_address']);
@@ -219,7 +221,8 @@ function convertJSON(text){
 
 function createUserListRow(id){
     var row = "<tr><td><input type='checkbox' id='km_user_check_" + id + "'></td>" +
-            "<td><input type='text' id='km_user_id_" + id + "'></td>" +
+            "<td><input type='text' id='km_user_id_" + id + "' readonly></td>" +
+            "<td><input type='text' id='km_user_user_id_" + id + "'></td>" +
             "<td><input type='text' id='km_user_name_" + id + "'></td>" +
             "<td><input type='text' id='km_user_password_" + id + "'></td>" +
             "<td><input type='text' id='km_user_mail_address_" + id + "'></td>" +
@@ -231,7 +234,7 @@ function createUserListRow(id){
 
 function createGroupListRow(id){
     var row = "<tr><td><input type='checkbox' id='km_group_check_" + id + "'></td>" +
-            "<td><input type='text' id='km_group_id_" + id + "'></td>" +
+            "<td><input type='text' id='km_group_id_" + id + "' readonly></td>" +
             "<td><input type='text' id='km_group_name_" + id + "'></td>" +
             "<td><input type='text' id='km_group_parent_id_" + id + "'></td>" +
             "</tr>";
@@ -240,7 +243,7 @@ function createGroupListRow(id){
 
 function createRoleListRow(id){
     var row = "<tr><td><input type='checkbox' id='km_role_check_" + id + "'></td>" +
-            "<td><input type='text' id='km_role_id_" + id + "'></td>" +
+            "<td><input type='text' id='km_role_id_" + id + "' readonly></td>" +
             "<td><input type='text' id='km_role_name_" + id + "'></td>" +
             "<td><input type='text' id='km_role_target_" + id + "'></td>" +
             "<td><input type='text' id='km_role_is_allow_" + id + "'></td>" +

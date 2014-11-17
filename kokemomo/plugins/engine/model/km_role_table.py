@@ -33,7 +33,7 @@ def search_parameter():
 
 class KMRole(Base):
     __tablename__ = 'km_role'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, autoincrement=True, primary_key=True)
     name = Column(String(50))
     target = Column(String(100))
     is_allow = Column(Boolean)

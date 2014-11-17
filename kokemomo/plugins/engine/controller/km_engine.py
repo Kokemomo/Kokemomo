@@ -103,7 +103,7 @@ def save_user():
                     user_delete(id, session)  # delete
                 else:
                     user = KMUser()
-                    user.id = id
+                    user.user_id = json_data[id]['user_id']
                     user.name = json_data[id]["name"]
                     user.password = json_data[id]["password"]
                     user.mail_address = json_data[id]["mail_address"]
@@ -149,7 +149,6 @@ def save_group():
                     group_delete(id, session)  # delete
                 else:
                     group = KMGroup()
-                    group.id = id
                     group.name = json_data[id]["name"]
                     group.parent_id = json_data[id]["parent_id"]
                     group_update(group, session)
