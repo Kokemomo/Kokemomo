@@ -8,7 +8,8 @@ __author__ = 'hiroki'
 """
 It is the accessor to user table to be used in the KOKEMOMO.
 [Table Layouts]
-    id:String
+    id:Integer
+    user_id:String
     name:String
     password:String
     mail_address:String
@@ -34,9 +35,10 @@ def search_parameter():
 
 class KMUser(Base):
     __tablename__ = 'km_user'
-    id = Column(String(10), primary_key=True)
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    user_id = Column(String(20))
     name = Column(String(50))
-    password = Column(String(10))
+    password = Column(String(20))
     mail_address = Column(String(30))
     group_id = Column(Integer)
     role_id = Column(Integer)
@@ -50,7 +52,7 @@ class KMUser(Base):
         return create_json(self)
 
 
-def find(id, session):
+def find(user_id, session):
     """
     Find the user.
     :param id: user id.
@@ -58,7 +60,7 @@ def find(id, session):
     :return: user data.
     """
     result = None
-    for user in session.query(KMUser).filter_by(id=id).all():
+    for user in session.query(KMUser).filter_by(user_id=user_id).all():
         result = user
     return result
 
