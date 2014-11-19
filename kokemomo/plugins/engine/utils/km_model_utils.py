@@ -5,10 +5,9 @@ from sqlalchemy import create_engine, String, Integer, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from types import *
-import datetime
-import inspect
-import json
+import datetime, inspect, json
 from abc import ABCMeta, abstractmethod
+from kokemomo.plugins.engine.utils.config import get_character_set_setting
 
 __author__ = 'hiroki'
 
@@ -16,6 +15,7 @@ __author__ = 'hiroki'
 """
 -------------------------------------------------------------------
 """
+charset = get_character_set_setting()
 
 def create_repr_str(model):
     result = '<' + model.__class__.__name__ + '('
@@ -23,7 +23,7 @@ def create_repr_str(model):
         value = getattr(model, column.name)
         if value is None:
             if type(value) is unicode:
-                value = value.encode('utf-8')
+                value = value.encode(charset)
             value = ''
         result += (column.name + '="' + str(value) + '",')
     result = result[0:-1] + ')>'
@@ -35,7 +35,7 @@ def create_json(model):
         value = getattr(model, column.name)
         if value is not None:
             if type(value) is unicode:
-                value = value.encode('utf-8')
+                value = value.encode(charset)
             try:
                 # json形式の値の場合はダブルクォートをつけない
                 json.loads(str(value))
@@ -61,7 +61,7 @@ def create_value_list(model):
     return value_list
 
 def set_value_list(model, json_str):
-    json_data = json.loads(json_str.decode('utf-8'))
+    json_data = json.loads(json_str.decode(charset))
     for key in json_data:
         setattr(model, key, str(json_data[key])) # TODO: 項目のタイプによって型を変換する
     return model
