@@ -5,7 +5,7 @@ import os
 import logging
 import json
 
-from kokemomo.lib.bottle import route, request, redirect, template, url
+from kokemomo.lib.bottle import route, request, response, redirect, template, url
 from kokemomo.lib.bottle import static_file
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 from kokemomo.plugins.engine.controller.km_exception import log
@@ -15,15 +15,15 @@ from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
 from kokemomo.plugins.engine.controller.km_access_check import check_login
-
+from kokemomo.plugins.engine.utils.config import get_character_set_setting
 
 __author__ = 'hiroki'
 
 logging.basicConfig(filename='engine.log', level=logging.INFO, format='%(asctime)s %(message)s')
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-
 db_manager = KMDBManager("engine")
+charset = get_character_set_setting()
 
 @route('/engine/js/<filename>', name='static_js')
 @log
@@ -60,7 +60,7 @@ def img_static(filename):
 
 @route('/engine/top')
 @log
-@check_login(request)
+@check_login(request, response)
 def load():
     type = request.params.get('type', default='info')
     user_id = request.cookies['user_id']
@@ -97,7 +97,7 @@ def save_user():
     try:
         session = db_manager.get_session()
         for save_user in request.forms:
-            json_data = json.loads(save_user.decode('utf-8'))
+            json_data = json.loads(save_user.decode(charset))
             for id in json_data:
                 if json_data[id] == "":
                     user_delete(id, session)  # delete
@@ -143,7 +143,7 @@ def save_group():
     try:
         session = db_manager.get_session()
         for save_group in request.forms:
-            json_data = json.loads(save_group.decode('utf-8'))
+            json_data = json.loads(save_group.decode(charset))
             for id in json_data:
                 if json_data[id] == "":
                     group_delete(id, session)  # delete
@@ -185,7 +185,7 @@ def save_role():
     try:
         session = db_manager.get_session()
         for save_group in request.forms:
-            json_data = json.loads(save_group.decode('utf-8'))
+            json_data = json.loads(save_group.decode(charset))
             for id in json_data:
                 if json_data[id] == "":
                     role_delete(id, session)  # delete
@@ -229,7 +229,7 @@ def engine_save_parameter():
     try:
         session = db_manager.get_session()
         for save_params in request.forms:
-            json_data = json.loads(save_params.decode('utf-8'))
+            json_data = json.loads(save_params.decode(charset))
             for key in json_data:
                 if json_data[key] == "":
                     delete_parameter(key, session)  # delete
@@ -264,11 +264,11 @@ def upload():
     """
     Save the file that is specified in the request.
     """
-    directory_path = request.forms.get('directory').decode('utf-8')
+    directory_path = request.forms.get('directory').decode(charset)
     data = request.files
     file_obj = data.get('files')
     file_name = file_obj.filename
-    file_name = file_name.decode('utf-8')
+    file_name = file_name.decode(charset)
     save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
     with open(save_path, "wb") as open_file:
         open_file.write(file_obj.file.read())

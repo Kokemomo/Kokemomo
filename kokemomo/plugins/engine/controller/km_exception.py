@@ -5,6 +5,7 @@ __author__ = 'hiroki'
 
 import logging
 import traceback
+from bottle import HTTPError
 
 """
 Exception class for Kokemomo CMS.
@@ -38,6 +39,10 @@ def log(callback):
             raise kme
         except Exception as e:
             logging.error("An error has occurred in the application.")
+            logging.error(traceback.format_exc())
+            raise e
+        except HTTPError as e:
+            logging.error("An error has occurred in the server.")
             logging.error(traceback.format_exc())
             raise e
     return wrapper
