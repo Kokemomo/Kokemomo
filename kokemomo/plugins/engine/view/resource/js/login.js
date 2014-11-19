@@ -14,7 +14,8 @@ function login(status, json){
         console.log("logine success!" + json);
         switch(json){
             case 'SUCCESS':
-                location.href = "/engine/admin";
+                var location_path = "/engine/top";
+                location.href = location_path;
                 break;
             case 'FAIL':
                 $("#error_label").removeClass('hidden');
