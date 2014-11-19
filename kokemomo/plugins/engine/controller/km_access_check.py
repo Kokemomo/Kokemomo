@@ -2,9 +2,11 @@
 # -*- coding:utf-8 -*-
 
 from functools import wraps
+from xml.sax.saxutils import *
 from kokemomo.plugins.engine.model.km_user_table import find as find_user
 from kokemomo.plugins.engine.model.km_role_table import find as find_role
 from kokemomo.plugins.engine.controller.km_db_manager import *
+from kokemomo.plugins.engine.utils.config import get_character_set_setting
 
 """
 Access check class for KOKEMOMO.
@@ -59,7 +61,7 @@ def check_target(request, role):
     return True
 
 
-def check_login(request):
+def check_login(request, response):
     """
     Check to see if it is logged.
     :param request:var ui = HtmlService.createHtmlOutputFromFile('sidebar')
@@ -70,6 +72,7 @@ def check_login(request):
     def _check_login(callback):
         @wraps(callback)
         def wrapper(*args, **kwargs):
+            response.set_header("Content-Type", "text/html; charset=" + get_character_set_setting())
             if hasattr(request, "cookies"):
                 user_id = request.cookies.user_id
                 session = request.environ.get('beaker.session')
