@@ -7,6 +7,7 @@ import sys
 
 from kokemomo.plugins.recommend.model.km_history_table import find, find_list, update
 from kokemomo.plugins.engine.controller.km_db_manager import *
+from kokemomo.plugins.engine.utils.config import get_character_set_setting
 
 """
 Reccomend class for Kokemomo CMS.
@@ -46,6 +47,7 @@ user01 is similar!
 """
 
 db_manager = KMDBManager("engine")
+charset = get_character_set_setting()
 
 def get_recommend(user_id, columns, session):
     """
@@ -66,7 +68,7 @@ def get_recommend(user_id, columns, session):
     # Check similarity.
     result = {}
     for target in check_list:
-        target = target.encode('utf-8') # TODO: 文字コードを設定ファイルに抜き出し
+        target = target.encode(charset)
         similarity = jaccard(user_record, check_list[target])
         result[target]=similarity
     return result
@@ -84,8 +86,8 @@ def create_user_record(user_id, history_list, columns):
     for i, column in enumerate(columns):
         record.append(0)
         for history in history_list:
-            history_user = history.user_id.encode('utf-8') # TODO: 文字コードを設定ファイルに抜き出し
-            history_column =  history.contents.encode('utf-8') # TODO: 文字コードを設定ファイルに抜き出し
+            history_user = history.user_id.encode(charset)
+            history_column =  history.contents.encode(charset)
             if user_id == history_user and column == history_column:
                 record[i] = 1
                 break
