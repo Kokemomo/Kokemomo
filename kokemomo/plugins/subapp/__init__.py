@@ -3,7 +3,7 @@
 
 import logging
 
-from kokemomo.lib.bottle import template, route, static_file, url
+from kokemomo.lib.bottle import template, route, static_file, url, request
 
 
 __author__ = 'hiroki'
