@@ -58,7 +58,7 @@ def img_static(filename):
     return static_file(filename, root='kokemomo/plugins/engine/view/resource/img')
 
 
-@route('/engine/admin')
+@route('/engine/top')
 @log
 @check_login(request, response)
 def load():
@@ -75,7 +75,7 @@ def load():
         for file_name in files:
             if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
                 files.remove(file_name)
-    return template('kokemomo/plugins/engine/view/admin', url=url, user_id=user_id, type=type, dirs=dirs, files=files) # TODO: パス解決を改修
+    return template('kokemomo/plugins/engine/view/top', url=url, user_id=user_id, type=type, dirs=dirs, files=files) # TODO: パス解決を改修
 
 
 @route('/engine/error')
@@ -273,7 +273,7 @@ def upload():
     with open(save_path, "wb") as open_file:
         open_file.write(file_obj.file.read())
         logging.info("file upload. name=" + save_path);
-    redirect("/engine/admin")
+    redirect("/engine/top")
 
 
 @route('/engine/file/remove', method='POST')
