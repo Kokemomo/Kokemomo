@@ -3,6 +3,7 @@
 
 from functools import wraps
 from xml.sax.saxutils import *
+from kokemomo.lib.bottle import redirect
 from kokemomo.plugins.engine.model.km_user_table import find as find_user
 from kokemomo.plugins.engine.model.km_role_table import find as find_role
 from kokemomo.plugins.engine.controller.km_db_manager import *
@@ -80,7 +81,7 @@ def check_login(request, response):
                     login_info = user_id in session
                     if login_info and session[user_id] is not u'':
                         return callback(*args, **kwargs)
-                return "<p>Not Logged!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
+                return redirect('/engine/login?errorcode=0')
         return wrapper
     return _check_login
 
