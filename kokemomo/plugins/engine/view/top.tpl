@@ -33,13 +33,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                          <li><a href="/engine/admin?type=user">ユーザー</a></li>
-                          <li><a href="/engine/admin?type=group">グループ</a></li>
-                          <li><a href="/engine/admin?type=role">ロール</a></li>
-                          <li><a href="/engine/admin?type=parameter">パラメータ</a></li>
-                          <li><a href="/engine/admin?type=file">ファイル</a></li>
-                          <li><a href="/engine/admin?type=plugin">プラグイン</a></li>
-                          <li><a href="/engine/admin?type=log">ログ</a></li>
+                          <li><a href="/engine/top?type=user">ユーザー</a></li>
+                          <li><a href="/engine/top?type=group">グループ</a></li>
+                          <li><a href="/engine/top?type=role">ロール</a></li>
+                          <li><a href="/engine/top?type=parameter">パラメータ</a></li>
+                          <li><a href="/engine/top?type=file">ファイル</a></li>
+                          <li><a href="/engine/top?type=plugin">プラグイン</a></li>
+                          <li><a href="/engine/top?type=log">ログ</a></li>
                         </ul>
                     </li>
                 </ul>

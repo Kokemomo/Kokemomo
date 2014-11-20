@@ -273,7 +273,7 @@ def upload():
     with open(save_path, "wb") as open_file:
         open_file.write(file_obj.file.read())
         logging.info("file upload. name=" + save_path);
-    redirect("/engine/admin")
+    redirect("/engine/top")
 
 
 @route('/engine/file/remove', method='POST')
