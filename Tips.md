@@ -7,6 +7,7 @@
 ### データベース接続
 
 get_database_setting(アプリケーション名)で取得
+
     -----------------------------
     [Database_アプリケーション名]
     rdbms=sqlite
@@ -16,6 +17,7 @@ get_database_setting(アプリケーション名)で取得
 ### データベースプーリング
 
 get_database_pool_setting()で取得
+
     -----------------------------
     [Database_Pool_アプリケーション名]
     recycle=3600
@@ -23,7 +25,8 @@ get_database_pool_setting()で取得
 
 ### アプリケーション文字コード
 
-    get_character_set_setting()で取得
+get_character_set_setting()で取得
+
     -----------------------------
     [Character_Set]
     charset=utf-8
@@ -32,6 +35,7 @@ get_database_pool_setting()で取得
 ### テスト用ログイン
 
 ログイン時にadmin/adminまたはadmin2/admin2でログインできるかどうか(falseでOFF)
+
     -----------------------------
     [Test_Setting]
     test_login=true
@@ -83,16 +87,16 @@ db_manager = KMDBManager("アプリケーション名")
 
 ### アクセスチェックの仕組み
 
-ログインユーザーに紐づくロール情報(KMRole)を元にチェックを行う。
-※KMRoleの定義
-name:ロール名
-target:チェック対象(/アプリケーション/機能/サブ機能まで設定可)
-is_allow:許可するかどうか
+ログインユーザーに紐づくロール情報(KMRole)を元にチェックを行う。  
+※KMRoleの定義  
+name:ロール名  
+target:チェック対象(/アプリケーション/機能/サブ機能まで設定可)  
+is_allow:許可するかどうか  
 
-例：
-target：/app/document/find
-is_allow：False
-http://localhost:8861/app/document/findでアクセスした場合はエラーになる
+例：  
+target：/app/document/find  
+is_allow：False  
+http://localhost:8861/app/document/findでアクセスした場合はエラーになる  
 
 
 ## モデルの作成
@@ -125,14 +129,15 @@ http://localhost:8861/app/document/findでアクセスした場合はエラー�
 
 ## Ajax通信
 
-モジュール：
-kokemomo/plugins/engine/view/resource/js/communication.js
-kokemomo/plugins/engine/util/km_utils.py
+モジュール：  
+kokemomo/plugins/engine/view/resource/js/communication.js  
+kokemomo/plugins/engine/util/km_utils.py  
 
-GETの場合
-    -----------------------------------
-+ クライアント側
-    $("#btn").click(function(){
+GETの場合  
+
+### クライアント側
+
+    $("#btn").click(function(){ 
     　　var value="hoge";
     　　send(SendType[1], '/app/action', value, func);
     });
@@ -144,17 +149,17 @@ GETの場合
     　　}
     }
 
-+ サーバー側
+### サーバー側
 
     @route('/app/action', method='POST')
     def post():
     　　result = request.params.get('value') # GETパラメータの取得
     　　return create_result(result) # 結果をJSONへ変換
-    -----------------------------------
 
-POSTの場合
-    -----------------------------------
-+ クライアント側
+POSTの場合  
+
+### クライアント側
+
     $("#btn").click(function(){
     　　var value="hoge";
     　　send(SendType[2], '/app/action', value, func);
@@ -167,17 +172,16 @@ POSTの場合
     　　}
     }
 
-+ サーバー側
+### サーバー側
 
     @route('/app/action', method='POST')
     def post():
     　　result = request.forms.get('value') # GETパラメータの取得
     　　return create_result(result) # 結果をJSONへ変換
-    -----------------------------------
 
-※コールバック関数にオプションを指定する方法
-    -----------------------------------
-+ クライアント側
+※コールバック関数にオプションを指定する方法  
+
+### クライアント側
 
     $("#btn").click(function(){
     　　var value="hoge";
@@ -191,24 +195,24 @@ POSTの場合
     　　　　// 成功処理
     　　}
     }
-    -----------------------------------
 
-※結果としてモデルのリストを返す場合
+※結果としてモデルのリストを返す場合  
+
     　list = [model1,model2]
     　return create_result_4_array(list)
 
-　結果のJSON：{"result":[model1から生成されたJSON,model2から生成されたJSON]}
+　結果のJSON：{"result":[model1から生成されたJSON,model2から生成されたJSON]}  
 
 
 ## ログインユーザーIDの取得
 
-モジュール：kokemomo/plugins/engine/view/resource/js/communication.js
-    -----------------------------------
-+ クライアント側
+モジュール：kokemomo/plugins/engine/view/resource/js/communication.js  
+
+### クライアント側
 
     user_id = getUserId();
 
-+ サーバー側
+### サーバー側
+
     user_id = request.cookies['user_id'] # ログインユーザーIDの取得
-    -----------------------------------
 
