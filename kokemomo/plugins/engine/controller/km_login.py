@@ -5,7 +5,7 @@ import uuid
 
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.engine.model.km_user_table import find
-from kokemomo.plugins.engine.controller.km_session_manager import add_session, close_session
+from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session, delete_value_to_session
 from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.controller.km_exception import log
 from kokemomo.plugins.engine.utils.config import get_test_setting
@@ -33,7 +33,7 @@ db_manager = KMDBManager("engine")
 
 @route('/engine/login')
 def login():
-    return template('kokemomo/plugins/engine/view/login', url=url) # TODO: パス解決を修正する
+    return template('kokemomo/plugins/engine/view/login', url=url)
 
 
 @route('/engine/login/auth', method='POST')
@@ -48,10 +48,8 @@ def login_auth():
 @route('/engine/logout')
 @log
 def logout():
-    user_id = request.cookies['user_id']
-    close_session(request, user_id)
-    response.delete_cookie('user_id') # TODO ver.0.11だと削除できない？
-    return template('kokemomo/plugins/engine/view/login', url=url) # TODO: パス解決を修正する
+    delete_value_to_session(request, 'user_id')
+    return template('kokemomo/plugins/engine/view/login', url=url)
 
 
 def auth(request, response, id, password):
@@ -73,14 +71,7 @@ def auth(request, response, id, password):
                 result = RESULT_SUCCESS
 
         if result == RESULT_SUCCESS:
-            session_id = get_session_id()
-            add_session(request, id, session_id)
-            paths = request.path.split('/')
-            path = '/' + paths[1] + '/'
-            response.set_cookie('user_id', id, path=path)
+            add_value_to_session(request, 'user_id', id)
     finally:
         session.close()
     return result
-
-def get_session_id():
-    return str(uuid.uuid1())
