@@ -12,7 +12,7 @@ from bottle_auth.core.auth import FacebookGraphMixin, HTTPRedirect
 from kokemomo import app
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.engine.controller.km_login import auth, RESULT_SUCCESS
-from kokemomo.plugins.engine.controller.km_session_manager import add_session
+from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session
 from bottle.ext import auth
 from bottle.ext.auth.decorator import login
 from bottle.ext.auth.social.facebook import Facebook, UserDenied
@@ -138,7 +138,7 @@ def fb_engine(filename):
 def create_session(request, response, id):
     result = RESULT_FAIL
     session_id = get_session_id()
-    add_session(request, id, session_id)
+    add_value_to_session(request, id, session_id)
     response.set_cookie('km_session', session_id) # TODO: セッション管理方法がこれで良いか再検討
     return result
 

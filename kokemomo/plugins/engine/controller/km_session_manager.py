@@ -5,15 +5,38 @@ from kokemomo.lib.bottle import request, get
 
 __author__ = 'hiroki'
 
-def add_session(request, user_id, value):
+def add_value_to_session(request, key, value):
+    '''
+    add session value.
+    :param request: bottle session object.
+    :param key: key.
+    :param value: value.
+    :return:
+    '''
     session = request.environ.get('beaker.session')
-    session[user_id] = value
+    session[key] = value
     session.save()
 
-def get_session(request, user_id):
+def get_value_to_session(request, key):
+    '''
+    get session value.
+    :param request: bottle request object.
+    :param key: key.
+    :return:
+    '''
     session = request.environ.get('beaker.session')
-    return session[user_id]
+    result = None
+    if key in session:
+        result = session[key]
+    return result
 
-def close_session(request, user_id):
+def delete_value_to_session(request, key):
+    '''
+    delete session value.
+    :param request: bottle request object.
+    :param key: key.
+    :return:
+    '''
     session = request.environ.get('beaker.session')
-    session[user_id] = u''
+    session[key] = None
+    session.save()
