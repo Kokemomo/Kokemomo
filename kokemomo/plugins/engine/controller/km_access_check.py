@@ -6,6 +6,7 @@ from xml.sax.saxutils import *
 from kokemomo.lib.bottle import redirect
 from kokemomo.plugins.engine.model.km_user_table import find as find_user
 from kokemomo.plugins.engine.model.km_role_table import find as find_role
+from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.utils.config import get_character_set_setting
 
@@ -29,20 +30,19 @@ def access_check(request):
     def _access_check(callback):
         @wraps(callback)
         def wrapper(*args, **kwargs):
-            if hasattr(request, "cookies"):
-                user_id = request.cookies.user_id
-                if user_id is not u'':
-                    try:
-                        session = db_manager.get_session()
-                        user = find_user(user_id, session)
-                        user_id = user.id
-                        role = find_role(user_id, session)
-                        if check_target(request, role):
-                            return callback(*args, **kwargs)
-                        else:
-                            return "<p>Access is not allowed!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
-                    finally:
-                        session.close()
+            user_id = get_value_to_session(request, 'user_id')
+            if user_id is not None:
+                try:
+                    session = db_manager.get_session()
+                    user = find_user(user_id, session)
+                    user_id = user.id
+                    role = find_role(user_id, session)
+                    if check_target(request, role):
+                        return callback(*args, **kwargs)
+                    else:
+                        return "<p>Access is not allowed!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
+                finally:
+                    session.close()
         return wrapper
     return _access_check
 
@@ -74,14 +74,10 @@ def check_login(request, response):
         @wraps(callback)
         def wrapper(*args, **kwargs):
             response.set_header("Content-Type", "text/html; charset=" + get_character_set_setting())
-            if hasattr(request, "cookies"):
-                user_id = request.cookies.user_id
-                session = request.environ.get('beaker.session')
-                if user_id is not u'' or session is not None:
-                    login_info = user_id in session
-                    if login_info and session[user_id] is not u'':
-                        return callback(*args, **kwargs)
-                return redirect('/engine/login?errorcode=0')
+            user_id = get_value_to_session(request, 'user_id')
+            if user_id is not None:
+                return callback(*args, **kwargs)
+            return redirect('/engine/login?errorcode=0')
         return wrapper
     return _check_login
 
