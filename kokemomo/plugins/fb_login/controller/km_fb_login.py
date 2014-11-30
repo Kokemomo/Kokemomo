@@ -100,8 +100,7 @@ def fb_engine(filename):
         return "<p>Please login!</p>" # TODO: 例外スロー時にエラー画面に遷移するようにする
     result = RESULT_FAIL
     if code is '':
-        km_session_key = request.get_cookie('km_session_id') # TODO: 現状としてログイン後の画面へのURLを直接たたくとアクセスできないため対応が必要
-        code = get_fb_code(km_session_key)
+        code = get_fb_code()
     code = str(code) + '#_=_'
     def get_user_callback(user):
         container['id'] = user['id']
@@ -137,15 +136,10 @@ def fb_engine(filename):
 
 def create_session(request, response, id):
     result = RESULT_FAIL
-    session_id = get_session_id()
-    add_value_to_session(request, id, session_id)
-    response.set_cookie('km_session', session_id) # TODO: セッション管理方法がこれで良いか再検討
+    add_value_to_session(request, 'fb_code', session_id)
     return result
 
-def get_fb_code(session_id):
+def get_fb_code():
     session = request.environ.get('beaker.session')
-    code = session_id in session
+    code = 'fb_code' in session
     return code
-
-def get_session_id():
-    return str(uuid.uuid1()) # TODO: セッションIDの生成方法を再検討
