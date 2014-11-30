@@ -17,7 +17,8 @@ from beaker.middleware import SessionMiddleware
 
 # session config
 session_opts = {
-    'session.type': 'file',
+    'session.type': 'ext:database',
+    'session.url': 'sqlite:///session_data/session.db',
     'session.data_dir': './session_data',
     'session.cookie_expires': True,
     'session.auto': True

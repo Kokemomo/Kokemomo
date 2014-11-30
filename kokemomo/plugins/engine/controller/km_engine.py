@@ -10,6 +10,7 @@ from kokemomo.lib.bottle import static_file
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 from kokemomo.plugins.engine.controller.km_exception import log
 from kokemomo.plugins.engine.controller.km_db_manager import *
+from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.model.km_user_table import find_all as user_find_all, delete as user_delete, update as user_update, KMUser
 from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_all, delete as group_delete, update as group_update, KMGroup
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
@@ -63,7 +64,7 @@ def img_static(filename):
 @check_login(request, response)
 def load():
     type = request.params.get('type', default='info')
-    user_id = request.cookies['user_id']
+    user_id = get_value_to_session(request, 'user_id')
     dirs = []
     files = []
     if type == "file":
