@@ -39,7 +39,7 @@ class KMUser(Base):
     user_id = Column(String(20))
     name = Column(String(50))
     password = Column(String(20))
-    mail_address = Column(String(30))
+    mail_address = Column(String(254))
     group_id = Column(Integer)
     role_id = Column(Integer)
     create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
