@@ -33,7 +33,7 @@ def search_parameter():
 
 class KMHistory(Base):
     __tablename__ = 'km_history'
-    id = Column(String(10), primary_key=True)
+    id = Column(Integer, autoincrement=True, primary_key=True)
     user_id = Column(String(10))
     contents = Column(Text())
     count = Column(Integer)
