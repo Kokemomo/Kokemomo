@@ -20,6 +20,8 @@
 + nose 1.3.4(テストのみ)
 
 ## セットアップ
+### 依存モジュールをインストールする
+pip install -r requirements.txt
 ### 開発用サーバーを起動する
 python simple_cms.py
 ### CMSへアクセスする
