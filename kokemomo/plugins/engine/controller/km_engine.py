@@ -16,7 +16,8 @@ from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
 from kokemomo.plugins.engine.controller.km_access_check import check_login
-from kokemomo.plugins.engine.utils.config import get_character_set_setting
+from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
+from kokemomo.plugins.engine.utils.km_utils import get_menu_list
 
 __author__ = 'hiroki'
 
@@ -76,7 +77,8 @@ def load():
         for file_name in files:
             if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
                 files.remove(file_name)
-    return template('kokemomo/plugins/engine/view/top', url=url, user_id=user_id, type=type, dirs=dirs, files=files) # TODO: パス解決を改修
+    menu_list = get_menu_list()
+    return template('kokemomo/plugins/engine/view/' + type, url=url, user_id=user_id, type=type, menu_list=menu_list, dirs=dirs, files=files) # TODO: パス解決を改修
 
 
 @route('/engine/error')
@@ -314,4 +316,3 @@ def select_dir():
             result = result + file_name + ","
     result = result[0:len(result) - 1]
     return create_result(result)
-

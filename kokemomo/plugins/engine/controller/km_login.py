@@ -8,7 +8,7 @@ from kokemomo.plugins.engine.model.km_user_table import find
 from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session, delete_value_to_session
 from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.controller.km_exception import log
-from kokemomo.plugins.engine.utils.config import get_test_setting
+from kokemomo.plugins.engine.utils.km_config import get_test_setting
 
 
 """
