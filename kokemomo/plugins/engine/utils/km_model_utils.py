@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from types import *
 import datetime, inspect, json
 from abc import ABCMeta, abstractmethod
-from kokemomo.plugins.engine.utils.config import get_character_set_setting
+from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
 
 __author__ = 'hiroki'
 

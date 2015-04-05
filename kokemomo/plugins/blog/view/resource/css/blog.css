@@ -1,0 +1,44 @@
+.container .jumbotron {
+  padding-right: 0px;
+  padding-left: 0px;
+  border-radius: 6px;
+}
+
+.required {
+  color: red;
+}
+
+.error {
+  color: red;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 1.2em;
+  margin: 5px;
+  padding: 5px;
+}
+
+div.box {
+  padding:10px;
+}
+
+div.menu {
+  padding-left: 2em;
+}
+
+div ul li a {
+  padding: 5px;
+}
+
+div ul li span {
+  padding: 5px;
+}
+
+input.article {
+  width: 100%;
+}

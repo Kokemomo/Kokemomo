@@ -144,3 +144,26 @@ def get_test_setting():
                             settings['test_login'] = test_login
                     __config_data[section_name] = settings
     return __config_data[section_name]
+
+def get_admin_menu_setting():
+    '''
+    get admin menu setting.
+    :return: config object.
+    '''
+    section_name = 'Admin_Menu'
+    settings = {}
+    if section_name in __config_data:
+        return __config_data[section_name]
+    else:
+        ini_file_path = os.path.abspath(os.curdir) + '/setting/kokemomo.ini'
+        if os.path.exists(ini_file_path):
+            config = ConfigParser.SafeConfigParser()
+            config.read(ini_file_path)
+            for section in config.sections():
+                if section == section_name :
+                    settings['menu'] = {}
+                    for option in config.options(section):
+                            menu_option = config.get(section, option)
+                            settings['menu'][option] = menu_option
+                    __config_data[section_name] = settings
+    return __config_data[section_name]

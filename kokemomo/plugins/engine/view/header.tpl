@@ -33,13 +33,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                          <li><a href="/engine/top?type=user">ユーザー</a></li>
-                          <li><a href="/engine/top?type=group">グループ</a></li>
-                          <li><a href="/engine/top?type=role">ロール</a></li>
-                          <li><a href="/engine/top?type=parameter">パラメータ</a></li>
-                          <li><a href="/engine/top?type=file">ファイル</a></li>
-                          <li><a href="/engine/top?type=plugin">プラグイン</a></li>
-                          <li><a href="/engine/top?type=log">ログ</a></li>
+                        % for menu in menu_list:
+                            <li><a href="{{menu.url}}">{{menu.name}}</a></li>
+                        % end
                         </ul>
                     </li>
                 </ul>
@@ -49,23 +45,5 @@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
-
-        % if type == 'info':
-            % include kokemomo/plugins/engine/view/info
-        % elif type == 'user':
-            % include kokemomo/plugins/engine/view/user
-        % elif type == 'group':
-            % include kokemomo/plugins/engine/view/group
-        % elif type == 'role':
-            % include kokemomo/plugins/engine/view/role
-        % elif type == 'parameter':
-            % include kokemomo/plugins/engine/view/parameter
-        % elif type == 'file':
-            % include kokemomo/plugins/engine/view/file dirs=dirs, files=files
-        % elif type == 'plugin':
-            % include kokemomo/plugins/engine/view/plugin
-        % elif type == 'log':
-            % include kokemomo/plugins/engine/view/log
-        % end
     </body>
 </html>

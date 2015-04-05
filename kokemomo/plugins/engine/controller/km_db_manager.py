@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from kokemomo.plugins.engine.utils.config import get_database_setting, get_database_pool_setting, get_character_set_setting
+from kokemomo.plugins.engine.utils.km_config import get_database_setting, get_database_pool_setting, get_character_set_setting
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

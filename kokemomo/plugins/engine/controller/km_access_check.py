@@ -8,7 +8,7 @@ from kokemomo.plugins.engine.model.km_user_table import find as find_user
 from kokemomo.plugins.engine.model.km_role_table import find as find_role
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.controller.km_db_manager import *
-from kokemomo.plugins.engine.utils.config import get_character_set_setting
+from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
 
 """
 Access check class for KOKEMOMO.
