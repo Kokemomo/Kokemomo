@@ -7,7 +7,7 @@ import sys
 
 from kokemomo.plugins.recommend.model.km_history_table import find, find_list, update
 from kokemomo.plugins.engine.controller.km_db_manager import *
-from kokemomo.plugins.engine.utils.config import get_character_set_setting
+from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
 
 """
 Reccomend class for Kokemomo CMS.

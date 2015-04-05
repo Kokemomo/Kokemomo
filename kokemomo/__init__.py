@@ -11,6 +11,7 @@ from kokemomo.lib.bottle import static_file, default_app
 from kokemomo.plugins import engine
 from kokemomo.plugins import common_entry
 from kokemomo.plugins import subapp
+from kokemomo.plugins import blog
 import application
 from beaker.middleware import SessionMiddleware
 
@@ -31,9 +32,10 @@ app.mount('/subapp', subapp)
 app.mount('/fb_login', fb_login)
 app.mount('/application', application)
 app.mount('/common_entry', common_entry)
+app.mount('/blog', blog)
 app = SessionMiddleware(app, session_opts)
 
-VERSION = "0.6.8"
+VERSION = "0.6.8.1"
 print("KOKEMOMO ver." + VERSION)
 
 
