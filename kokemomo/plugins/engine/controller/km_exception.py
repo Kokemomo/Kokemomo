@@ -37,12 +37,8 @@ def log(callback):
             logging.error(traceback.format_exc())
             logging.error(kme.msg)
             raise kme
-        except Exception as e:
+        except BaseException as e:
             logging.error("An error has occurred in the application.")
-            logging.error(traceback.format_exc())
-            raise e
-        except HTTPError as e:
-            logging.error("An error has occurred in the server.")
             logging.error(traceback.format_exc())
             raise e
     return wrapper

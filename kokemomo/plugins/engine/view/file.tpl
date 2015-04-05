@@ -1,3 +1,4 @@
+% include kokemomo/plugins/engine/view/header url=url, user_id=user_id, menu_list=menu_list
         <section class="container">
             <h3>ファイル管理</h3>
             <div class="row">
