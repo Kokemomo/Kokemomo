@@ -14,7 +14,11 @@
                                 <li>記事がありません。</li>
                             % end
                             % for article in info.articles:
-                                <li><span>{{article.title}}</span>[<a href="/blog/admin?type=article&info_id={{info.id}}&id={{article.id}}">編集</a>]</li>
+                                <li>
+                                    <span>{{article.title}}</span>
+                                    [<a href="/blog/admin?type=article&info_id={{info.id}}&id={{article.id}}">編集</a>]
+                                    [<a href="/blog/admin?type=article_list&info_id={{info.id}}&id={{article.id}}&delete=true">削除</a>]
+                                </li>
                             % end
                             </ul>
                         </div>
