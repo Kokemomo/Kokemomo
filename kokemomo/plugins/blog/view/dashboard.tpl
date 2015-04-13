@@ -8,7 +8,11 @@
                 % if 'info' in values and len(values['info']) != 0:
                     <ul>
                     % for info in values['info']:
-                        <li><a href="/blog/{{info.url}}">{{info.name}}</a>[<a href="/blog/admin?type=info&id={{info.id}}">編集</a>]</li>
+                        <li>
+                            <a href="/blog/{{info.url}}">{{info.name}}</a>
+                            [<a href="/blog/admin?type=info&id={{info.id}}">編集</a>]
+                            [<a href="/blog/admin?type=dashboard&id={{info.id}}&delete=true">削除</a>]
+                        </li>
                     % end
                     </ul>
                 % else:

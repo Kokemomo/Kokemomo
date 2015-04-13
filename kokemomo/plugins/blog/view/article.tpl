@@ -32,8 +32,13 @@
                                 <th width="100px">カテゴリ</th>
                                 <td>
                                     <select id="category" name="category">
+                                        <option value="0">カテゴリなし</option>
                                     % for category in categories:
-                                        <option value="{{category.id}}">{{category.name}}</option>
+                                        % if category.id == article.category_id:
+                                            <option value="{{category.id}}" selected>{{category.name}}</option>
+                                        % else:
+                                            <option value="{{category.id}}">{{category.name}}</option>
+                                        % end
                                     % end
                                     </select>
                                 </td>
