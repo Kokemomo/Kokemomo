@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 from kokemomo.plugins.engine.utils.km_model_utils import *
 from kokemomo.plugins.engine.controller.km_db_manager import Base
 from sqlalchemy.types import Text
@@ -23,6 +24,7 @@ class KMBlogArticle(Base):
     __tablename__ = 'km_blog_article'
     id = Column(Integer, autoincrement=True, primary_key=True)
     info_id = Column(Integer)
+    category_id = Column(Integer)
     title = Column(Text)
     article = Column(Text)
     post_date = Column(DateTime)
@@ -39,6 +41,7 @@ def create(id, session):
     if id == 'None':
         article = KMBlogArticle()
         article.info_id = 0
+        article.category_id = 0
         article.title = ""
         article.article = ""
         article.post_date = datetime.datetime.now()
@@ -89,6 +92,26 @@ def delete(id, session):
     fetch_object = session.query(KMBlogArticle).filter_by(id=id).one()
     try:
         session.delete(fetch_object)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+
+def delete_by_info(info_id, session):
+    fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
+    try:
+        for target in fetch:
+            session.delete(target)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+
+def delete_by_category(category_id, session):
+    fetch = session.query(KMBlogArticle).filter_by(category_id=category_id).all()
+    try:
+        for target in fetch:
+            session.delete(target)
         session.commit()
     except Exception as e:
         session.rollback()
