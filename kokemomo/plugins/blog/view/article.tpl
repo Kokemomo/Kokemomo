@@ -22,7 +22,7 @@
                             <tr class="row">
                                 <th width="100px">記事<span class="required">*</span></th>
                                 <td>
-                                    <input type="text" name="article" id="article" value="{{article.article}}" class="article">
+                                    <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
                                     % if 'article' in errors:
                                         <label class="error">{{errors['article']}}</label>
                                     % end

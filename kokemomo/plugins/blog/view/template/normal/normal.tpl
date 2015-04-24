@@ -20,7 +20,7 @@
         <![endif]-->
 
         <script src='{{url("static_js", filename="communication.js")}}'></script>
-        <script src='{{url("blog_static_normal_css", filename="normal.js")}}'></script>
+        <script src='{{url("blog_static_normal_js", filename="normal.js")}}'></script>
         <link href='{{url("blog_static_normal_css", filename="normal.css")}}' rel="stylesheet">
     </head>
     <body>
@@ -35,8 +35,17 @@
                 % for article in info.articles:
                 <div class="jumbotron">
                     <h2>{{article.title}}</h2>
-                    <p>{{article.article}}</p>
-                    [<a href="#">コメント</a>]
+                    <div>{{!article.article}}</div>
+                    % for blog_comment in article.comments:
+                        <div class="comment"><span>{{blog_comment.create_at}} : {{blog_comment.comment}}</span></div>
+                    % end
+                    <form id="form" action="/blog/{{blog_url}}/add_comment" method="post">
+                    <input type="hidden" name="id" id="id" value="{{article.id}}">
+                    <div class="comment">
+                        <input type="text" name="comment" id="comment">
+                        <input type="submit" value="コメントする">
+                    </div>
+                    </form>
                 </div>
                 % end
             </div>
