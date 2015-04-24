@@ -39,6 +39,14 @@ def find(id, session):
     return result
 
 
+def find_by_article_id(article_id, session):
+    result = []
+    fetch = session.query(KMBlogComment).filter_by(article_id=article_id).all();
+    for comment in fetch:
+        result.append(comment)
+    return result
+
+
 def find_all(session):
     result = []
     fetch = session.query(KMBlogComment)
