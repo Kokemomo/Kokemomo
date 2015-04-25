@@ -42,8 +42,8 @@ class KMUser(Base):
     mail_address = Column(String(254))
     group_id = Column(Integer)
     role_id = Column(Integer)
-    create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
-    update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    create_at = Column(DateTime, default=datetime.datetime.now)
+    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     def __repr__(self):
         return create_repr_str(self)

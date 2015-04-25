@@ -33,8 +33,8 @@ class KMParameter(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
     key = Column(String(50))
     json = Column(Text())
-    create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
-    update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    create_at = Column(DateTime, default=datetime.datetime.now)
+    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     def __repr__(self):
         return create_repr_str(self)
