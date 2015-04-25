@@ -22,8 +22,8 @@ class KMBlogCategory(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
     info_id = Column(Integer)
     name = Column(Text)
-    create_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
-    update_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    create_at = Column(DateTime, default=datetime.datetime.now)
+    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
 
     def __repr__(self):
         return create_repr_str(self)
