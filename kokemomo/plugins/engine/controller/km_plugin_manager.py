@@ -16,14 +16,17 @@ name = get_wsgi_setting()
 mod = __import__("kokemomo.plugins.engine.controller",fromlist=["km_wsgi"])
 class_def = getattr(getattr(mod, "km_wsgi"), "WSGI_" + name)
 
+plugins = {}
 
-def create_base_plugin():
+
+def create_base_plugin(name):
     '''
     ベースプラグインを生成します。
     :return: ベースプラグインオブジェクト
     '''
     plugin = class_def()
     plugin.create_app()
+    plugins[name] = plugin
     return plugin
 
 

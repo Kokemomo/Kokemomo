@@ -27,9 +27,6 @@ DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変
 db_manager = KMDBManager("engine")
 charset = get_character_set_setting()
 
-def load():
-    print('call load!')
-
 #@route('/engine/js/<filename>', name='static_js')
 @log
 def js_static(filename):
