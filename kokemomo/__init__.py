@@ -27,10 +27,10 @@ session_opts = {
 
 # sub subapp mount
 app = default_app()
-from kokemomo.plugins import fb_login
+#from kokemomo.plugins import fb_login
 app.mount('/engine', engine.app)
 app.mount('/subapp', subapp)
-app.mount('/fb_login', fb_login)
+#app.mount('/fb_login', fb_login)
 app.mount('/application', application)
 app.mount('/common_entry', common_entry)
 app.mount('/blog', blog)

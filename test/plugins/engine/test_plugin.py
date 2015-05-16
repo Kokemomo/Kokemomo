@@ -4,7 +4,7 @@
 from unittest import TestCase
 from nose.tools import ok_, eq_
 from kokemomo.plugins.engine.controller.km_wsgi import WSGI_Bottle
-from kokemomo.plugins.engine.controller.km_plugin import create_base_plugin
+from kokemomo.plugins.engine.controller.km_plugin_manager import create_base_plugin
 
 
 __author__ = 'hiroki'
