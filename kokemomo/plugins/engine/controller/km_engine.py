@@ -27,7 +27,10 @@ DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変
 db_manager = KMDBManager("engine")
 charset = get_character_set_setting()
 
-@route('/engine/js/<filename>', name='static_js')
+def load():
+    print('call load!')
+
+#@route('/engine/js/<filename>', name='static_js')
 @log
 def js_static(filename):
     """
@@ -38,7 +41,7 @@ def js_static(filename):
     return static_file(filename, root='kokemomo/plugins/engine/view/resource/js')
 
 
-@route('/engine/css/<filename>', name='static_css')
+#@route('/engine/css/<filename>', name='static_css')
 @log
 def css_static(filename):
     """
@@ -49,7 +52,7 @@ def css_static(filename):
     return static_file(filename, root='kokemomo/plugins/engine/view/resource/css')
 
 
-@route('/engine/img/<filename>', name='static_img')
+#@route('/engine/img/<filename>', name='static_img')
 @log
 def img_static(filename):
     """
@@ -60,7 +63,7 @@ def img_static(filename):
     return static_file(filename, root='kokemomo/plugins/engine/view/resource/img')
 
 
-@route('/engine/top')
+#@route('/engine/top')
 @log
 @check_login(request, response)
 def load():
@@ -81,14 +84,14 @@ def load():
     return template('kokemomo/plugins/engine/view/' + type, url=url, user_id=user_id, type=type, menu_list=menu_list, dirs=dirs, files=files) # TODO: パス解決を改修
 
 
-@route('/engine/error')
+#@route('/engine/error')
 def engine_error():
     return "An error has occurred. Please contact the server administrator."
 
 
 ## User
 
-@route('/engine/user/save', method='POST')
+#@route('/engine/user/save', method='POST')
 @log
 def save_user():
     """
@@ -117,7 +120,7 @@ def save_user():
         session.close()
 
 
-@route('/engine/user/search')
+#@route('/engine/user/search')
 @log
 def search_user():
     """
@@ -134,7 +137,7 @@ def search_user():
 
 ## Group
 
-@route('/engine/group/save', method='POST')
+#@route('/engine/group/save', method='POST')
 @log
 def save_group():
     """
@@ -159,7 +162,7 @@ def save_group():
         session.close()
 
 
-@route('/engine/group/search')
+#@route('/engine/group/search')
 @log
 def search_group():
     """
@@ -176,7 +179,7 @@ def search_group():
 
 ## Role
 
-@route('/engine/role/save', method='POST')
+#@route('/engine/role/save', method='POST')
 @log
 def save_role():
     """
@@ -203,7 +206,7 @@ def save_role():
         session.close()
 
 
-@route('/engine/role/search')
+#@route('/engine/role/search')
 @log
 def search_role():
     """
@@ -220,7 +223,7 @@ def search_role():
 
 ## Parameter
 
-@route('/engine/parameter/save', method='POST')
+#@route('/engine/parameter/save', method='POST')
 @log
 def engine_save_parameter():
     """
@@ -245,7 +248,7 @@ def engine_save_parameter():
         session.commit()
 
 
-@route('/engine/parameter/search', method='GET')
+#@route('/engine/parameter/search', method='GET')
 @log
 def engine_search_parameter():
     """
@@ -261,7 +264,7 @@ def engine_search_parameter():
 
 ## File
 
-@route('/engine/file/upload', method='POST')
+#@route('/engine/file/upload', method='POST')
 @log
 def upload():
     """
@@ -279,7 +282,7 @@ def upload():
     redirect("/engine/top")
 
 
-@route('/engine/file/remove', method='POST')
+#@route('/engine/file/remove', method='POST')
 @log
 def remove_file():
     """
@@ -291,7 +294,7 @@ def remove_file():
         print("remove. " + DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
 
 
-@route('/engine/file/change_dir', method="POST")
+#@route('/engine/file/change_dir', method="POST")
 @log
 def select_dir():
     """

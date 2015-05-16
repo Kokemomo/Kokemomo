@@ -31,7 +31,7 @@ test_login = get_test_setting()['test_login']
 
 db_manager = KMDBManager("engine")
 
-@route('/engine/login')
+#@route('/engine/login')
 def login():
     return template('kokemomo/plugins/engine/view/login', url=url)
 
