@@ -4,7 +4,7 @@ $(document).ready(function(){
 	$("#login").click(function(){
 	    user_id = $('#user_id').val();
 	    var loginInfo = user_id + ":" + $('#password').val();
-	    send(SendType[2], '/engine/login/auth', loginInfo , login);
+	    send(SendType[2], '/engine/login_auth', loginInfo , login);
 	});
 
 	var return_parameter = getParameter("errorcode");
@@ -19,7 +19,7 @@ function login(status, json){
         console.log("logine success!" + json);
         switch(json){
             case 'SUCCESS':
-                var location_path = "/engine/top";
+                var location_path = "/engine/index";
                 location.href = location_path;
                 break;
             case 'FAIL':
