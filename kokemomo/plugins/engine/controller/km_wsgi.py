@@ -19,8 +19,6 @@ name=Bottle
 '''
 
 
-
-
 class WSGI_Bottle:
     '''
     Bottleのラッパー
@@ -39,7 +37,6 @@ class WSGI_Bottle:
     @classmethod
     def mount(cls, rule, plugin):
         cls.root_app.mount(rule, plugin.plugin.app)
-
 
     @classmethod
     def run(cls):
@@ -75,7 +72,7 @@ class WSGI_Bottle:
             name = params['name']
         else:
             name = None
-        self.app.route(path=rule, method=method, callback=target, name=name);
+        self.app.route(path=rule, method=method, callback=target, name=name)
 
 
     def get_request(self):
@@ -86,7 +83,7 @@ class WSGI_Bottle:
         return response
 
 
-    def get_reqeust_parameter(self, name, default):
+    def get_request_parameter(self, name, default):
         return request.params.get(name, default)
 
 
@@ -96,3 +93,6 @@ class WSGI_Bottle:
 
     def load_static_file(self, filename, root):
         return static_file(filename, root=root)
+
+    def redirect(self, url):
+        redirect(url)

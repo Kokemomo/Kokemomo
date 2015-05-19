@@ -21,8 +21,8 @@ class KMData():
 
 
     def get_request_parameter(self, name, default):
-        self.controller.plugin.get_request_parameter(name, default)
+        return self.controller.plugin.get_request_parameter(name, default)
 
 
     def get_user_id(self):
-        get_value_to_session(self.controller.plugin.get_request(), 'user_id')
+        return get_value_to_session(self.controller.plugin.get_request(), 'user_id')

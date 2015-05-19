@@ -3,7 +3,6 @@
 
 import uuid
 
-from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.engine.model.km_user_table import find
 from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session, delete_value_to_session
 from kokemomo.plugins.engine.controller.km_db_manager import *
@@ -18,6 +17,12 @@ It is a certification class for KOKEMOMO.
 
 __author__ = 'hiroki'
 
+
+# TODO authインターフェースへ変更
+# TODO ユーザーの取得などはモデルへ移行
+# TODO セッションマネージャ関連もラップできないか検討
+
+
 RESULT_SUCCESS = "SUCCESS"
 RESULT_FAIL = "FAIL"
 
@@ -29,21 +34,19 @@ test_password2 = "admin2"
 
 test_login = get_test_setting()['test_login']
 
-db_manager = KMDBManager("engine")
-
-
-def logout():
+def logout(data):
+    request = data.get_request()
     delete_value_to_session(request, 'user_id')
 
 
-def login_auth(data):
-    for login_info in data.get_request().forms:
+def login_auth(km_data, db_manager):
+    for login_info in km_data.get_request().forms:
         login_args = login_info.split(':')
-    result = auth(data.get_request(), data.get_response(), login_args[0], login_args[1])
+    result = auth(km_data.get_request(), db_manager, login_args[0], login_args[1])
     return result
 
 
-def auth(request, response, id, password):
+def auth(km_data, db_manager, id, password):
     result = RESULT_FAIL
     try:
         session = db_manager.get_session()
@@ -62,7 +65,7 @@ def auth(request, response, id, password):
                 result = RESULT_SUCCESS
 
         if result == RESULT_SUCCESS:
-            add_value_to_session(request, 'user_id', id)
+            add_value_to_session(km_data.get_request(), 'user_id', id)
     finally:
         session.close()
     return result

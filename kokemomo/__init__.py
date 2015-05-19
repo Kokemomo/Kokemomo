@@ -6,9 +6,8 @@ Contents Management System KOKEMOMO
 
 """
 
-from kokemomo.lib.bottle import route, run as runner, request, response, redirect, template, get, url
-from kokemomo.lib.bottle import static_file, default_app
 from kokemomo.plugins.engine import engine
+from kokemomo.plugins.admin import admin
 from kokemomo.plugins import common_entry
 from kokemomo.plugins import subapp
 from kokemomo.plugins import blog
@@ -26,6 +25,7 @@ session_opts = {
 }
 
 mount('/engine', engine)
+mount('/admin', admin)
 
 plugin = SessionMiddleware(get_root_plugin())
 set_root_plugin(plugin)

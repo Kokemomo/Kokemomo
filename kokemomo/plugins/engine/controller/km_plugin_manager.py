@@ -93,3 +93,7 @@ class KMBaseController(object):
 
     def load_static_file(self, filename, root):
         return self.plugin.load_static_file(filename, root)
+
+
+    def redirect(self, url):
+        self.plugin.redirect(url)
