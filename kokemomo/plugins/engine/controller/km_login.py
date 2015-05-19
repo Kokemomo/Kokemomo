@@ -9,7 +9,6 @@ from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_s
 from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.controller.km_exception import log
 from kokemomo.plugins.engine.utils.km_config import get_test_setting
-from kokemomo.plugins.engine.controller.km_base_controller import KMBaseController
 
 
 """
@@ -33,51 +32,37 @@ test_login = get_test_setting()['test_login']
 db_manager = KMDBManager("engine")
 
 
-class KMLogin(KMBaseController):
-
-    #@route('/engine/login')
-    @classmethod
-    def login(cls):
-        return template('kokemomo/plugins/engine/view/login', url=KMBaseController.get_url)
-
-    #@route('/engine/login/auth', method='POST')
-    #@log
-    @classmethod
-    def login_auth(cls):
-        for login_info in request.forms:
-            login_args = login_info.split(':')
-        result = KMLogin.auth(request, response, login_args[0], login_args[1])
-        return result
+def logout():
+    delete_value_to_session(request, 'user_id')
 
 
-    #@route('/engine/logout')
-    #@log
-    @classmethod
-    def logout(cls):
-        delete_value_to_session(request, 'user_id')
-        return template('kokemomo/plugins/engine/view/login', url=url)
+def login_auth(data):
+    for login_info in data.get_request().forms:
+        login_args = login_info.split(':')
+    result = auth(data.get_request(), data.get_response(), login_args[0], login_args[1])
+    return result
 
-    @classmethod
-    def auth(cls, request, response, id, password):
-        result = RESULT_FAIL
-        try:
-            session = db_manager.get_session()
-            user = find(id, session)
-            if user is not None:
-                user_password = user.password
-                if user_password == password:
-                    # create web_session
-                    result = RESULT_SUCCESS
 
-            # テスト用
-            if test_login == 'true':
-                if id == test_user and password == test_password:
-                    result = RESULT_SUCCESS
-                if id == test_user2 and password == test_password2:
-                    result = RESULT_SUCCESS
+def auth(request, response, id, password):
+    result = RESULT_FAIL
+    try:
+        session = db_manager.get_session()
+        user = find(id, session)
+        if user is not None:
+            user_password = user.password
+            if user_password == password:
+                # create web_session
+                result = RESULT_SUCCESS
 
-            if result == RESULT_SUCCESS:
-                add_value_to_session(request, 'user_id', id)
-        finally:
-            session.close()
-        return result
+        # テスト用
+        if test_login == 'true':
+            if id == test_user and password == test_password:
+                result = RESULT_SUCCESS
+            if id == test_user2 and password == test_password2:
+                result = RESULT_SUCCESS
+
+        if result == RESULT_SUCCESS:
+            add_value_to_session(request, 'user_id', id)
+    finally:
+        session.close()
+    return result
