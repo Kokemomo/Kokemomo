@@ -44,7 +44,7 @@ def login_auth(km_data, db_manager):
     return result
 
 
-def auth(km_data, db_manager, id, password):
+def auth(request, db_manager, id, password):
     result = RESULT_FAIL
     try:
         session = db_manager.get_session()
@@ -63,7 +63,7 @@ def auth(km_data, db_manager, id, password):
                 result = RESULT_SUCCESS
 
         if result == RESULT_SUCCESS:
-            add_value_to_session(km_data.get_request(), 'user_id', id)
+            add_value_to_session(request, 'user_id', id)
     finally:
         session.close()
     return result

@@ -9,12 +9,19 @@ __author__ = 'hiroki'
 
 class KMEngine(KMBaseController):
 
-    def __init__(self):
-        super(KMEngine, self).__init__('engine')
-        self.add_route('/js/<filename>', 'GET', self.js_static, 'static_js')
-        self.add_route('/css/<filename>', 'GET', self.css_static, 'static_css')
-        self.add_route('/img/<filename>', 'GET', self.img_static, 'static_img')
-        self.add_route('/error', 'GET', self.engine_error)
+    def get_name(self):
+        return 'engine'
+
+
+    def get_route_list(self):
+        list = (
+            {'rule': '/js/<filename>', 'method': 'GET', 'target': self.js_static, 'name': 'static_js'},
+            {'rule': '/css/<filename>', 'method': 'GET', 'target': self.css_static, 'name': 'static_css'},
+            {'rule': '/img/<filename>', 'method': 'GET', 'target': self.img_static, 'name': 'static_img'},
+            {'rule': '/error', 'method': 'GET', 'target': self.engine_error},
+        )
+        return list
+
 
     @log
     def js_static(self, filename):

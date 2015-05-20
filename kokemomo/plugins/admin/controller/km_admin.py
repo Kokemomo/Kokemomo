@@ -29,28 +29,33 @@ db_manager = KMDBManager("engine")
 
 class KMAdmin(KMBaseController):
 
+    def get_name(self):
+        return 'admin'
 
-    def __init__(self):
-        super(KMAdmin, self).__init__('admin')
-        self.add_route('/js/<filename>','GET', self.js_static, 'admin_static_js')
-        self.add_route('/css/<filename>','GET', self.css_static, 'admin_static_css')
-        self.add_route('/img/<filename>','GET', self.img_static, 'admin_static_img')
 
-        self.add_route('/', 'GET', self.top)
-        self.add_route('/login', 'GET', self.login)
-        self.add_route('/login_auth', 'POST', self.login_auth)
-        self.add_route('/top', 'GET', self.top)
-        self.add_route('/user/save', 'POST', self.save_user)
-        self.add_route('/user/search', 'GET', self.search_user)
-        self.add_route('/group/save', 'POST', self.save_group)
-        self.add_route('/group/search', 'GET', self.search_group)
-        self.add_route('/role/save', 'POST', self.save_role)
-        self.add_route('/role/search', 'GET', self.search_role)
-        self.add_route('/parameter/save', 'POST', self.save_parameter)
-        self.add_route('/parameter/search', 'GET', self.search_parameter)
-        self.add_route('/file/upload', 'POST', self.upload)
-        self.add_route('/file/remove', 'POST', self.remove_file)
-        self.add_route('/file/change_dir', 'POST', self.select_dir)
+    def get_route_list(self):
+        list = (
+            {'rule': '/js/<filename>', 'method': 'GET', 'target': self.js_static, 'name': 'admin_static_js'},
+            {'rule': '/css/<filename>', 'method': 'GET', 'target': self.css_static, 'name': 'admin_static_css'},
+            {'rule': '/img/<filename>', 'method': 'GET', 'target': self.img_static, 'name': 'admin_static_img'},
+            {'rule': '/', 'method': 'GET', 'target': self.top},
+            {'rule': '/login', 'method': 'GET', 'target': self.login},
+            {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
+            {'rule': '/logout', 'method': 'GET', 'target': self.logout},
+            {'rule': '/top', 'method': 'GET', 'target': self.top},
+            {'rule': '/user/save', 'method': 'POST', 'target': self.save_user},
+            {'rule': '/user/search', 'method': 'GET', 'target': self.search_user},
+            {'rule': '/group/save', 'method': 'POST', 'target': self.save_group},
+            {'rule': '/group/search', 'method': 'GET', 'target': self.search_group},
+            {'rule': '/role/save', 'method': 'POST', 'target': self.save_role},
+            {'rule': '/role/search', 'method': 'GET', 'target': self.search_role},
+            {'rule': '/parameter/save', 'method': 'POST', 'target': self.save_parameter},
+            {'rule': '/parameter/search', 'method': 'GET', 'target': self.search_parameter},
+            {'rule': '/file/upload', 'method': 'POST', 'target': self.upload},
+            {'rule': '/file/remove', 'method': 'POST', 'target': self.remove_file},
+            {'rule': '/file/change_dir', 'method': 'POST', 'target': self.select_dir},
+        )
+        return list
 
 
     @log
