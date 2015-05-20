@@ -18,9 +18,9 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script src='{{url("static_js", filename="communication.js")}}'></script>
-        <script src='{{url("static_js", filename="admin.js")}}'></script>
-        <link href='{{url("static_css", filename="admin.css")}}' rel="stylesheet">
+        <script src='{{url("admin_static_js", "communication.js")}}'></script>
+        <script src='{{url("admin_static_js", "admin.js")}}'></script>
+        <link href='{{url("admin_static_css", "admin.css")}}' rel="stylesheet">
     </head>
     <body>
         <nav class="navbar navbar-inverse" role="navigation">
@@ -29,7 +29,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/engine/top">Top</a></li>
+                    <li class="active"><a href="/admin/top">Top</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理メニュー<b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -41,7 +41,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">{{user_id}}さん</a></li>
-                    <li><a href="/engine/logout">Logout</a></li>
+                    <li><a href="/admin/logout">Logout</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

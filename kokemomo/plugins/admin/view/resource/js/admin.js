@@ -23,17 +23,17 @@ $(document).ready(function(){
     // -- File --
     // Lists the files in a directory.
 	$("#dirList").change(function(){
-	    send(SendType[2], '/engine/file/change_dir', $("#dirList").val(), changeDir);
+	    send(SendType[2], '/admin/file/change_dir', $("#dirList").val(), changeDir);
 	});
 
 	// -- User --
 	$("#km_user_save").click(function(){
         json = JSON.stringify(createSaveData("km_user", userRowCount));
-	    send(SendType[2], '/engine/user/save', encodeURIComponent(json), manualSearch, "km_user");
+	    send(SendType[2], '/admin/user/save', encodeURIComponent(json), manualSearch, "km_user");
 	});
 	$("#km_user_search").click(function(){
         var option = ["km_user", 0, createUserListRow];
-	    send(SendType[1], '/engine/user/search', null, search, option);
+	    send(SendType[1], '/admin/user/search', null, search, option);
 	});
     $("#km_user_add_row").click(function(){
         $("#km_user_list").append(createUserListRow(userRowCount));
@@ -43,11 +43,11 @@ $(document).ready(function(){
 	// -- Group --
 	$("#km_group_save").click(function(){
         json = JSON.stringify(createSaveData("km_group", groupRowCount));
-	    send(SendType[2], '/engine/group/save', encodeURIComponent(json), manualSearch, "km_group");
+	    send(SendType[2], '/admin/group/save', encodeURIComponent(json), manualSearch, "km_group");
 	});
 	$("#km_group_search").click(function(){
         var option = ["km_group", 0, createGroupListRow];
-	    send(SendType[1], '/engine/group/search', null, search, option);
+	    send(SendType[1], '/admin/group/search', null, search, option);
 	});
     $("#km_group_add_row").click(function(){
         $("#km_group_list").append(createGroupListRow(groupRowCount));
@@ -57,11 +57,11 @@ $(document).ready(function(){
 	// -- Role --
 	$("#km_role_save").click(function(){
         json = JSON.stringify(createSaveData("km_role", roleRowCount));
-	    send(SendType[2], '/engine/role/save', encodeURIComponent(json), manualSearch, "km_role");
+	    send(SendType[2], '/admin/role/save', encodeURIComponent(json), manualSearch, "km_role");
 	});
 	$("#km_role_search").click(function(){
         var option = ["km_role", 0, createRoleListRow];
-	    send(SendType[1], '/engine/role/search', null, search, option);
+	    send(SendType[1], '/admin/role/search', null, search, option);
 	});
     $("#km_role_add_row").click(function(){
         $("#km_role_list").append(createRoleListRow(roleRowCount));
@@ -73,11 +73,11 @@ $(document).ready(function(){
 	$("#km_parameter_save").click(function(){
         // Format: 'keyName':{"hoge":"fuga"}
         json = JSON.stringify(createSaveData("km_parameter", parameterRowCount));
-	    send(SendType[2], '/engine/parameter/save', encodeURIComponent(json), manualSearch, "km_parameter");
+	    send(SendType[2], '/admin/parameter/save', encodeURIComponent(json), manualSearch, "km_parameter");
 	});
 	$("#km_parameter_search").click(function(){
         var option = ["km_parameter", 0, createParameterListRow];
-	    send(SendType[1], '/engine/parameter/search', null, search, option);
+	    send(SendType[1], '/admin/parameter/search', null, search, option);
 	});
     $("#km_parameter_add_row").click(function(){
         $("#km_parameter_list").append(createParameterListRow(parameterRowCount));
@@ -270,7 +270,7 @@ function handleDroppedFile(event){
             formData.append('files', files[file]);
             formData.append('directory', path);
             $.ajax({
-                    url: '/engine/file/upload',
+                    url: '/admin/file/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -290,7 +290,7 @@ function cancel(event) {
 
 function removeFile(dirPath, file){
         var request = new XMLHttpRequest();
-    	request.open( 'POST', '/engine/file/remove');
+    	request.open( 'POST', '/admin/file/remove');
     	request.send(dirPath + "," + file);
     	request.onreadystatechange = function() {
             if (request.readyState == 4) {
