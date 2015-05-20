@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from abc import ABCMeta, abstractmethod
 from urlparse import urljoin
 from ..utils.km_config import get_wsgi_setting
 from .km_data import KMData
@@ -77,11 +78,26 @@ def get_plugin(name):
 
 
 class KMBaseController(object):
+    __metaclass__ = ABCMeta
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = self.get_name()
         self.data = KMData(self)
-        self.plugin = create_base_plugin(name)
+        self.plugin = create_base_plugin(self.name)
+        for route in self.get_route_list():
+            if 'name' in route:
+                self.add_route(route['rule'], route['method'], route['target'], route['name'])
+            else:
+                self.add_route(route['rule'], route['method'], route['target'])
+
+
+    @abstractmethod
+    def get_name(self):
+        pass
+
+    @abstractmethod
+    def get_route_list(self):
+        pass
 
     def get_url(self, routename, filename):
         return urljoin('/' + self.name + '/',
