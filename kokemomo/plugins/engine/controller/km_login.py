@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import uuid
-
-from kokemomo.plugins.engine.model.km_user_table import find
-from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session, delete_value_to_session
-from kokemomo.plugins.engine.controller.km_db_manager import *
-from kokemomo.plugins.engine.controller.km_exception import log
-from kokemomo.plugins.engine.utils.km_config import get_test_setting
+from ..model.km_user_table import find
+from ..utils.km_config import get_test_setting
+from .km_session_manager import add_value_to_session, delete_value_to_session
 
 
 """
@@ -34,6 +30,7 @@ test_password2 = "admin2"
 
 test_login = get_test_setting()['test_login']
 
+
 def logout(data):
     request = data.get_request()
     delete_value_to_session(request, 'user_id')
@@ -42,7 +39,8 @@ def logout(data):
 def login_auth(km_data, db_manager):
     for login_info in km_data.get_request().forms:
         login_args = login_info.split(':')
-    result = auth(km_data.get_request(), db_manager, login_args[0], login_args[1])
+    result = auth(
+        km_data.get_request(), db_manager, login_args[0], login_args[1])
     return result
 
 
