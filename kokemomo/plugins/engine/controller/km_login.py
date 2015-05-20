@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import uuid
-
-from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
-from kokemomo.plugins.engine.model.km_user_table import find
-from kokemomo.plugins.engine.controller.km_session_manager import add_value_to_session, delete_value_to_session
-from kokemomo.plugins.engine.controller.km_db_manager import *
-from kokemomo.plugins.engine.controller.km_exception import log
-from kokemomo.plugins.engine.utils.km_config import get_test_setting
+from ..model.km_user_table import find
+from ..utils.km_config import get_test_setting
+from .km_session_manager import add_value_to_session, delete_value_to_session
 
 
 """
@@ -17,6 +12,12 @@ It is a certification class for KOKEMOMO.
 """
 
 __author__ = 'hiroki'
+
+
+# TODO authインターフェースへ変更
+# TODO ユーザーの取得などはモデルへ移行
+# TODO セッションマネージャ関連もラップできないか検討
+
 
 RESULT_SUCCESS = "SUCCESS"
 RESULT_FAIL = "FAIL"
@@ -29,30 +30,21 @@ test_password2 = "admin2"
 
 test_login = get_test_setting()['test_login']
 
-db_manager = KMDBManager("engine")
 
-@route('/engine/login')
-def login():
-    return template('kokemomo/plugins/engine/view/login', url=url)
+def logout(data):
+    request = data.get_request()
+    delete_value_to_session(request, 'user_id')
 
 
-@route('/engine/login/auth', method='POST')
-@log
-def login_auth():
-    for login_info in request.forms:
+def login_auth(km_data, db_manager):
+    for login_info in km_data.get_request().forms:
         login_args = login_info.split(':')
-    result = auth(request, response, login_args[0], login_args[1])
+    result = auth(
+        km_data.get_request(), db_manager, login_args[0], login_args[1])
     return result
 
 
-@route('/engine/logout')
-@log
-def logout():
-    delete_value_to_session(request, 'user_id')
-    return template('kokemomo/plugins/engine/view/login', url=url)
-
-
-def auth(request, response, id, password):
+def auth(request, db_manager, id, password):
     result = RESULT_FAIL
     try:
         session = db_manager.get_session()
