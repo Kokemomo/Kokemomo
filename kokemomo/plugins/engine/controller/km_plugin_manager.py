@@ -1,15 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__author__ = 'hiroki-m'
-
 import logging
 from urlparse import urljoin
-from kokemomo.plugins.engine.utils.km_config import get_wsgi_setting
-from kokemomo.plugins.engine.controller.km_data import KMData
+from ..utils.km_config import get_wsgi_setting
+from .km_data import KMData
+
+__author__ = 'hiroki-m'
 
 
-logging.basicConfig(filename='kokemomo.log', level=logging.INFO, format='%(asctime)s %(message)s')
+logging.basicConfig(
+    filename='kokemomo.log',
+    level=logging.INFO,
+    format='%(asctime)s %(message)s'
+)
 
 '''
 Kokemomoプラグインマネージャ
@@ -19,8 +23,9 @@ Kokemomoプラグインマネージャ
 '''
 
 name = get_wsgi_setting()
-mod = __import__("kokemomo.plugins.engine.controller",fromlist=["km_wsgi"])
-class_def = getattr(getattr(mod, "km_wsgi"), "WSGI_" + name)
+mod = __import__(
+    "kokemomo.plugins.engine.controller", fromlist=["km_wsgi_rapper"])
+class_def = getattr(getattr(mod, "km_wsgi_rapper"), "WSGI_" + name)
 
 plugins = {}
 
@@ -78,22 +83,22 @@ class KMBaseController(object):
         self.data = KMData(self)
         self.plugin = create_base_plugin(name)
 
-
     def get_url(self, routename, filename):
-        return urljoin('/' + self.name + '/', self.plugin.app.get_url(routename, filename=filename))
-
+        return urljoin('/' + self.name + '/',
+                       self.plugin.app.get_url(routename, filename=filename))
 
     def add_route(self, rule, method, target, name=None):
-        add_route(self.name, {'rule':rule, 'method':method, 'target':target, 'name':name})
-
+        add_route(
+            self.name,
+            {'rule': rule, 'method': method, 'target': target, 'name': name}
+        )
 
     def render(self, template_path, **params):
         return self.plugin.render(template_path, params)
 
-
     def load_static_file(self, filename, root):
+        # TODO 他のプラグインからの読み込みに対応する必要がある
         return self.plugin.load_static_file(filename, root)
-
 
     def redirect(self, url):
         self.plugin.redirect(url)

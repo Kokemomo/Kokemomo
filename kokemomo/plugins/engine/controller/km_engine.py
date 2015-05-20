@@ -1,28 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-
-import json
-
-from kokemomo.plugins.engine.controller.km_plugin_manager import KMBaseController
-from kokemomo.plugins.engine.controller.km_exception import log
-from kokemomo.plugins.engine.controller.km_access_check import check_login
-from kokemomo.plugins.engine.controller.km_login import logout, login_auth
-from kokemomo.plugins.engine.utils.km_utils import get_menu_list
+from .km_plugin_manager import KMBaseController
+from .km_exception import log
 
 __author__ = 'hiroki'
 
-class KMEngine(KMBaseController):
 
+class KMEngine(KMBaseController):
 
     def __init__(self):
         super(KMEngine, self).__init__('engine')
-        self.add_route('/js/<filename>','GET', self.js_static, 'static_js')
-        self.add_route('/css/<filename>','GET', self.css_static, 'static_css')
-        self.add_route('/img/<filename>','GET', self.img_static, 'static_img')
+        self.add_route('/js/<filename>', 'GET', self.js_static, 'static_js')
+        self.add_route('/css/<filename>', 'GET', self.css_static, 'static_css')
+        self.add_route('/img/<filename>', 'GET', self.img_static, 'static_img')
         self.add_route('/error', 'GET', self.engine_error)
-
 
     @log
     def js_static(self, filename):
@@ -31,8 +23,8 @@ class KMEngine(KMBaseController):
         :param filename: javascript file name.
         :return: static path.
         """
-        return self.load_static_file(filename, root='kokemomo/plugins/engine/view/resource/js')
-
+        file_path = 'kokemomo/plugins/engine/view/resource/js'
+        return self.load_static_file(filename, root=file_path)
 
     @log
     def css_static(self, filename):
@@ -41,8 +33,8 @@ class KMEngine(KMBaseController):
         :param filename: css file name.
         :return: static path.
         """
-        return self.load_static_file(filename, root='kokemomo/plugins/engine/view/resource/css')
-
+        file_path = 'kokemomo/plugins/engine/view/resource/css'
+        return self.load_static_file(filename, root=file_path)
 
     @log
     def img_static(self, filename):
@@ -51,8 +43,9 @@ class KMEngine(KMBaseController):
         :param filename: image file name.
         :return: static path.
         """
-        return self.load_static_file(filename, root='kokemomo/plugins/engine/view/resource/img')
-
+        file_path = 'kokemomo/plugins/engine/view/resource/img'
+        return self.load_static_file(filename, root=file_path)
 
     def engine_error(self):
-        return "An error has occurred. Please contact the server administrator."
+        return "An error has occurred." \
+               " Please contact the server administrator."

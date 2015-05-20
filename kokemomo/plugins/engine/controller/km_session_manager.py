@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from kokemomo.lib.bottle import request, get
-
 __author__ = 'hiroki'
+
 
 def add_value_to_session(request, key, value):
     '''
@@ -17,6 +16,7 @@ def add_value_to_session(request, key, value):
     session[key] = value
     session.save()
 
+
 def get_value_to_session(request, key):
     '''
     get session value.
@@ -29,6 +29,7 @@ def get_value_to_session(request, key):
     if key in session:
         result = session[key]
     return result
+
 
 def delete_value_to_session(request, key):
     '''

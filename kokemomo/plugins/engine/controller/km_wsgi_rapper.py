@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from kokemomo.lib.bottle import Bottle, run as runner
-from kokemomo.lib.bottle import route, request, response, redirect, template, url
+from kokemomo.lib.bottle import request, response, redirect, template
 from kokemomo.lib.bottle import static_file, default_app
 
 __author__ = 'hiroki-m'
@@ -19,7 +19,8 @@ name=Bottle
 '''
 
 
-class WSGI_Bottle:
+class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装はファイルを分けよう
+
     '''
     Bottleのラッパー
     '''
@@ -41,18 +42,17 @@ class WSGI_Bottle:
     @classmethod
     def run(cls):
         if cls.root_app is not None:
-            runner(cls.root_app, host='localhost', port=8861, debug=True, reloader=True)
+            runner(cls.root_app, host='localhost',
+                   port=8861, debug=True, reloader=True)
         #        runner(app, host='localhost', port=8080, server='gunicorn', workers=1)
         else:
             raise SystemError
-
 
     def create_app(self):
         '''
         Bottleアプリケーションを生成します。
         '''
         self.app = Bottle()
-
 
     def add_route(self, params):
         '''
@@ -74,25 +74,23 @@ class WSGI_Bottle:
             name = None
         self.app.route(path=rule, method=method, callback=target, name=name)
 
-
-    def get_request(self):
+    def get_request(self):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
         return request
 
-
-    def get_response(self):
+    def get_response(self):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
         return response
 
-
+    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def get_request_parameter(self, name, default):
         return request.params.get(name, default)
 
-
+    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def render(self, template_path, params):
         return template(template_path, params)
 
-
+    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def load_static_file(self, filename, root):
         return static_file(filename, root=root)
 
-    def redirect(self, url):
+    def redirect(self, url):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
         redirect(url)
