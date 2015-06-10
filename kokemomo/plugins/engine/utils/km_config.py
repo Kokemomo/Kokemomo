@@ -189,3 +189,42 @@ def get_wsgi_setting():
                             name = config.get(section, option)
                     __config_data[section_name] = name
     return __config_data[section_name]
+
+
+def get_logging_setting():
+    '''
+    get logging setting.
+    :return: config object.
+    '''
+    section_name = 'Logging'
+    settings = {}
+    if section_name in __config_data:
+        return __config_data[section_name]
+    else:
+        ini_file_path = os.path.abspath(os.curdir) + '/setting/kokemomo.ini'
+        if os.path.exists(ini_file_path):
+            config = ConfigParser.SafeConfigParser()
+            config.read(ini_file_path)
+            for section in config.sections():
+                if section == section_name :
+                    for option in config.options(section):
+                        if option == 'level':
+                            level = config.get(section, option)
+                            settings['level'] = level
+                        if option == 'format':
+                            format = config.get(section, option)
+                            settings['format'] = format
+                        if option == 'handler':
+                            handler = config.get(section, option)
+                            settings['handler'] = handler
+                        if option == 'filename':
+                            filename = config.get(section, option)
+                            settings['filename'] = filename
+                        if option == 'maxbytes':
+                            maxbytes = config.get(section, option)
+                            settings['maxbytes'] = maxbytes
+                        if option == 'backupcount':
+                            backupcount = config.get(section, option)
+                            settings['backupcount'] = backupcount
+                    __config_data[section_name] = settings
+    return __config_data[section_name]

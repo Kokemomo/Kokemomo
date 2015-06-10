@@ -14,6 +14,7 @@ from kokemomo.plugins import blog
 import application
 from beaker.middleware import SessionMiddleware
 from kokemomo.plugins.engine.controller.km_plugin_manager import mount, run, get_root_plugin, set_root_plugin
+from kokemomo.plugins.engine.utils.km_log import KMLogger
 
 # session config
 session_opts = {
@@ -42,8 +43,9 @@ set_root_plugin(plugin)
 #app = SessionMiddleware(app, session_opts)
 
 VERSION = "0.6.8.1"
-print("KOKEMOMO ver." + VERSION)
 
+logger = KMLogger('kokemomo');
+logger.info("KOKEMOMO ver." + VERSION)
 
 def app_run():
     run()
