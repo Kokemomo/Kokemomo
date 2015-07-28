@@ -7,7 +7,6 @@ from ..model.km_user_table import find as find_user
 from ..model.km_role_table import find as find_role
 from ..utils.km_config import get_character_set_setting
 from .km_session_manager import get_value_to_session
-from .km_db_manager import KMDBManager
 
 """
 Access check class for KOKEMOMO.
@@ -18,7 +17,7 @@ It provides as a decorator each check processing.
 
 __author__ = 'hiroki'
 
-db_manager = KMDBManager("engine")
+from kokemomo.plugins.engine.controller.km_storage import db
 
 
 def access_check(request):
@@ -33,7 +32,7 @@ def access_check(request):
             user_id = get_value_to_session(request, 'user_id')
             if user_id is not None:
                 try:
-                    session = db_manager.get_session()
+                    session = db.adapter.session
                     user = find_user(user_id, session)
                     user_id = user.id
                     role = find_role(user_id, session)

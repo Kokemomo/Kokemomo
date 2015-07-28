@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
+from kokemomo.plugins.engine.controller.km_storage import db
 
 __author__ = 'hiroki'
 
@@ -33,17 +33,16 @@ def search_parameter():
 -------------------------------------------------------------------
 """
 
-class KMUser(Base):
+
+class KMUser(db.Model):
     __tablename__ = 'km_user'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    user_id = Column(String(20))
-    name = Column(String(50))
-    password = Column(String(20))
-    mail_address = Column(String(254))
-    group_id = Column(Integer)
-    role_id = Column(Integer)
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.String(20))
+    name = db.Column(db.String(50))
+    password = db.Column(db.String(20))
+    mail_address = db.Column(db.String(254))
+    group_id = db.Column(db.Integer)
+    role_id = db.Column(db.Integer)
 
     def __repr__(self):
         return create_repr_str(self)
