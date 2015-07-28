@@ -6,7 +6,6 @@ __author__ = 'hiroki'
 import sys
 
 from kokemomo.plugins.recommend.model.km_history_table import find, find_list, update
-from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
 
 """
@@ -46,7 +45,7 @@ user01 is similar!
 
 """
 
-db_manager = KMDBManager("engine")
+from kokemomo.plugins.engine.controller.km_storage import db
 charset = get_character_set_setting()
 
 def get_recommend(user_id, columns, session):

@@ -7,7 +7,6 @@ from kokemomo.plugins.engine.controller.km_plugin_manager import KMBaseControlle
 from kokemomo.plugins.engine.controller.km_exception import log
 from kokemomo.plugins.engine.controller.km_login import logout, login_auth
 
-from kokemomo.plugins.engine.controller.km_db_manager import *
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.model.km_user_table import find_all as user_find_all, delete as user_delete, update as user_update, KMUser
 from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_all, delete as group_delete, update as group_update, KMGroup
@@ -24,7 +23,7 @@ __author__ = 'hiroki-m'
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
 charset = get_character_set_setting()
-db_manager = KMDBManager("engine")
+from kokemomo.plugins.engine.controller.km_storage import db
 
 
 class KMAdmin(KMBaseController):
@@ -113,7 +112,7 @@ class KMAdmin(KMBaseController):
 
     @log
     def login_auth(self):
-        return login_auth(self.data, db_manager)
+        return login_auth(self.data, db)
 
 
     def logout(self):
@@ -129,7 +128,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             for save_user in self.data.get_request().forms:
                 json_data = json.loads(save_user.decode(charset))
                 for id in json_data:
@@ -154,7 +153,7 @@ class KMAdmin(KMBaseController):
         :return: users.
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             result = user_find_all(session)
         finally:
             session.close()
@@ -169,7 +168,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             for save_group in self.data.get_request().forms:
                 json_data = json.loads(save_group.decode(charset))
                 for id in json_data:
@@ -190,7 +189,7 @@ class KMAdmin(KMBaseController):
         :return: groups.
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             result = group_find_all(session)
         finally:
             session.close()
@@ -206,7 +205,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             for save_group in self.data.get_request().forms:
                 json_data = json.loads(save_group.decode(charset))
                 for id in json_data:
@@ -231,7 +230,7 @@ class KMAdmin(KMBaseController):
         :return: roles.
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             result = role_find_all(session)
         finally:
             session.close()
@@ -247,7 +246,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             for save_params in self.data.get_request().forms:
                 json_data = json.loads(save_params.decode(charset))
                 for key in json_data:
@@ -268,7 +267,7 @@ class KMAdmin(KMBaseController):
         :return: parameters.
         """
         try:
-            session = db_manager.get_session()
+            session = db.adapter.session
             result = find_parameter(session)
         finally:
             session.commit()

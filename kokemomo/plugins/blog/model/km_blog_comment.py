@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
+from kokemomo.plugins.engine.controller.km_storage import db
 from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
@@ -17,13 +17,12 @@ It is blog comment table to be used in the KOKEMOMO.
 
 """
 
-class KMBlogComment(Base):
+
+class KMBlogComment(db.Model):
     __tablename__ = 'km_blog_comment'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    article_id = Column(Integer)
-    comment = Column(Text)
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    article_id = db.Column(db.Integer)
+    comment = db.Column(db.Text)
 
     def __repr__(self):
         return create_repr_str(self)
@@ -41,7 +40,7 @@ def find(id, session):
 
 def find_by_article_id(article_id, session):
     result = []
-    fetch = session.query(KMBlogComment).filter_by(article_id=article_id).all();
+    fetch = session.query(KMBlogComment).filter_by(article_id=article_id).all()
     for comment in fetch:
         result.append(comment)
     return result

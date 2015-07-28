@@ -5,7 +5,6 @@ import json
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.common_entry.controller.km_entry_config import get_model, get_name, entry_model
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import *
 
 __author__ = 'hiroki'
 
@@ -18,7 +17,7 @@ Generates display items of model set, it is possible to register a value.
 -------------------------------------------------------------------
 """
 
-db_manager = KMDBManager("engine")
+from kokemomo.plugins.engine.controller.km_storage import db
 
 @route('/common_entry/js/<filename>', name='common_entry_static_js')
 def common_entry_js_static(filename):
@@ -76,6 +75,6 @@ def entry(request):
     """
     for entry_params in request.forms:
         model = set_value_list(get_model(), entry_params)
-        session = db_manager.get_session()
+        session = db.adapter.session
         entry_model(model, session)
         session.close()
