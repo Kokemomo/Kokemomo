@@ -23,7 +23,7 @@ __author__ = 'hiroki-m'
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
 charset = get_character_set_setting()
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 
 class KMAdmin(KMBaseController):
@@ -112,7 +112,7 @@ class KMAdmin(KMBaseController):
 
     @log
     def login_auth(self):
-        return login_auth(self.data, db)
+        return login_auth(self.data, storage)
 
 
     def logout(self):
@@ -128,7 +128,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             for save_user in self.data.get_request().forms:
                 json_data = json.loads(save_user.decode(charset))
                 for id in json_data:
@@ -153,7 +153,7 @@ class KMAdmin(KMBaseController):
         :return: users.
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             result = user_find_all(session)
         finally:
             session.close()
@@ -168,7 +168,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             for save_group in self.data.get_request().forms:
                 json_data = json.loads(save_group.decode(charset))
                 for id in json_data:
@@ -189,7 +189,7 @@ class KMAdmin(KMBaseController):
         :return: groups.
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             result = group_find_all(session)
         finally:
             session.close()
@@ -205,7 +205,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             for save_group in self.data.get_request().forms:
                 json_data = json.loads(save_group.decode(charset))
                 for id in json_data:
@@ -230,7 +230,7 @@ class KMAdmin(KMBaseController):
         :return: roles.
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             result = role_find_all(session)
         finally:
             session.close()
@@ -246,7 +246,7 @@ class KMAdmin(KMBaseController):
 
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             for save_params in self.data.get_request().forms:
                 json_data = json.loads(save_params.decode(charset))
                 for key in json_data:
@@ -267,7 +267,7 @@ class KMAdmin(KMBaseController):
         :return: parameters.
         """
         try:
-            session = db.adapter.session
+            session = storage.adapter.session
             result = find_parameter(session)
         finally:
             session.commit()

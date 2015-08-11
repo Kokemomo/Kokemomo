@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 from sqlalchemy.types import Boolean
 
 __author__ = 'hiroki'
@@ -32,12 +32,12 @@ def search_parameter():
 """
 
 
-class KMRole(db.Model):
+class KMRole(storage.Model):
     __tablename__ = 'km_role'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(50))
-    target = db.Column(db.String(100))
-    is_allow = db.Column(db.Boolean)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    name = storage.Column(storage.String(50))
+    target = storage.Column(storage.String(100))
+    is_allow = storage.Column(storage.Boolean)
 
     def __repr__(self):
         return create_repr_str(self)

@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -20,14 +20,14 @@ It is blog article table to be used in the KOKEMOMO.
 """
 
 
-class KMBlogArticle(db.Model):
+class KMBlogArticle(storage.Model):
     __tablename__ = 'km_blog_article'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    info_id = db.Column(db.Integer)
-    category_id = db.Column(db.Integer)
-    title = db.Column(db.Text)
-    article = db.Column(db.Text)
-    post_date = db.Column(db.DateTime)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    info_id = storage.Column(storage.Integer)
+    category_id = storage.Column(storage.Integer)
+    title = storage.Column(storage.Text)
+    article = storage.Column(storage.Text)
+    post_date = storage.Column(storage.DateTime)
 
     def __repr__(self):
         return create_repr_str(self)

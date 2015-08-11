@@ -14,9 +14,9 @@ from kokemomo.plugins import blog
 import application
 from beaker.middleware import SessionMiddleware
 from kokemomo.plugins.engine.controller.km_plugin_manager import mount, run, get_root_plugin, set_root_plugin
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
-db.init()
+storage.init()
 
 # session config
 session_opts = {

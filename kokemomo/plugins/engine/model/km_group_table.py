@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -30,11 +30,11 @@ def search_parameter():
 """
 
 
-class KMGroup(db.Model):
+class KMGroup(storage.Model):
     __tablename__ = 'km_group'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(50))
-    parent_id = db.Column(db.Integer)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    name = storage.Column(storage.String(50))
+    parent_id = storage.Column(storage.Integer)
 
     def __repr__(self):
         return create_repr_str(self)

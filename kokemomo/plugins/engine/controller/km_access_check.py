@@ -17,7 +17,7 @@ It provides as a decorator each check processing.
 
 __author__ = 'hiroki'
 
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 
 def access_check(request):
@@ -32,7 +32,7 @@ def access_check(request):
             user_id = get_value_to_session(request, 'user_id')
             if user_id is not None:
                 try:
-                    session = db.adapter.session
+                    session = storage.adapter.session
                     user = find_user(user_id, session)
                     user_id = user.id
                     role = find_role(user_id, session)
