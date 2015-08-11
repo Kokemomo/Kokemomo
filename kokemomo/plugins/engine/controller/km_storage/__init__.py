@@ -64,8 +64,8 @@ mod = __import__(
 class_def = getattr(getattr(mod, adapter_filename), adapter_name+"Adapter")
 
 
-db = Storage(
+storage = Storage(
     adapter=class_def(sql_url)
 )
 
-__all__ = ['Storage', 'BasicAdapter', 'RdbAdapter', 'db']
+__all__ = ['Storage', 'BasicAdapter', 'RdbAdapter', 'storage']

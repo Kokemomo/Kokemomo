@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -17,11 +17,11 @@ It is blog category table to be used in the KOKEMOMO.
 """
 
 
-class KMBlogCategory(db.Model):
+class KMBlogCategory(storage.Model):
     __tablename__ = 'km_blog_category'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    info_id = db.Column(db.Integer)
-    name = db.Column(db.Text)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    info_id = storage.Column(storage.Integer)
+    name = storage.Column(storage.Text)
 
     def __repr__(self):
         return create_repr_str(self)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -17,11 +17,11 @@ It is blog subscription table to be used in the KOKEMOMO.
 """
 
 
-class KMBlogSubscription(db.Model):
+class KMBlogSubscription(storage.Model):
     __tablename__ = 'km_blog_subscription'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer)
-    target_id = db.Column(db.Integer)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    user_id = storage.Column(storage.Integer)
+    target_id = storage.Column(storage.Integer)
 
     def __repr__(self):
         return create_repr_str(self)

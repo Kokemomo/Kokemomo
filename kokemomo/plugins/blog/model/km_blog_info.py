@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
@@ -18,12 +18,12 @@ It is blog information table to be used in the Kokemomo.
 """
 
 
-class KMBlogInfo(db.Model):
+class KMBlogInfo(storage.Model):
     __tablename__ = 'km_blog_info'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.Text)
-    url = db.Column(db.Text)
-    description = db.Column(db.Text)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    name = storage.Column(storage.Text)
+    url = storage.Column(storage.Text)
+    description = storage.Column(storage.Text)
 
     def __repr__(self):
         return create_repr_str(self)

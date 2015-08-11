@@ -23,23 +23,23 @@ class BaseModel(object):
 
     def save(self):
         try:
-            db.adapter.add(self)
-            db.adapter.commit()
+            storage.adapter.add(self)
+            storage.adapter.commit()
         except:
-            db.adapter.rollback()
+            storage.adapter.rollback()
             raise
 
     def delete(self):
         try:
-            db.adapter.add(self)
-            db.adapter.commit()
+            storage.adapter.add(self)
+            storage.adapter.commit()
         except:
-            db.adapter.rollback()
+            storage.adapter.rollback()
             raise
 
     @classmethod
     def all(cls):
-        return db.session.query(cls)
+        return storage.session.query(cls)
 
 
 class SQLAlchemyAdapter(BasicAdapter, RdbAdapter):

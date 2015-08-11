@@ -31,7 +31,7 @@ from kokemomo.plugins.blog.model.km_blog_comment import KMBlogComment, update as
 
 DATA_DIR_PATH = "/kokemomo/data/blog/"
 
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 charset = get_character_set_setting()
 
@@ -101,7 +101,7 @@ def blog_admin():
     :return: template
     '''
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         type = request.params.get('type', default='dashboard')
         id = request.params.get('id', default='None')
         if request.params.get('delete', default=False):
@@ -158,7 +158,7 @@ def blog_admin_create_info():
     :return:
     '''
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         values = create_info_values(request, session)
         if len(values['errors']) == 0:
             save_info(values['info'], session)
@@ -200,7 +200,7 @@ def blog_admin_create_category():
     :return:
     '''
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         values = create_category_values(request, session)
         if len(values['errors']) == 0:
             save_category(values['category'], session)
@@ -239,7 +239,7 @@ def blog_admin_create_article():
     :return:
     '''
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         values = create_article_values(request, session)
         if len(values['errors']) == 0:
             save_article(values['article'], session)
@@ -285,7 +285,7 @@ Templates
 @route('/blog/<blog_url>')
 def blog_page(blog_url):
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         info = find_info_by_url(blog_url, session)
         info.articles = find_article_list_by_info_id(info.id, session)
         for article in info.articles:
@@ -309,7 +309,7 @@ def blog_entry_css_static(filename):
 @route('/blog/<blog_url>/add_comment', method='POST')
 def blog_add_comment(blog_url):
     try:
-        session = db.adapter.session
+        session = storage.adapter.session
         blob_comment = KMBlogComment()
         article_id = request.params.get('id', default='None')
         comment = request.params.get('comment', default='').decode(charset)

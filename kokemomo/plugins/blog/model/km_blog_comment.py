@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
@@ -18,11 +18,11 @@ It is blog comment table to be used in the KOKEMOMO.
 """
 
 
-class KMBlogComment(db.Model):
+class KMBlogComment(storage.Model):
     __tablename__ = 'km_blog_comment'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    article_id = db.Column(db.Integer)
-    comment = db.Column(db.Text)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    article_id = storage.Column(storage.Integer)
+    comment = storage.Column(storage.Text)
 
     def __repr__(self):
         return create_repr_str(self)

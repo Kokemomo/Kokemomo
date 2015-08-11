@@ -45,7 +45,7 @@ user01 is similar!
 
 """
 
-from kokemomo.plugins.engine.controller.km_storage import db
+from kokemomo.plugins.engine.controller.km_storage import storage
 charset = get_character_set_setting()
 
 def get_recommend(user_id, columns, session):
