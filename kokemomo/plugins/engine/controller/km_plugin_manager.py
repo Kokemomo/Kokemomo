@@ -4,7 +4,7 @@
 from abc import ABCMeta, abstractmethod
 from urlparse import urljoin
 from ..utils.km_config import get_wsgi_setting
-from ..utils.km_log import KMLogger
+from ..utils.km_logging import KMLogger
 from .km_data import KMData
 
 __author__ = 'hiroki-m'
