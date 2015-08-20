@@ -189,3 +189,25 @@ def get_wsgi_setting():
                             name = config.get(section, option)
                     __config_data[section_name] = name
     return __config_data[section_name]
+
+
+def get_storage_adapter_setting():
+    '''
+    get adapter setting.
+    :return: config object.
+    '''
+    section_name = 'Storage_Adapter'
+    if section_name in __config_data:
+        return __config_data[section_name]
+    else:
+        ini_file_path = os.path.abspath(os.curdir) + '/setting/kokemomo.ini'
+        if os.path.exists(ini_file_path):
+            config = ConfigParser.SafeConfigParser()
+            config.read(ini_file_path)
+            for section in config.sections():
+                if section == section_name:
+                    for option in config.options(section):
+                        if option == 'name':
+                            name = config.get(section, option)
+                    __config_data[section_name] = name
+    return __config_data[section_name]

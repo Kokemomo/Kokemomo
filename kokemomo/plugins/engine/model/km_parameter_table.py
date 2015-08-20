@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
+from kokemomo.plugins.engine.controller.km_storage import storage
 from sqlalchemy.types import Text
 
 """
@@ -28,13 +28,12 @@ def search_parameter():
 -------------------------------------------------------------------
 """
 
-class KMParameter(Base):
+
+class KMParameter(storage.Model):
     __tablename__ = 'km_parameter'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    key = Column(String(50))
-    json = Column(Text())
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    key = storage.Column(storage.String(50))
+    json = storage.Column(storage.Text())
 
     def __repr__(self):
         return create_repr_str(self)
