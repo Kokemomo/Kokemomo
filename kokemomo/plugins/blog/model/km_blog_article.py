@@ -2,8 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
-from sqlalchemy.types import Text
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -20,22 +19,22 @@ It is blog article table to be used in the KOKEMOMO.
 
 """
 
-class KMBlogArticle(Base):
+
+class KMBlogArticle(storage.Model):
     __tablename__ = 'km_blog_article'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    info_id = Column(Integer)
-    category_id = Column(Integer)
-    title = Column(Text)
-    article = Column(Text)
-    post_date = Column(DateTime)
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    info_id = storage.Column(storage.Integer)
+    category_id = storage.Column(storage.Integer)
+    title = storage.Column(storage.Text)
+    article = storage.Column(storage.Text)
+    post_date = storage.Column(storage.DateTime)
 
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
+
 
 def create(id, session):
     if id == 'None':
@@ -49,18 +48,21 @@ def create(id, session):
         article = find(id, session)
     return article
 
+
 def find(id, session):
     result = None
     for article in session.query(KMBlogArticle).filter_by(id=id).all():
         result = article
     return result
 
+
 def find_by_info_id(info_id, session):
     result = []
-    fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all();
+    fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
     for article in fetch:
         result.append(article)
     return result
+
 
 def find_all(session):
     result = []
@@ -97,6 +99,7 @@ def delete(id, session):
         session.rollback()
         raise e
 
+
 def delete_by_info(info_id, session):
     fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
     try:
@@ -106,6 +109,7 @@ def delete_by_info(info_id, session):
     except Exception as e:
         session.rollback()
         raise e
+
 
 def delete_by_category(category_id, session):
     fetch = session.query(KMBlogArticle).filter_by(category_id=category_id).all()
