@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
+from kokemomo.plugins.engine.controller.km_storage import storage
 from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
@@ -17,20 +17,20 @@ It is blog information table to be used in the Kokemomo.
     update_at:DateTime(Automatic Updates)
 """
 
-class KMBlogInfo(Base):
+
+class KMBlogInfo(storage.Model):
     __tablename__ = 'km_blog_info'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    name = Column(Text)
-    url = Column(Text)
-    description = Column(Text)
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    name = storage.Column(storage.Text)
+    url = storage.Column(storage.Text)
+    description = storage.Column(storage.Text)
 
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
+
 
 def create(id, session):
     if id == 'None':
@@ -42,17 +42,20 @@ def create(id, session):
         info = find(id, session)
     return info
 
+
 def find(id, session):
     result = None
     for info in session.query(KMBlogInfo).filter_by(id=id).all():
         result = info
     return result
 
+
 def find_by_url(url, session):
     result = None
     for info in session.query(KMBlogInfo).filter_by(url=url).all():
         result = info
     return result
+
 
 def find_all(session):
     result = []

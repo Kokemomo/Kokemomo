@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_db_manager import Base
-from sqlalchemy.types import Text
+from kokemomo.plugins.engine.controller.km_storage import storage
 
 __author__ = 'hiroki'
 
@@ -17,19 +16,19 @@ It is blog category table to be used in the KOKEMOMO.
 
 """
 
-class KMBlogCategory(Base):
+
+class KMBlogCategory(storage.Model):
     __tablename__ = 'km_blog_category'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    info_id = Column(Integer)
-    name = Column(Text)
-    create_at = Column(DateTime, default=datetime.datetime.now)
-    update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
+    info_id = storage.Column(storage.Integer)
+    name = storage.Column(storage.Text)
 
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
+
 
 def create(id, session):
     if id == 'None':
@@ -39,17 +38,20 @@ def create(id, session):
         category = find(id, session)
     return category
 
+
 def find(id, session):
     result = None
     for category in session.query(KMBlogCategory).filter_by(id=id).all():
         result = category
     return result
 
+
 def find_by_info(info_id, session):
     result = []
     for info in session.query(KMBlogCategory).filter_by(info_id=info_id).all():
         result.append(info)
     return result
+
 
 def find_all(session):
     result = []
@@ -85,6 +87,7 @@ def delete(id, session):
     except Exception as e:
         session.rollback()
         raise e
+
 
 def delete_by_info(info_id, session):
     fetch = session.query(KMBlogCategory).filter_by(info_id=info_id).all()
