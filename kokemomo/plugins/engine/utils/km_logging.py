@@ -51,10 +51,10 @@ def createHTTPHandler(settings):
 initHandlers()
 sqllogger = logging.getLogger('sqlalchemy.engine')
 sqllogger.addHandler(handlers['RotatingFileHandler'])
-sqllogger.setLevel(logging.DEBUG)
+sqllogger.setLevel(logging.INFO)
 sqllogger = logging.getLogger('sqlalchemy.orm.unitofwork')
 sqllogger.addHandler(handlers['RotatingFileHandler'])
-sqllogger.setLevel(logging.DEBUG)
+sqllogger.setLevel(logging.INFO)
 
 class KMLogger:
     def __init__(self, name):

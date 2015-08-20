@@ -47,7 +47,7 @@ def login_auth(km_data, db_manager):
 def auth(request, db_manager, id, password):
     result = RESULT_FAIL
     try:
-        session = db_manager.get_session()
+        session = db_manager.adapter.session
         user = find(id, session)
         if user is not None:
             user_password = user.password
