@@ -1,20 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
 from abc import ABCMeta, abstractmethod
 from urlparse import urljoin
 from ..utils.km_config import get_wsgi_setting
+from ..utils.km_logging import KMLogger
 from .km_data import KMData
 
 __author__ = 'hiroki-m'
 
-
-logging.basicConfig(
-    filename='kokemomo.log',
-    level=logging.INFO,
-    format='%(asctime)s %(message)s'
-)
 
 '''
 Kokemomoプラグインマネージャ
@@ -82,6 +76,7 @@ class KMBaseController(object):
 
     def __init__(self):
         self.name = self.get_name()
+        self.logger = KMLogger(self.get_name());
         self.data = KMData(self)
         self.plugin = create_base_plugin(self.name)
         for route in self.get_route_list():

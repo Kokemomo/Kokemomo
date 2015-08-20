@@ -4,7 +4,7 @@
 import os, json
 
 from kokemomo.plugins.engine.controller.km_plugin_manager import KMBaseController
-from kokemomo.plugins.engine.controller.km_exception import log
+from kokemomo.plugins.engine.controller.km_exception import log as log_error
 from kokemomo.plugins.engine.controller.km_login import logout, login_auth
 
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
@@ -57,7 +57,7 @@ class KMAdmin(KMBaseController):
         return list
 
 
-    @log
+    @log_error
     def js_static(self, filename):
         """
         set javascript files.
@@ -67,7 +67,7 @@ class KMAdmin(KMBaseController):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/js')
 
 
-    @log
+    @log_error
     def css_static(self, filename):
         """
         set css files.
@@ -77,7 +77,7 @@ class KMAdmin(KMBaseController):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/css')
 
 
-    @log
+    @log_error
     def img_static(self, filename):
         """
         set image files.
@@ -87,8 +87,9 @@ class KMAdmin(KMBaseController):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/img')
 
 
-    @log
+    @log_error
     def top(self):
+        self.logger.debug("load top")
         type = self.data.get_request_parameter('type', default='info')
         menu_list = get_menu_list()
         user_id = self.data.get_user_id()
@@ -110,7 +111,7 @@ class KMAdmin(KMBaseController):
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
 
-    @log
+    @log_error
     def login_auth(self):
         return login_auth(self.data, storage)
 
