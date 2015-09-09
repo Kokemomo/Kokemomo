@@ -3,7 +3,7 @@
 
 from abc import ABCMeta, abstractmethod
 from urlparse import urljoin
-from ..utils.km_config import get_wsgi_setting
+from kokemomo.settings.common import WSGI_NAME
 from ..utils.km_logging import KMLogger
 from .km_data import KMData
 
@@ -17,10 +17,10 @@ Kokemomoプラグインマネージャ
 
 '''
 
-name = get_wsgi_setting()
+
 mod = __import__(
     "kokemomo.plugins.engine.controller", fromlist=["km_wsgi_rapper"])
-class_def = getattr(getattr(mod, "km_wsgi_rapper"), "WSGI_" + name)
+class_def = getattr(getattr(mod, "km_wsgi_rapper"), "WSGI_" + WSGI_NAME)
 
 plugins = {}
 
