@@ -49,13 +49,10 @@ class RdbAdapter(object):
     __metaclass__ = ABCMeta
 
 
-from kokemomo.plugins.engine.utils.km_config import (
-    get_database_setting,
-    get_storage_adapter_setting
-)
+from kokemomo.settings.common import DATA_BASE, STORAGE_ADAPTER_NAME
 
-sql_url = get_database_setting('engine')
-adapter_name = get_storage_adapter_setting()
+sql_url = DATA_BASE
+adapter_name = STORAGE_ADAPTER_NAME
 adapter_filename = adapter_name.lower() + "_adapter"
 
 mod = __import__(

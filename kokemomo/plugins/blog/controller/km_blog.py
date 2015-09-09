@@ -8,7 +8,7 @@ import os
 from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
-from kokemomo.plugins.engine.utils.km_config import get_character_set_setting
+from kokemomo.settings.common import CHARACTER_SET
 from kokemomo.plugins.blog.model.km_blog_info import KMBlogInfo, create as create_info, find_all as find_info_list, \
     update as save_info, find_by_url as find_info_by_url, find as find_info, delete as delete_info
 from kokemomo.plugins.blog.model.km_blog_category import KMBlogCategory, create as create_category, \
@@ -32,8 +32,6 @@ from kokemomo.plugins.blog.model.km_blog_comment import KMBlogComment, update as
 DATA_DIR_PATH = "/kokemomo/data/blog/"
 
 from kokemomo.plugins.engine.controller.km_storage import storage
-
-charset = get_character_set_setting()
 
 
 @route('/blog/js/<filename>', name='blog_static_js')
@@ -181,13 +179,13 @@ def create_info_values(request, session):
     id = request.params.get('id', default='None')
     values['message'] = 'ブログを新規作成しました。' if id == 'None' else 'ブログを更新しました。'
     info = create_info(id, session)
-    info.name = request.forms.get('name', default='').decode(charset)
+    info.name = request.forms.get('name', default='').decode(CHARACTER_SET)
     if info.name == '':
         errors['name'] = 'ブログ名は必須です。'
     info.url = request.forms.get('url', default='')
     if info.url == '':
         errors['url'] = 'URLは必須です。'
-    info.description = request.forms.get('description', default='').decode(charset)
+    info.description = request.forms.get('description', default='').decode(CHARACTER_SET)
     values['info'] = info
     values['errors'] = errors
     return values
@@ -223,7 +221,7 @@ def create_category_values(request, session):
     id = request.params.get('id', default='None')
     values['message'] = 'カテゴリを新規作成しました。' if id == 'None' else 'カテゴリを更新しました。'
     category = create_category(id, session)
-    category.name = request.forms.get('name', default='').decode(charset)
+    category.name = request.forms.get('name', default='').decode(CHARACTER_SET)
     category.info_id = request.forms.get('info', default='None')
     if category.name == '':
         errors['name'] = 'カテゴリ名は必須です。'
@@ -265,10 +263,10 @@ def create_article_values(request, session):
     values['message'] = '記事を新規作成しました。' if id == 'None' else '記事を更新しました。'
     article.info_id = request.forms.get('info_id')
     article.category_id = request.forms.get('category')
-    article.title = request.forms.get('title', default='').decode(charset)
+    article.title = request.forms.get('title', default='').decode(CHARACTER_SET)
     if article.title == '':
         errors['title'] = '記事名は必須です。'
-    article.article = request.forms.get('article', default='').decode(charset)
+    article.article = request.forms.get('article', default='').decode(CHARACTER_SET)
     if article.article == '':
         errors['article'] = '記事は必須です。'
     values['article'] = article
@@ -312,7 +310,7 @@ def blog_add_comment(blog_url):
         session = storage.adapter.session
         blob_comment = KMBlogComment()
         article_id = request.params.get('id', default='None')
-        comment = request.params.get('comment', default='').decode(charset)
+        comment = request.params.get('comment', default='').decode(CHARACTER_SET)
         blob_comment.article_id = article_id
         blob_comment.comment = comment
         update_comment(blob_comment, session)
