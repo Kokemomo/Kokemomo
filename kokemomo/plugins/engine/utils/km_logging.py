@@ -3,65 +3,56 @@
 
 import logging
 from logging.handlers import RotatingFileHandler, HTTPHandler
-from .km_config import (
-    get_logging_setting,
-    get_logging_setting_by_name,
-    get_plugin_setting,
-    get_plugin_setting_by_name,
-)
+from kokemomo.settings.common import LOGGER, PLUGINS
 
 __author__ = 'hiroki'
 
-handlers = {}
-
-def initHandlers():
-    handler_names = get_logging_setting()
-    for hadler_name in handler_names['handler']:
-        settings = get_logging_setting_by_name(hadler_name)
-        if hadler_name == "RotatingFileHandler":
-            handler = createRotatingFileHandler(settings)
-        elif hadler_name == "HTTPHandler":
-            handler = createHTTPHandler(settings)
-
-        if 'format' in settings:
-            formatter = logging.Formatter(settings['format'])
-            handler.setFormatter(formatter)
-        handlers[hadler_name] = handler
-
-
-def createRotatingFileHandler(settings):
-    mod = __import__("logging.handlers", fromlist=["RotatingFileHandler"])
-    class_def = getattr(mod, "RotatingFileHandler")
-    handler = class_def(
-        filename=settings['filename'],
-        maxBytes=settings['maxBytes'],
-        backupCount=settings['backupCount'])
-    return handler
-
-
-def createHTTPHandler(settings):
-    mod = __import__("logging.handlers", fromlist=["HTTPHandler"])
-    class_def = getattr(mod, "HTTPHandler")
-    handler = class_def(
-        host=settings['host'],
-        url=settings['url'],
-        method=settings['method'])
-    return handler
-
-initHandlers()
-sqllogger = logging.getLogger('sqlalchemy.engine')
-sqllogger.addHandler(handlers['RotatingFileHandler'])
-sqllogger.setLevel(logging.INFO)
-sqllogger = logging.getLogger('sqlalchemy.orm.unitofwork')
-sqllogger.addHandler(handlers['RotatingFileHandler'])
-sqllogger.setLevel(logging.INFO)
 
 class KMLogger:
+
+    handlers = {}
+
+    @classmethod
+    def initHandlers(cls):
+        if len(cls.handlers) == 0:
+            mod = __import__('logging.handlers', fromlist=['RotatingFileHandler','HTTPHandler'])
+            class_def = getattr(mod, "RotatingFileHandler")
+            handler = class_def(
+                filename=LOGGER['RotatingFileHandler']['filename'],
+                maxBytes=LOGGER['RotatingFileHandler']['maxBytes'],
+                backupCount=LOGGER['RotatingFileHandler']['backupCount'])
+            formatter = logging.Formatter(LOGGER['RotatingFileHandler']['format'])
+            handler.setFormatter(formatter)
+            cls.handlers['RotatingFileHandler'] = handler
+
+            class_def = getattr(mod, "HTTPHandler")
+            handler = class_def(
+                host=LOGGER['HTTPHandler']['host'],
+                url=LOGGER['HTTPHandler']['url'],
+                method=LOGGER['HTTPHandler']['method'])
+            cls.handlers['HTTPHandler'] = handler
+
+            sqllogger = logging.getLogger('sqlalchemy.pool')
+            sqllogger.addHandler(cls.handlers['RotatingFileHandler'])
+            sqllogger.setLevel(logging.CRITICAL)
+            sqllogger = logging.getLogger('sqlalchemy.engine')
+            sqllogger.addHandler(cls.handlers['RotatingFileHandler'])
+            sqllogger.setLevel(logging.CRITICAL)
+            sqllogger = logging.getLogger('sqlalchemy.orm.unitofwork')
+            sqllogger.addHandler(cls.handlers['RotatingFileHandler'])
+            sqllogger.setLevel(logging.CRITICAL)
+            sqllogger = logging.getLogger('sqlalchemy.engine.base.Engine')
+            sqllogger.addHandler(cls.handlers['RotatingFileHandler'])
+            sqllogger.setLevel(logging.CRITICAL)
+
+    @classmethod
+    def get_handler(cls, name):
+        return cls.handlers[name]
+
     def __init__(self, name):
-        settings = get_plugin_setting_by_name(name)
         self.logger = logging.getLogger(name)
-        self.logger.setLevel(self.__get_level(settings))
-        handler = handlers[settings['logger']]
+        self.logger.setLevel(self.__get_level(PLUGINS[name]['level']))
+        handler = self.get_handler(PLUGINS[name]['logger'])
         self.logger.addHandler(handler)
 
     def debug(self, msg, *args, **kwargs):
@@ -73,11 +64,16 @@ class KMLogger:
     def error(self, msg, *args, **kwargs):
         self.logger.error(msg, *args, **kwargs)
 
-    def __get_level(self, settings):
-        level = settings['level']
+    def __get_level(self, level):
         if level == 'DEBUG':
             return logging.DEBUG
         elif level == 'INFO':
             return logging.INFO
         elif level == 'ERROR':
             return logging.ERROR
+        elif level == 'WARNING':
+            return logging.WARNING
+        elif level == 'CRITICAL':
+            return logging.CRITICAL
+
+KMLogger.initHandlers()
