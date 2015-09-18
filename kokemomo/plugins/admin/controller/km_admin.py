@@ -3,7 +3,7 @@
 
 import os, json
 
-from kokemomo.plugins.engine.controller.km_plugin_manager import KMBaseController
+from kokemomo.plugins.engine.controller.km_engine import KMEngine
 from kokemomo.plugins.engine.controller.km_exception import log as log_error
 from kokemomo.plugins.engine.controller.km_login import logout, login_auth
 
@@ -25,17 +25,18 @@ DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変
 from kokemomo.plugins.engine.controller.km_storage import storage
 
 
-class KMAdmin(KMBaseController):
+class KMAdmin(KMEngine):
 
     def get_name(self):
         return 'admin'
 
 
     def get_route_list(self):
-        list = (
-            {'rule': '/js/<filename>', 'method': 'GET', 'target': self.js_static, 'name': 'admin_static_js'},
-            {'rule': '/css/<filename>', 'method': 'GET', 'target': self.css_static, 'name': 'admin_static_css'},
-            {'rule': '/img/<filename>', 'method': 'GET', 'target': self.img_static, 'name': 'admin_static_img'},
+        list = super(KMAdmin, self).get_route_list() # import engine route list
+        list = list + (
+            {'rule': '/admin-js/<filename>', 'method': 'GET', 'target': self.admin_js_static, 'name': 'admin_static_js'},
+            {'rule': '/admin-css/<filename>', 'method': 'GET', 'target': self.admin_css_static, 'name': 'admin_static_css'},
+            {'rule': '/admin-img/<filename>', 'method': 'GET', 'target': self.admin_img_static, 'name': 'admin_static_img'},
             {'rule': '/', 'method': 'GET', 'target': self.top},
             {'rule': '/login', 'method': 'GET', 'target': self.login},
             {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
@@ -57,7 +58,7 @@ class KMAdmin(KMBaseController):
 
 
     @log_error
-    def js_static(self, filename):
+    def admin_js_static(self, filename):
         """
         set javascript files.
         :param filename: javascript file name.
@@ -67,7 +68,7 @@ class KMAdmin(KMBaseController):
 
 
     @log_error
-    def css_static(self, filename):
+    def admin_css_static(self, filename):
         """
         set css files.
         :param filename: css file name.
@@ -77,7 +78,7 @@ class KMAdmin(KMBaseController):
 
 
     @log_error
-    def img_static(self, filename):
+    def admin_img_static(self, filename):
         """
         set image files.
         :param filename: image file name.

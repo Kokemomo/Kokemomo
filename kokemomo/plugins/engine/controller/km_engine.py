@@ -15,16 +15,16 @@ class KMEngine(KMBaseController):
 
     def get_route_list(self):
         list = (
-            {'rule': '/js/<filename>', 'method': 'GET', 'target': self.js_static, 'name': 'static_js'},
-            {'rule': '/css/<filename>', 'method': 'GET', 'target': self.css_static, 'name': 'static_css'},
-            {'rule': '/img/<filename>', 'method': 'GET', 'target': self.img_static, 'name': 'static_img'},
+            {'rule': '/engine-js/<filename>', 'method': 'GET', 'target': self.engine_js_static, 'name': 'engine_static_js'},
+            {'rule': '/engine-css/<filename>', 'method': 'GET', 'target': self.engine_css_static, 'name': 'engine_static_css'},
+            {'rule': '/engine-img/<filename>', 'method': 'GET', 'target': self.engine_img_static, 'name': 'engine_static_img'},
             {'rule': '/error', 'method': 'GET', 'target': self.engine_error},
         )
         return list
 
 
     @log
-    def js_static(self, filename):
+    def engine_js_static(self, filename):
         """
         set javascript files.
         :param filename: javascript file name.
@@ -34,7 +34,7 @@ class KMEngine(KMBaseController):
         return self.load_static_file(filename, root=file_path)
 
     @log
-    def css_static(self, filename):
+    def engine_css_static(self, filename):
         """
         set css files.
         :param filename: css file name.
@@ -44,7 +44,7 @@ class KMEngine(KMBaseController):
         return self.load_static_file(filename, root=file_path)
 
     @log
-    def img_static(self, filename):
+    def engine_img_static(self, filename):
         """
         set image files.
         :param filename: image file name.
