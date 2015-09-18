@@ -38,7 +38,7 @@ DATA_DIR_PATH = "/kokemomo/data/blog/"
 from kokemomo.plugins.engine.controller.km_storage import storage
 
 
-class KMBlog(KMEngine, KMAdmin):
+class KMBlog(KMAdmin):
 
 
     def get_name(self):
@@ -47,14 +47,14 @@ class KMBlog(KMEngine, KMAdmin):
 
     def get_route_list(self):
         list = super(KMBlog, self).get_route_list() # import engine route list
-        list = list + super(KMEngine, self).get_route_list() # import admin route list
+        list = list + super(KMAdmin, self).get_route_list() # import admin route list
         list = list + (
-            {'rule': '/js/<filename>', 'method': 'GET', 'target': self.blog_js_static, 'name': 'blog_static_js'},
-            {'rule': '/js/tinymce/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_static, 'name': 'blog_static_tiny_js'},
-            {'rule': '/js/tinymce/<child>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_child_static, 'name': 'blog_static_tiny_js_child'},
-            {'rule': '/js/tinymce/<child>/<grandchild>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_grandchild_static, 'name': 'blog_static_tiny_js_grandchild'},
-            {'rule': '/js/tinymce/<child>/<grandchild>/<great_grandchild>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_great_grandchild_static, 'name': 'blog_static_tiny_js_great_grandchild'},
-            {'rule': '/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name': 'blog_static_css'},
+            {'rule': '/blog-js/<filename>', 'method': 'GET', 'target': self.blog_js_static, 'name': 'blog_static_js'},
+            {'rule': '/blog-js/tinymce/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_static, 'name': 'blog_static_tiny_js'},
+            {'rule': '/blog-js/tinymce/<child>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_child_static, 'name': 'blog_static_tiny_js_child'},
+            {'rule': '/blog-js/tinymce/<child>/<grandchild>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_grandchild_static, 'name': 'blog_static_tiny_js_grandchild'},
+            {'rule': '/blog-js/tinymce/<child>/<grandchild>/<great_grandchild>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_great_grandchild_static, 'name': 'blog_static_tiny_js_great_grandchild'},
+            {'rule': '/blog-css/<filename>', 'method': 'GET', 'target': self.blog_css_static, 'name': 'blog_static_css'},
             {'rule': '/admin', 'method': 'GET', 'target': self.blog_admin},
             {'rule': '/admin/create_info', 'method': 'POST', 'target': self.blog_admin_create_info},
             {'rule': '/admin/create_category', 'method': 'POST', 'target': self.blog_admin_create_category},
@@ -119,7 +119,7 @@ class KMBlog(KMEngine, KMAdmin):
 
 
     @log_error
-    def blog_entry_css_static(self, filename):
+    def blog_css_static(self, filename):
         """
         set css files.
         :param filename: css file name.
