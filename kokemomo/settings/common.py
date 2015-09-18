@@ -30,7 +30,7 @@ LOGGER = {
     'RotatingFileHandler':{
         'format':'%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         'filename':'kokemomo.log',
-        'maxBytes':2000,
+        'maxBytes':2000000,
         'backupCount':5
     },
     'HTTPHandler':{
@@ -53,5 +53,9 @@ PLUGINS = {
     'engine':{
         'logger':'RotatingFileHandler',
         'level':'INFO'
+    },
+    'blog':{
+        'logger':'RotatingFileHandler',
+        'level':'DEBUG'
     }
 }

@@ -17,7 +17,7 @@ class KMData():
     def get_response(self):
         return self.controller.plugin.get_response()
 
-    def get_request_parameter(self, name, default):
+    def get_request_parameter(self, name, default=None):
         return self.controller.plugin.get_request_parameter(name, default)
 
     def get_user_id(self):
