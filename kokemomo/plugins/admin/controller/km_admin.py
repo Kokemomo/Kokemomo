@@ -57,7 +57,6 @@ class KMAdmin(KMEngine):
         return list
 
 
-    @log_error
     def admin_js_static(self, filename):
         """
         set javascript files.
@@ -67,7 +66,6 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/js')
 
 
-    @log_error
     def admin_css_static(self, filename):
         """
         set css files.
@@ -77,7 +75,6 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/css')
 
 
-    @log_error
     def admin_img_static(self, filename):
         """
         set image files.
@@ -87,7 +84,6 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/img')
 
 
-    @log_error
     def top(self):
         self.logger.debug("load top")
         type = self.data.get_request_parameter('type', default='info')
@@ -111,7 +107,6 @@ class KMAdmin(KMEngine):
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
 
-    @log_error
     def login_auth(self):
         return login_auth(self.data, storage)
 
