@@ -46,8 +46,8 @@ class KMBlog(KMAdmin):
 
 
     def get_route_list(self):
-        list = super(KMBlog, self).get_route_list() # import engine route list
-        list = list + super(KMAdmin, self).get_route_list() # import admin route list
+        list = super(KMBlog, self).get_route_list() # import admin route list
+        list = list + super(KMAdmin, self).get_route_list() # import engine route list
         list = list + (
             {'rule': '/blog-js/<filename>', 'method': 'GET', 'target': self.blog_js_static, 'name': 'blog_static_js'},
             {'rule': '/blog-js/tinymce/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_static, 'name': 'blog_static_tiny_js'},

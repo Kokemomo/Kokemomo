@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from kokemomo.lib.bottle import Bottle, run as runner
+from kokemomo.lib.bottle import Bottle, run as runner, Route
 from kokemomo.lib.bottle import request, response, redirect, template
 from kokemomo.lib.bottle import static_file, default_app
 
@@ -72,6 +72,8 @@ class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装
             name = params['name']
         else:
             name = None
+#        route = Route(self.app, rule, method, target)
+#        self.app.add_route(route)
         self.app.route(path=rule, method=method, callback=target, name=name)
 
     def get_request(self):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
