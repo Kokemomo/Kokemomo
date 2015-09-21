@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import kokemomo.plugins.blog.controller.km_blog
+from kokemomo.plugins.blog.controller.km_blog import KMBlog
 
 __author__ = 'hiroki-m'
+
+blog = KMBlog()

@@ -19,7 +19,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src='{{url("static_js", filename="communication.js")}}'></script>
+        <script src='{{url("engine_static_js", filename="communication.js")}}'></script>
         <script src='{{url("blog_static_normal_js", filename="normal.js")}}'></script>
         <link href='{{url("blog_static_normal_css", filename="normal.css")}}' rel="stylesheet">
     </head>

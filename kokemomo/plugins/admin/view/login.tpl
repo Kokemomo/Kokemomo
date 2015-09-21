@@ -20,7 +20,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src='{{url("admin_static_js", "communication.js")}}'></script>
+        <script src='{{url("engine_static_js", "communication.js")}}'></script>
         <script src='{{url("admin_static_js", "login.js")}}'></script>
         <link href='{{url("admin_static_css", "login.css")}}' rel="stylesheet">
     </head>

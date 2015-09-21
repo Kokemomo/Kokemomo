@@ -1,4 +1,4 @@
-% include kokemomo/plugins/engine/view/header url=url, user_id=user_id, menu_list=menu_list
+% include kokemomo/plugins/admin/view/header url=url, user_id=user_id, menu_list=menu_list
     <head>
         <script src='{{url("blog_static_tiny_js", filename="tinymce.min.js")}}'></script>
         <script src='{{url("blog_static_js", filename="blog.js")}}'></script>
