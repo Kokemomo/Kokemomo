@@ -9,8 +9,9 @@ STORAGE_ADAPTER_NAME = 'SQLAlchemy'
 TEST_LOGIN = True
 
 ## MySQL
-DATA_BASE = 'mysql://root:mylocal@127.0.0.1:3306/kokemomo_test'
-## sqlite:'sqlite:///data.db'
+##DATA_BASE = 'mysql://user:pass@127.0.0.1:3306/dbname'
+## SQLite
+DATA_BASE = 'sqlite:///data.db'
 
 
 ADMIN_MENU = {
@@ -56,6 +57,6 @@ PLUGINS = {
     },
     'blog':{
         'logger':'RotatingFileHandler',
-        'level':'DEBUG'
+        'level':'INFO'
     }
 }
