@@ -3,9 +3,9 @@ div.background {
     height: 200px;
     background-color: #F0FFF0;
     padding: 20px;
-    border-radius: 10px;		/* CSS3草案 */
-    -webkit-border-radius: 10px;	/* Safari,Google Chrome用 */
-    -moz-border-radius: 10px;	/* Firefox用 */
+    border-radius: 10px; /* CSS3草案 */
+    -webkit-border-radius: 10px; /* Safari,Google Chrome用 */
+    -moz-border-radius: 10px; /* Firefox用 */
 }
 
 #delete_button {
@@ -14,7 +14,7 @@ div.background {
 }
 
 .column_delete {
-    width:5%;
+    width: 5%;
 }
 .column_normal {
     width: 10%;
