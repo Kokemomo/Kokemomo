@@ -22,7 +22,6 @@ __author__ = 'hiroki-m'
 
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-from kokemomo.plugins.engine.controller.km_storage import storage
 
 
 class KMAdmin(KMEngine):
@@ -148,11 +147,8 @@ class KMAdmin(KMEngine):
         Find all the user.
         :return: users.
         """
-        try:
-            session = storage.adapter.session
-            result = user_find_all(session)
-        finally:
-            session.close()
+        result = KMUser.all()
+        print result
         return create_result_4_array(result)
 
 

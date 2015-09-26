@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
+from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter
+
 
 __author__ = 'hiroki'
 
@@ -34,15 +35,15 @@ def search_parameter():
 """
 
 
-class KMUser(storage.Model):
+class KMUser(adapter.Model):
     __tablename__ = 'km_user'
-    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
-    user_id = storage.Column(storage.String(20))
-    name = storage.Column(storage.String(50))
-    password = storage.Column(storage.String(20))
-    mail_address = storage.Column(storage.String(254))
-    group_id = storage.Column(storage.Integer)
-    role_id = storage.Column(storage.Integer)
+    id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
+    user_id = adapter.Column(adapter.String(20))
+    name = adapter.Column(adapter.String(50))
+    password = adapter.Column(adapter.String(20))
+    mail_address = adapter.Column(adapter.String(254))
+    group_id = adapter.Column(adapter.Integer)
+    role_id = adapter.Column(adapter.Integer)
 
     def __repr__(self):
         return create_repr_str(self)
@@ -58,6 +59,7 @@ def find(user_id, session):
     :param session: session
     :return: user data.
     """
+    users = KMUser.all()
     result = None
     for user in session.query(KMUser).filter_by(user_id=user_id).all():
         result = user
@@ -65,6 +67,7 @@ def find(user_id, session):
 
 
 def find_all(session):
+    pass
     """
     Find all the users.
     :param session: session
@@ -77,6 +80,7 @@ def find_all(session):
     return result
 
 def add(user, session):
+    pass
     """
     Add the user.
     :param user: user model.
@@ -92,6 +96,7 @@ def add(user, session):
 
 
 def update(user, session):
+    pass
     """
     Update the user.
     :param user: user model.
@@ -107,6 +112,7 @@ def update(user, session):
 
 
 def delete(id, session):
+    pass
     """
     Delete the user.
     :param id: user id
