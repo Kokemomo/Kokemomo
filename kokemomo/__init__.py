@@ -10,14 +10,14 @@ from kokemomo.plugins.engine import engine
 from kokemomo.plugins.admin import admin
 from kokemomo.plugins import common_entry
 from kokemomo.plugins import subapp
-from kokemomo.plugins.blog import blog
+#from kokemomo.plugins.blog import blog
 import application
 from beaker.middleware import SessionMiddleware
 from kokemomo.plugins.engine.controller.km_plugin_manager import mount, run, get_root_plugin, set_root_plugin
 from kokemomo.plugins.engine.utils.km_logging import KMLogger
-from kokemomo.plugins.engine.controller.km_storage import storage
 
-storage.init()
+from kokemomo.plugins.engine.controller.km_storage import initialize
+initialize()
 
 # session config
 session_opts = {
@@ -30,7 +30,7 @@ session_opts = {
 
 mount('/engine', engine)
 mount('/admin', admin)
-mount('/blog', blog)
+#mount('/blog', blog)
 
 plugin = SessionMiddleware(get_root_plugin())
 set_root_plugin(plugin)
