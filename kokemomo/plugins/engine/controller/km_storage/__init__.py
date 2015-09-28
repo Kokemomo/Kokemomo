@@ -1,7 +1,7 @@
 from .impl.km_rdb_adapter import adapter
 
-def initialize():
-    adapter.init()
+def initialize(rdb_path=None):
+    adapter.init(rdb_path)
 
 class Storage(object):
     def Column(self):
