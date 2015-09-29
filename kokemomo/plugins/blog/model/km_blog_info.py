@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
 from kokemomo.plugins.engine.controller.km_storage import storage
-from sqlalchemy.types import Text
 
 __author__ = 'hiroki'
 
@@ -43,51 +42,51 @@ def create(id, session):
     return info
 
 
-def find(id, session):
-    result = None
-    for info in session.query(KMBlogInfo).filter_by(id=id).all():
-        result = info
-    return result
-
-
-def find_by_url(url, session):
-    result = None
-    for info in session.query(KMBlogInfo).filter_by(url=url).all():
-        result = info
-    return result
-
-
-def find_all(session):
-    result = []
-    fetch = session.query(KMBlogInfo)
-    for info in fetch.all():
-        result.append(info)
-    return result
-
-
-def add(info, session):
-    try:
-        session.add(info)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(info, session):
-    try:
-        session.merge(info)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    fetch_object = session.query(KMBlogInfo).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
+# def find(id, session):
+#     result = None
+#     for info in session.query(KMBlogInfo).filter_by(id=id).all():
+#         result = info
+#     return result
+#
+#
+# def find_by_url(url, session):
+#     result = None
+#     for info in session.query(KMBlogInfo).filter_by(url=url).all():
+#         result = info
+#     return result
+#
+#
+# def find_all(session):
+#     result = []
+#     fetch = session.query(KMBlogInfo)
+#     for info in fetch.all():
+#         result.append(info)
+#     return result
+#
+#
+# def add(info, session):
+#     try:
+#         session.add(info)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def update(info, session):
+#     try:
+#         session.merge(info)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def delete(id, session):
+#     fetch_object = session.query(KMBlogInfo).filter_by(id=id).one()
+#     try:
+#         session.delete(fetch_object)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
