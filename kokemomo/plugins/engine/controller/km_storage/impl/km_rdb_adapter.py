@@ -76,4 +76,6 @@ class KMRDBAdapter(BaseAdapter):
     def get(self, *args, **kwargs):
         pass
 
-adapter = KMRDBAdapter('sqlite:///:memory:')
+from kokemomo.settings.common import DATA_BASE, STORAGE_ADAPTER_NAME
+
+adapter = KMRDBAdapter(DATA_BASE)
