@@ -30,44 +30,44 @@ class KMBlogSubscription(storage.Model):
         return create_json(self)
 
 
-def find(id, session):
-    result = None
-    for subscription in session.query(KMBlogSubscription).filter_by(id=id).all():
-        result = subscription
-    return result
-
-
-def find_all(session):
-    result = []
-    fetch = session.query(KMBlogSubscription)
-    for subscription in fetch.all():
-        result.append(subscription)
-    return result
-
-
-def add(subscription, session):
-    try:
-        session.add(subscription)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(subscription, session):
-    try:
-        session.merge(subscription)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    fetch_object = session.query(KMBlogSubscription).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
+# def find(id, session):
+#     result = None
+#     for subscription in session.query(KMBlogSubscription).filter_by(id=id).all():
+#         result = subscription
+#     return result
+#
+#
+# def find_all(session):
+#     result = []
+#     fetch = session.query(KMBlogSubscription)
+#     for subscription in fetch.all():
+#         result.append(subscription)
+#     return result
+#
+#
+# def add(subscription, session):
+#     try:
+#         session.add(subscription)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def update(subscription, session):
+#     try:
+#         session.merge(subscription)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def delete(id, session):
+#     fetch_object = session.query(KMBlogSubscription).filter_by(id=id).one()
+#     try:
+#         session.delete(fetch_object)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e

@@ -49,74 +49,74 @@ def create(id, session):
     return article
 
 
-def find(id, session):
-    result = None
-    for article in session.query(KMBlogArticle).filter_by(id=id).all():
-        result = article
-    return result
-
-
-def find_by_info_id(info_id, session):
-    result = []
-    fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
-    for article in fetch:
-        result.append(article)
-    return result
-
-
-def find_all(session):
-    result = []
-    fetch = session.query(KMBlogArticle)
-    for article in fetch.all():
-        result.append(article)
-    return result
-
-
-def add(article, session):
-    try:
-        session.add(article)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(article, session):
-    try:
-        session.merge(article)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    fetch_object = session.query(KMBlogArticle).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete_by_info(info_id, session):
-    fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
-    try:
-        for target in fetch:
-            session.delete(target)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete_by_category(category_id, session):
-    fetch = session.query(KMBlogArticle).filter_by(category_id=category_id).all()
-    try:
-        for target in fetch:
-            session.delete(target)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
+# def find(id, session):
+#     result = None
+#     for article in session.query(KMBlogArticle).filter_by(id=id).all():
+#         result = article
+#     return result
+#
+#
+# def find_by_info_id(info_id, session):
+#     result = []
+#     fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
+#     for article in fetch:
+#         result.append(article)
+#     return result
+#
+#
+# def find_all(session):
+#     result = []
+#     fetch = session.query(KMBlogArticle)
+#     for article in fetch.all():
+#         result.append(article)
+#     return result
+#
+#
+# def add(article, session):
+#     try:
+#         session.add(article)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def update(article, session):
+#     try:
+#         session.merge(article)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def delete(id, session):
+#     fetch_object = session.query(KMBlogArticle).filter_by(id=id).one()
+#     try:
+#         session.delete(fetch_object)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def delete_by_info(info_id, session):
+#     fetch = session.query(KMBlogArticle).filter_by(info_id=info_id).all()
+#     try:
+#         for target in fetch:
+#             session.delete(target)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
+#
+#
+# def delete_by_category(category_id, session):
+#     fetch = session.query(KMBlogArticle).filter_by(category_id=category_id).all()
+#     try:
+#         for target in fetch:
+#             session.delete(target)
+#         session.commit()
+#     except Exception as e:
+#         session.rollback()
+#         raise e
