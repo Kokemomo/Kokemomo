@@ -1,4 +1,4 @@
-﻿# *~~~~~Kokemomo Tips~~~~~~~~~*
+# *Kokemomo Tips*
 ## kokemomo.iniのセクション一覧
 
 各セクションにアクセスするモジュール：kokemomo/plugins/engine/utils/config.py
@@ -215,4 +215,46 @@ POSTの場合
 ### サーバー側
 
     user_id = request.cookies['user_id'] # ログインユーザーIDの取得
+
+
+## ブログプラグインについて
+
+・ブログは以下の様なデータで構成されます。
+
+ブログ  
+├info ブログの情報  
+├subscription 購読情報　※現在未使用  
+└category カテゴリ  
+　└article 記事  
+　└comment コメント  
+
+### ブログプラグインのテンプレートについて
+
+ブログプラグインのテンプレートでは以下の値が使用できます。
+
+・ブログのurl  
+blog_url  
+  
+・ブログ情報  
+info.id ブログのID  
+info.name ブログ名  
+info.url ブログのurl  
+info.description ブログの詳細  
+  
+・記事  
+info.articles 記事の配列  
+info.articles[index].id 記事のID  
+info.articles[index].info_id ブログ情報のID  
+info.articles[index].title 記事のタイトル  
+info.articles[index].article 記事の内容  
+info.articles[index].post_date 投稿日  
+  
+・コメント  
+info.articles[index].comments コメントの一覧  
+info.articles[index].comments[index].id コメントのID  
+info.articles[index].comments[index].article_id 記事のID  
+info.articles[index].comments[index].comment コメントの内容  
+info.articles[index].comments[index].created_at コメントの作成日時  
+
+
 
