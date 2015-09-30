@@ -37,7 +37,7 @@
                     <h2>{{article.title}}</h2>
                     <div>{{!article.article}}</div>
                     % for blog_comment in article.comments:
-                        <div class="comment"><span>{{blog_comment.create_at}} : {{blog_comment.comment}}</span></div>
+                        <div class="comment"><span>{{blog_comment.created_at}} : {{blog_comment.comment}}</span></div>
                     % end
                     <form id="form" action="/blog/{{blog_url}}/add_comment" method="post">
                     <input type="hidden" name="id" id="id" value="{{article.id}}">
