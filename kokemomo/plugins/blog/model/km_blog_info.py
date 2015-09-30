@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
-from sqlalchemy.types import Text
+from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
 
 __author__ = 'hiroki'
 
@@ -18,12 +17,13 @@ It is blog information table to be used in the Kokemomo.
 """
 
 
-class KMBlogInfo(storage.Model):
+class KMBlogInfo(adapter.Model):
     __tablename__ = 'km_blog_info'
-    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
-    name = storage.Column(storage.Text)
-    url = storage.Column(storage.Text)
-    description = storage.Column(storage.Text)
+    id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
+    name = adapter.Column(adapter.Text)
+    url = adapter.Column(adapter.Text)
+    description = adapter.Column(adapter.Text)
+
 
     def __repr__(self):
         return create_repr_str(self)
@@ -32,62 +32,14 @@ class KMBlogInfo(storage.Model):
         return create_json(self)
 
 
-def create(id, session):
-    if id == 'None':
-        info = KMBlogInfo()
-        info.name = ""
-        info.url = ""
-        info.description = ""
-    else:
-        info = find(id, session)
-    return info
+    @classmethod
+    def create(cls, id):
+        if id == 'None':
+            info = KMBlogInfo()
+            info.name = ""
+            info.url = ""
+            info.description = ""
+        else:
+            info = KMBlogInfo.get(id=id)
+        return info
 
-
-def find(id, session):
-    result = None
-    for info in session.query(KMBlogInfo).filter_by(id=id).all():
-        result = info
-    return result
-
-
-def find_by_url(url, session):
-    result = None
-    for info in session.query(KMBlogInfo).filter_by(url=url).all():
-        result = info
-    return result
-
-
-def find_all(session):
-    result = []
-    fetch = session.query(KMBlogInfo)
-    for info in fetch.all():
-        result.append(info)
-    return result
-
-
-def add(info, session):
-    try:
-        session.add(info)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(info, session):
-    try:
-        session.merge(info)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    fetch_object = session.query(KMBlogInfo).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
