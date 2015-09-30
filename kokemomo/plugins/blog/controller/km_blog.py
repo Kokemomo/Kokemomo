@@ -20,6 +20,8 @@ from kokemomo.plugins.admin import KMAdmin
 from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
 
 
+
+
 '''
 ブログ
 ├info ブログの情報
