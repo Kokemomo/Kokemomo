@@ -28,4 +28,3 @@ class KMBlogComment(adapter.Model):
 
     def get_json(self):
         return create_json(self)
-
