@@ -62,7 +62,7 @@ class KMRDBAdapter(BaseAdapter):
     def __init__(self, rdb_path):
         self.rdb_path = rdb_path
         self.Model = declarative_base(cls=BaseModel)
-        self.fields = [Column, String, Integer, Boolean, Text]
+        self.fields = [Column, String, Integer, Boolean, Text, DateTime]
         for field in self.fields:
             setattr(self, field.__name__, field)
 
