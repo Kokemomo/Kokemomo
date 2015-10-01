@@ -330,14 +330,12 @@ class KMBlog(KMAdmin):
 
     @log_error
     def blog_add_comment(self, blog_url):
-        blob_comment = KMBlogComment()
+        blog_comment = KMBlogComment()
         article_id = self.data.get_request_parameter('id', default='None')
         comment = self.data.get_request_parameter('comment', default='').decode(CHARACTER_SET)
-        blob_comment.article_id = article_id
-        blob_comment.comment = comment
-        with Transaction.begin():
-            Transaction.add(blob_comment)
-        Transaction.commit()
+        blog_comment.article_id = article_id
+        blog_comment.comment = comment
+        blog_comment.save()
         self.redirect('/blog/' + blog_url)
 
     # def create_blog_file(info):
