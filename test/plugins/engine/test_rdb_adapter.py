@@ -9,6 +9,9 @@ from sqlalchemy.exc import SQLAlchemyError
 class User(adapter.Model):
     name = adapter.Column(adapter.String(50))
 
+    def validate(self):
+        self.name = self.name.lower() # for test
+
 class SimpleTestCase(unittest.TestCase):
     def setUp(self):
         initialize(rdb_path='sqlite:///:memory:')
@@ -62,3 +65,13 @@ class SimpleTestCase(unittest.TestCase):
         john = User(id=999,name='jonh')
         john.save()
         self.assertEqual(2, len(User.all()))
+
+    def test_validation(self):
+        steve = User(name='STEVE')
+        steve.save()
+        self.assertEqual('steve', steve.name)
+
+    def test_no_validation(self):
+        steve = User(name='STEVE')
+        steve.save(validate=False)
+        self.assertNotEqual('steve', steve.name)
