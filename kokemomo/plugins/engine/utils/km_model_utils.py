@@ -7,7 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from types import *
 import datetime, inspect, json
 from abc import ABCMeta, abstractmethod
-from kokemomo.settings.common import CHARACTER_SET
+from kokemomo.settings import SETTINGS
 
 __author__ = 'hiroki'
 
@@ -22,7 +22,7 @@ def create_repr_str(model):
         value = getattr(model, column.name)
         if value is None:
             if isinstance(value, unicode):
-                value = value.encode(CHARACTER_SET)
+                value = value.encode(SETTINGS.CHARACTER_SET)
             value = ''
         result += (column.name + '="' + str(value) + '",')
     result = result[0:-1] + ')>'
@@ -34,7 +34,7 @@ def create_json(model):
         value = getattr(model, column.name)
         if value is not None:
             if isinstance(value, unicode):
-                value = value.encode(CHARACTER_SET)
+                value = value.encode(SETTINGS.CHARACTER_SET)
             try:
                 # json形式の値の場合はダブルクォートをつけない
                 json.loads(str(value))
@@ -60,7 +60,7 @@ def create_value_list(model):
     return value_list
 
 def set_value_list(model, json_str):
-    json_data = json.loads(json_str.decode(CHARACTER_SET))
+    json_data = json.loads(json_str.decode(SETTINGS.CHARACTER_SET))
     for key in json_data:
         setattr(model, key, str(json_data[key])) # TODO: 項目のタイプによって型を変換する
     return model
