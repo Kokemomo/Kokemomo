@@ -4,9 +4,11 @@
 __author__ = 'hiroki-m'
 
 WSGI_NAME='Bottle'
+PORT = 8861
 CHARACTER_SET = 'utf-8'
 STORAGE_ADAPTER_NAME = 'SQLAlchemy'
 TEST_LOGIN = True
+
 
 ## MySQL
 ##DATA_BASE = 'mysql://user:pass@127.0.0.1:3306/dbname'

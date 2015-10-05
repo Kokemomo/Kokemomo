@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from kokemomo.settings.common import ADMIN_MENU
+from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.controller.km_menu import KMMenu
 
 __author__ = 'hiroki'
@@ -28,10 +28,10 @@ def create_result_4_array(list):
 
 def get_menu_list():
     list = []
-    for name in ADMIN_MENU:
+    for name in SETTINGS.ADMIN_MENU:
         item = KMMenu()
         item.name = name
-        item.url = ADMIN_MENU[name]
+        item.url = SETTINGS.ADMIN_MENU[name]
         list.append(item)
     return list
 

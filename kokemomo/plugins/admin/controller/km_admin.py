@@ -13,7 +13,7 @@ from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
 
-from kokemomo.settings.common import CHARACTER_SET
+from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 
@@ -125,7 +125,7 @@ class KMAdmin(KMEngine):
         try:
             session = storage.adapter.session
             for save_user in self.data.get_request().forms:
-                json_data = json.loads(save_user.decode(CHARACTER_SET))
+                json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
                 for id in json_data:
                     if json_data[id] == "":
                         user_delete(id, session)  # delete
@@ -162,7 +162,7 @@ class KMAdmin(KMEngine):
         try:
             session = storage.adapter.session
             for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(CHARACTER_SET))
+                json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
                 for id in json_data:
                     if json_data[id] == "":
                         group_delete(id, session)  # delete
@@ -199,7 +199,7 @@ class KMAdmin(KMEngine):
         try:
             session = storage.adapter.session
             for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(CHARACTER_SET))
+                json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
                 for id in json_data:
                     if json_data[id] == "":
                         role_delete(id, session)  # delete
@@ -240,7 +240,7 @@ class KMAdmin(KMEngine):
         try:
             session = storage.adapter.session
             for save_params in self.data.get_request().forms:
-                json_data = json.loads(save_params.decode(CHARACTER_SET))
+                json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
                 for key in json_data:
                     if json_data[key] == "":
                         delete_parameter(key, session)  # delete
@@ -270,11 +270,11 @@ class KMAdmin(KMEngine):
         """
         Save the file that is specified in the request.
         """
-        directory_path = self.data.get_request().forms.get('directory').decode(CHARACTER_SET)
+        directory_path = self.data.get_request().forms.get('directory').decode(SETTINGS.CHARACTER_SET)
         data = self.data.get_request().files
         file_obj = data.get('files')
         file_name = file_obj.filename
-        file_name = file_name.decode(CHARACTER_SET)
+        file_name = file_name.decode(SETTINGS.CHARACTER_SET)
         save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
         with open(save_path, "wb") as open_file:
             open_file.write(file_obj.file.read())

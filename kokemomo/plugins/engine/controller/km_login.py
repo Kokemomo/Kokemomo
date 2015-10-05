@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from ..model.km_user_table import find
-from kokemomo.settings.common import TEST_LOGIN
+from kokemomo.settings import SETTINGS
 from .km_session_manager import add_value_to_session, delete_value_to_session
 
 
@@ -54,7 +54,7 @@ def auth(request, db_manager, id, password):
                 result = RESULT_SUCCESS
 
         # テスト用
-        if TEST_LOGIN == True:
+        if SETTINGS.TEST_LOGIN == True:
             if id == test_user and password == test_password:
                 result = RESULT_SUCCESS
             if id == test_user2 and password == test_password2:
