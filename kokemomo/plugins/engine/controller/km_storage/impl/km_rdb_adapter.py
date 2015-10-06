@@ -18,7 +18,12 @@ class BaseModel(object):
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
 
-    def save(self):
+    def validate(self):
+        pass
+
+    def save(self, validate=True):
+        if validate:
+            self.validate()
         try:
             adapter.add(self)
             adapter.commit()
