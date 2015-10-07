@@ -4,7 +4,8 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from ..km_adapter import BaseAdapter
+from kokemomo.plugins.engine.model.km_storage.km_adapter import BaseAdapter
+
 
 class BaseModel(object):
     id = Column(Integer, primary_key=True)
@@ -22,8 +23,6 @@ class BaseModel(object):
         pass
 
     def save(self, validate=True):
-        if validate:
-            self.validate()
         try:
             adapter.add(self)
             adapter.commit()
@@ -52,6 +51,17 @@ class BaseModel(object):
         try:
             elem = cls.get(id)
             adapter.delete(elem)
+            adapter.commit()
+        except:
+            adapter.rollback()
+            raise
+
+    @classmethod
+    def delete_by_condition(cls, **kwargs):
+        target_list = cls.find(**kwargs)
+        try:
+            for target in target_list:
+                adapter.session.delete(target)
             adapter.commit()
         except:
             adapter.rollback()
@@ -126,6 +136,6 @@ class Transaction(object):
     def rollback(self):
         adapter.session.rollback()
 
-from kokemomo.settings.common import DATA_BASE, STORAGE_ADAPTER_NAME
+from kokemomo.settings.common import DATA_BASE
 
 adapter = KMRDBAdapter(DATA_BASE)

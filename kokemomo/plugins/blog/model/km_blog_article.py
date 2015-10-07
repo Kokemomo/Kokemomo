@@ -2,7 +2,9 @@
 # -*- coding:utf-8 -*-
 
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
+from kokemomo.plugins.engine.model.km_validate_error import KMValidateError
+
 
 __author__ = 'hiroki'
 
@@ -29,21 +31,36 @@ class KMBlogArticle(adapter.Model):
     article = adapter.Column(adapter.Text)
     post_date = adapter.Column(adapter.DateTime)
 
+    def __init__(self, data=None):
+        if data is None:
+            self.info_id = 0
+            self.category_id = 0
+            self.title = ""
+            self.article = ""
+            self.post_date = datetime.datetime.now()
+        else:
+            self.set_data(data)
+
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
 
-    @classmethod
-    def create(cls, id):
-        if id == 'None':
-            article = KMBlogArticle()
-            article.info_id = 0
-            article.category_id = 0
-            article.title = ""
-            article.article = ""
-            article.post_date = datetime.datetime.now()
+
+    def set_data(self, data):
+        self.error = None
+        self.info_id = data.get_request_parameter('info_id')
+        self.category_id = data.get_request_parameter('category')
+        self.title = data.get_request_parameter('title', default='', decode=True)
+        self.article = data.get_request_parameter('article', default='', decode=True)
+
+
+    def validate(self):
+        self.error = KMValidateError()
+        if self.title == '':
+            self.error.add_data(id='title', message='記事名は必須です。')
+        if self.error.size() == 0:
+            return True
         else:
-            article = KMBlogArticle.get(id)
-        return article
+            return False

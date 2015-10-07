@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
+from kokemomo.plugins.engine.model.km_validate_error import KMValidateError
 
 __author__ = 'hiroki'
 
@@ -23,8 +24,25 @@ class KMBlogComment(adapter.Model):
     article_id = adapter.Column(adapter.Integer)
     comment = adapter.Column(adapter.Text)
 
+    def __init__(self, data=None):
+        if data is None:
+            self.name = ''
+            self.url = ''
+            self.description = ''
+        else:
+            self.set_data(data)
+
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
+
+
+    def set_data(self, data):
+        self.error = None
+        self.article_id = data.get_request_parameter('id', default='', decode=True)
+        self.comment = data.get_request_parameter('comment', default='', decode=True)
+
+    def validate(self):
+        return True

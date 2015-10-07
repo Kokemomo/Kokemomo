@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
-from sqlalchemy.types import Text
+from kokemomo.plugins.engine.model.km_storage import storage
 
 __author__ = 'hiroki'
 
