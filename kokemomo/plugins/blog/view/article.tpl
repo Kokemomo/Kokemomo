@@ -1,7 +1,6 @@
         <section class="container">
             % info = values['info']
             % article = values['article']
-            % errors = values['errors'] if ('errors' in values) else {}
             % categories = values['category']
             <div class="col-sm-12">
                 <h3>記事作成</h3>
@@ -14,8 +13,8 @@
                                 <th width="100px">記事名<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="title" id="title" value="{{article.title}}">
-                                    % if 'title' in errors:
-                                        <label class="error">{{errors['title']}}</label>
+                                    % if 'error' in values and values['error'].have('title'):
+                                        <label class="error">{{values['error'].get('title')['message']}}</label>
                                     % end
                                 </td>
                             </tr>
@@ -23,9 +22,6 @@
                                 <th width="100px">記事<span class="required">*</span></th>
                                 <td>
                                     <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
-                                    % if 'article' in errors:
-                                        <label class="error">{{errors['article']}}</label>
-                                    % end
                                 </td>
                             </tr>
                             <tr class="row">
