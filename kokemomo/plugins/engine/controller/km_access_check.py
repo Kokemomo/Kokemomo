@@ -2,11 +2,13 @@
 # -*- coding:utf-8 -*-
 
 from functools import wraps
+
 from kokemomo.lib.bottle import redirect
 from kokemomo.settings import SETTINGS
 from ..model.km_user_table import find as find_user
 from ..model.km_role_table import find as find_role
 from .km_session_manager import get_value_to_session
+
 
 """
 Access check class for KOKEMOMO.
@@ -17,7 +19,7 @@ It provides as a decorator each check processing.
 
 __author__ = 'hiroki'
 
-from kokemomo.plugins.engine.controller.km_storage import storage
+from kokemomo.plugins.engine.model.km_storage import storage
 
 
 def access_check(request):

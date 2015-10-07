@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
 
 
 __author__ = 'hiroki'
