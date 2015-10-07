@@ -1,7 +1,6 @@
         <section class="container">
             % category = values['category']
             % info_list = values['info']
-            % errors = values['errors'] if ('errors' in values) else {}
             <div class="col-sm-12">
                 <h3>カテゴリ作成</h3>
                 <div class="box">
@@ -11,7 +10,7 @@
                             <tr class="row">
                                 <th width="100px">ブログ</th>
                                 <td>
-                                    <select id="info" name="info">
+                                    <select id="info_id" name="info_id">
                                     % for info in info_list:
                                         % if info.id == category.info_id:
                                         <option value="{{info.id}}" selected>{{info.name}}</option>
@@ -26,8 +25,8 @@
                                 <th width="100px">カテゴリ名<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="name" id="name" value="{{category.name}}">
-                                    % if 'name' in errors:
-                                        <label class="error">{{errors['name']}}</label>
+                                    % if 'error' in values and values['error'].have('name'):
+                                        <label class="error">{{values['error'].get('name')['message']}}</label>
                                     % end
                                 </td>
                             </tr>

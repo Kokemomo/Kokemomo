@@ -57,6 +57,17 @@ class BaseModel(object):
             raise
 
     @classmethod
+    def delete_by_condition(cls, **kwargs):
+        target_list = cls.find(**kwargs)
+        try:
+            for target in target_list:
+                adapter.session.delete(target)
+            adapter.commit()
+        except:
+            adapter.rollback()
+            raise
+
+    @classmethod
     def find(cls, **kwargs):
         return adapter.session.query(cls).filter_by(**kwargs).all()
 
