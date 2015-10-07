@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
+from kokemomo.plugins.engine.model.km_validate_error import KMValidateError
 
 __author__ = 'hiroki'
 
@@ -24,6 +25,13 @@ class KMBlogInfo(adapter.Model):
     url = adapter.Column(adapter.Text)
     description = adapter.Column(adapter.Text)
 
+    def __init__(self, data=None):
+        if data is None:
+            self.name = ''
+            self.url = ''
+            self.description = ''
+        else:
+            self.set_data(data)
 
     def __repr__(self):
         return create_repr_str(self)
@@ -32,14 +40,19 @@ class KMBlogInfo(adapter.Model):
         return create_json(self)
 
 
-    @classmethod
-    def create(cls, id):
-        if id == 'None':
-            info = KMBlogInfo()
-            info.name = ""
-            info.url = ""
-            info.description = ""
-        else:
-            info = KMBlogInfo.get(id=id)
-        return info
+    def set_data(self, data):
+        self.error = None
+        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.url = data.get_request_parameter('url', default='')
+        self.description = data.get_request_parameter('description', default='', decode=True)
 
+    def validate(self):
+        self.error = KMValidateError()
+        if self.name == '':
+            self.error.add_data(id='name', message='ブログ名は必須です。')
+        if self.url == '':
+            self.error.add_data(id='url', message='URLは必須です。')
+        if self.error.size() == 0:
+            return True
+        else:
+            return False
