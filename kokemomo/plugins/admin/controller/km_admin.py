@@ -190,10 +190,9 @@ class KMAdmin(KMEngine):
                     role_delete(id, session)  # delete
                 else:
                     role = KMRole()
-                    role.id = id
                     role.name = json_data[id]["name"]
                     role.target = json_data[id]["target"]
-                    role.is_allow = json_data[id]["is_allow"]
+                    role.is_allow = json_data[id]["is_allow"].lower() in ("true", "1")
                     role.save()
 
 
