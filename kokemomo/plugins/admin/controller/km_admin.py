@@ -122,24 +122,20 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_user in self.data.get_request().forms:
-                json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        user_delete(id, session)  # delete
-                    else:
-                        user = KMUser()
-                        user.user_id = json_data[id]['user_id']
-                        user.name = json_data[id]["name"]
-                        user.password = json_data[id]["password"]
-                        user.mail_address = json_data[id]["mail_address"]
-                        user.group_id = json_data[id]["group_id"]
-                        user.role_id = json_data[id]["role_id"]
-                        user_update(user, session)
-        finally:
-            session.close()
+        for save_user in self.data.get_request().forms:
+            json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    KMUser.delete(id)
+                else:
+                    user = KMUser()
+                    user.user_id = json_data[id]['user_id']
+                    user.name = json_data[id]["name"]
+                    user.password = json_data[id]["password"]
+                    user.mail_address = json_data[id]["mail_address"]
+                    user.group_id = json_data[id]["group_id"]
+                    user.role_id = json_data[id]["role_id"]
+                    user.save()
 
 
     def search_user(self):
@@ -148,8 +144,8 @@ class KMAdmin(KMEngine):
         :return: users.
         """
         result = KMUser.all()
-        print result
         return create_result_4_array(result)
+
 
 
     def save_group(self):
@@ -159,20 +155,16 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        group_delete(id, session)  # delete
-                    else:
-                        group = KMGroup()
-                        group.name = json_data[id]["name"]
-                        group.parent_id = json_data[id]["parent_id"]
-                        group_update(group, session)
-        finally:
-            session.close()
+        for save_group in self.data.get_request().forms:
+            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    KMGroup.delete(id)
+                else:
+                    group = KMGroup()
+                    group.name = json_data[id]["name"]
+                    group.parent_id = json_data[id]["parent_id"]
+                    group.save()
 
 
     def search_group(self):
@@ -180,13 +172,8 @@ class KMAdmin(KMEngine):
         Find all the group.
         :return: groups.
         """
-        try:
-            session = storage.adapter.session
-            result = group_find_all(session)
-        finally:
-            session.close()
+        result = KMGroup.all()
         return create_result_4_array(result)
-
 
 
     def save_role(self):
@@ -196,24 +183,17 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        role_delete(id, session)  # delete
-                    else:
-                        role = KMRole()
-                        role.id = id
-                        role.name = json_data[id]["name"]
-                        role.target = json_data[id]["target"]
-                        role.is_allow = json_data[id]["is_allow"]
-                        role_update(role, session)
-        finally:
-            session.close()
-
-
+        for save_group in self.data.get_request().forms:
+            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    role_delete(id, session)  # delete
+                else:
+                    role = KMRole()
+                    role.name = json_data[id]["name"]
+                    role.target = json_data[id]["target"]
+                    role.is_allow = json_data[id]["is_allow"].lower() in ("true", "1")
+                    role.save()
 
 
     def search_role(self):
@@ -221,13 +201,8 @@ class KMAdmin(KMEngine):
         Find all the role.
         :return: roles.
         """
-        try:
-            session = storage.adapter.session
-            result = role_find_all(session)
-        finally:
-            session.close()
+        result = KMRole.all()
         return create_result_4_array(result)
-
 
 
     def save_parameter(self):
@@ -237,20 +212,16 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_params in self.data.get_request().forms:
-                json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
-                for key in json_data:
-                    if json_data[key] == "":
-                        delete_parameter(key, session)  # delete
-                    else:
-                        parameter = KMParameter()
-                        parameter.key = key
-                        parameter.json = json_data[key]
-                        update_parameter(parameter, session)
-        finally:
-            session.commit()
+        for save_params in self.data.get_request().forms:
+            json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
+            for key in json_data:
+                if json_data[key] == "":
+                    delete_parameter(key, session)  # delete
+                else:
+                    parameter = KMParameter()
+                    parameter.key = key
+                    parameter.json = json_data[key]
+                    parameter.save()
 
 
     def search_parameter(self):
@@ -258,11 +229,7 @@ class KMAdmin(KMEngine):
         Find all the parameters.
         :return: parameters.
         """
-        try:
-            session = storage.adapter.session
-            result = find_parameter(session)
-        finally:
-            session.commit()
+        result = KMParameter.all()
         return create_result_4_array(result)
 
 
