@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
 
 __author__ = 'hiroki'
 
@@ -30,11 +30,11 @@ def search_parameter():
 """
 
 
-class KMGroup(storage.Model):
+class KMGroup(adapter.Model):
     __tablename__ = 'km_group'
-    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
-    name = storage.Column(storage.String(50))
-    parent_id = storage.Column(storage.Integer)
+    id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
+    name = adapter.Column(adapter.String(50))
+    parent_id = adapter.Column(adapter.Integer)
 
     def __repr__(self):
         return create_repr_str(self)
@@ -44,6 +44,7 @@ class KMGroup(storage.Model):
 
 
 def find(id, session):
+    pass
     """
     Find the group.
     :param id: group id.
@@ -57,6 +58,7 @@ def find(id, session):
 
 
 def find_all(session):
+    pass
     """
     Find all the groups.
     :param session: session
@@ -70,6 +72,7 @@ def find_all(session):
 
 
 def add(group, session):
+    pass
     """
     Add the group
     :param group: group model
@@ -84,6 +87,7 @@ def add(group, session):
 
 
 def update(group, session):
+    pass
     """
     Update the group.
     :param group: group model
@@ -98,6 +102,7 @@ def update(group, session):
 
 
 def delete(id, session):
+    pass
     """
     Delete the group.
     :param id: group id

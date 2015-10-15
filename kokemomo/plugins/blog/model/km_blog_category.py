@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
+from kokemomo.plugins.engine.model.km_validate_error import KMValidateError
+
 
 __author__ = 'hiroki'
 
@@ -17,11 +19,17 @@ It is blog category table to be used in the KOKEMOMO.
 """
 
 
-class KMBlogCategory(storage.Model):
+class KMBlogCategory(adapter.Model):
     __tablename__ = 'km_blog_category'
-    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
-    info_id = storage.Column(storage.Integer)
-    name = storage.Column(storage.Text)
+    id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
+    info_id = adapter.Column(adapter.Integer)
+    name = adapter.Column(adapter.Text)
+
+    def __init__(self, data=None):
+        if data is None:
+            self.name = ''
+        else:
+            self.set_data(data)
 
     def __repr__(self):
         return create_repr_str(self)
@@ -30,71 +38,17 @@ class KMBlogCategory(storage.Model):
         return create_json(self)
 
 
-def create(id, session):
-    if id == 'None':
-        category = KMBlogCategory()
-        category.name = ""
-    else:
-        category = find(id, session)
-    return category
+    def set_data(self, data):
+        self.error = None
+        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.info_id = data.get_request_parameter('info_id', default=None)
 
 
-def find(id, session):
-    result = None
-    for category in session.query(KMBlogCategory).filter_by(id=id).all():
-        result = category
-    return result
-
-
-def find_by_info(info_id, session):
-    result = []
-    for info in session.query(KMBlogCategory).filter_by(info_id=info_id).all():
-        result.append(info)
-    return result
-
-
-def find_all(session):
-    result = []
-    fetch = session.query(KMBlogCategory)
-    for category in fetch.all():
-        result.append(category)
-    return result
-
-
-def add(category, session):
-    try:
-        session.add(category)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(category, session):
-    try:
-        session.merge(category)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    fetch_object = session.query(KMBlogCategory).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete_by_info(info_id, session):
-    fetch = session.query(KMBlogCategory).filter_by(info_id=info_id).all()
-    try:
-        for target in fetch:
-            session.delete(target)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
+    def validate(self):
+        self.error = KMValidateError()
+        if self.name == '':
+            self.error.add_data(id='name', message='ブログ名は必須です。')
+        if self.error.size() == 0:
+            return True
+        else:
+            return False

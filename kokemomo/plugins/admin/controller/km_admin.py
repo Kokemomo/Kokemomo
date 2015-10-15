@@ -13,7 +13,7 @@ from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_
 from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
 
-from kokemomo.settings.common import CHARACTER_SET
+from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
 from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 
@@ -22,7 +22,6 @@ __author__ = 'hiroki-m'
 
 
 DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-from kokemomo.plugins.engine.controller.km_storage import storage
 
 
 class KMAdmin(KMEngine):
@@ -123,24 +122,20 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_user in self.data.get_request().forms:
-                json_data = json.loads(save_user.decode(CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        user_delete(id, session)  # delete
-                    else:
-                        user = KMUser()
-                        user.user_id = json_data[id]['user_id']
-                        user.name = json_data[id]["name"]
-                        user.password = json_data[id]["password"]
-                        user.mail_address = json_data[id]["mail_address"]
-                        user.group_id = json_data[id]["group_id"]
-                        user.role_id = json_data[id]["role_id"]
-                        user_update(user, session)
-        finally:
-            session.close()
+        for save_user in self.data.get_request().forms:
+            json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    KMUser.delete(id)
+                else:
+                    user = KMUser()
+                    user.user_id = json_data[id]['user_id']
+                    user.name = json_data[id]["name"]
+                    user.password = json_data[id]["password"]
+                    user.mail_address = json_data[id]["mail_address"]
+                    user.group_id = json_data[id]["group_id"]
+                    user.role_id = json_data[id]["role_id"]
+                    user.save()
 
 
     def search_user(self):
@@ -148,12 +143,9 @@ class KMAdmin(KMEngine):
         Find all the user.
         :return: users.
         """
-        try:
-            session = storage.adapter.session
-            result = user_find_all(session)
-        finally:
-            session.close()
+        result = KMUser.all()
         return create_result_4_array(result)
+
 
 
     def save_group(self):
@@ -163,20 +155,16 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        group_delete(id, session)  # delete
-                    else:
-                        group = KMGroup()
-                        group.name = json_data[id]["name"]
-                        group.parent_id = json_data[id]["parent_id"]
-                        group_update(group, session)
-        finally:
-            session.close()
+        for save_group in self.data.get_request().forms:
+            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    KMGroup.delete(id)
+                else:
+                    group = KMGroup()
+                    group.name = json_data[id]["name"]
+                    group.parent_id = json_data[id]["parent_id"]
+                    group.save()
 
 
     def search_group(self):
@@ -184,13 +172,8 @@ class KMAdmin(KMEngine):
         Find all the group.
         :return: groups.
         """
-        try:
-            session = storage.adapter.session
-            result = group_find_all(session)
-        finally:
-            session.close()
+        result = KMGroup.all()
         return create_result_4_array(result)
-
 
 
     def save_role(self):
@@ -200,24 +183,17 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_group in self.data.get_request().forms:
-                json_data = json.loads(save_group.decode(CHARACTER_SET))
-                for id in json_data:
-                    if json_data[id] == "":
-                        role_delete(id, session)  # delete
-                    else:
-                        role = KMRole()
-                        role.id = id
-                        role.name = json_data[id]["name"]
-                        role.target = json_data[id]["target"]
-                        role.is_allow = json_data[id]["is_allow"]
-                        role_update(role, session)
-        finally:
-            session.close()
-
-
+        for save_group in self.data.get_request().forms:
+            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
+            for id in json_data:
+                if json_data[id] == "":
+                    role_delete(id, session)  # delete
+                else:
+                    role = KMRole()
+                    role.name = json_data[id]["name"]
+                    role.target = json_data[id]["target"]
+                    role.is_allow = json_data[id]["is_allow"].lower() in ("true", "1")
+                    role.save()
 
 
     def search_role(self):
@@ -225,13 +201,8 @@ class KMAdmin(KMEngine):
         Find all the role.
         :return: roles.
         """
-        try:
-            session = storage.adapter.session
-            result = role_find_all(session)
-        finally:
-            session.close()
+        result = KMRole.all()
         return create_result_4_array(result)
-
 
 
     def save_parameter(self):
@@ -241,20 +212,16 @@ class KMAdmin(KMEngine):
         Format: 'keyName':{"hoge":"fuga"}
 
         """
-        try:
-            session = storage.adapter.session
-            for save_params in self.data.get_request().forms:
-                json_data = json.loads(save_params.decode(CHARACTER_SET))
-                for key in json_data:
-                    if json_data[key] == "":
-                        delete_parameter(key, session)  # delete
-                    else:
-                        parameter = KMParameter()
-                        parameter.key = key
-                        parameter.json = json_data[key]
-                        update_parameter(parameter, session)
-        finally:
-            session.commit()
+        for save_params in self.data.get_request().forms:
+            json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
+            for key in json_data:
+                if json_data[key] == "":
+                    delete_parameter(key, session)  # delete
+                else:
+                    parameter = KMParameter()
+                    parameter.key = key
+                    parameter.json = json_data[key]
+                    parameter.save()
 
 
     def search_parameter(self):
@@ -262,11 +229,7 @@ class KMAdmin(KMEngine):
         Find all the parameters.
         :return: parameters.
         """
-        try:
-            session = storage.adapter.session
-            result = find_parameter(session)
-        finally:
-            session.commit()
+        result = KMParameter.all()
         return create_result_4_array(result)
 
 
@@ -274,11 +237,11 @@ class KMAdmin(KMEngine):
         """
         Save the file that is specified in the request.
         """
-        directory_path = self.data.get_request().forms.get('directory').decode(CHARACTER_SET)
+        directory_path = self.data.get_request().forms.get('directory').decode(SETTINGS.CHARACTER_SET)
         data = self.data.get_request().files
         file_obj = data.get('files')
         file_name = file_obj.filename
-        file_name = file_name.decode(CHARACTER_SET)
+        file_name = file_name.decode(SETTINGS.CHARACTER_SET)
         save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
         with open(save_path, "wb") as open_file:
             open_file.write(file_obj.file.read())

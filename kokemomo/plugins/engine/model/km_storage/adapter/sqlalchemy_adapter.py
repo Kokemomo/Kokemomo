@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-from kokemomo.plugins.engine.controller.km_storage import *
+from kokemomo.plugins.engine.model.km_storage import *
 
 
 class BaseModel(object):
