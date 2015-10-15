@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
-from kokemomo.plugins.engine.controller.km_storage import storage
-from sqlalchemy.types import Text
+from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
 
 """
 It is the accessor to generic parameters table to be used in the KOKEMOMO.
@@ -29,11 +28,11 @@ def search_parameter():
 """
 
 
-class KMParameter(storage.Model):
+class KMParameter(adapter.Model):
     __tablename__ = 'km_parameter'
-    id = storage.Column(storage.Integer, autoincrement=True, primary_key=True)
-    key = storage.Column(storage.String(50))
-    json = storage.Column(storage.Text())
+    id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
+    key = adapter.Column(adapter.String(50))
+    json = adapter.Column(adapter.Text())
 
     def __repr__(self):
         return create_repr_str(self)

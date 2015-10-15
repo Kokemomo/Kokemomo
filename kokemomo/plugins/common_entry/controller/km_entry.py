@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import json
-from kokemomo.lib.bottle import template, route, static_file, url, request, response, redirect
+from kokemomo.lib.bottle import template, route, static_file, url, request
 from kokemomo.plugins.common_entry.controller.km_entry_config import get_model, get_name, entry_model
 from kokemomo.plugins.engine.utils.km_model_utils import *
 
@@ -17,7 +16,7 @@ Generates display items of model set, it is possible to register a value.
 -------------------------------------------------------------------
 """
 
-from kokemomo.plugins.engine.controller.km_storage import storage
+from kokemomo.plugins.engine.model.km_storage import storage
 
 @route('/common_entry/js/<filename>', name='common_entry_static_js')
 def common_entry_js_static(filename):

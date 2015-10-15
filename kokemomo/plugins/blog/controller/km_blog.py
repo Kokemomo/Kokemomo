@@ -3,25 +3,15 @@
 
 __author__ = 'hiroki-m'
 
-import os
-
-from kokemomo.plugins.engine.controller.km_plugin_manager import KMBaseController
 from kokemomo.plugins.engine.controller.km_exception import log as log_error
-from kokemomo.plugins.engine.controller.km_login import logout, login_auth
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
-from kokemomo.plugins.engine.controller.km_engine import KMEngine
-from kokemomo.settings.common import CHARACTER_SET
-from kokemomo.plugins.blog.model.km_blog_info import KMBlogInfo, create as create_info, find_all as find_info_list, \
-    update as save_info, find_by_url as find_info_by_url, find as find_info, delete as delete_info
-from kokemomo.plugins.blog.model.km_blog_category import KMBlogCategory, create as create_category, \
-    find_all as find_category_list, update as save_category, delete as delete_category, \
-    delete_by_info as delete_category_by_info, find_by_info as find_category_by_info
-from kokemomo.plugins.blog.model.km_blog_article import KMBlogArticle, create as create_article, \
-    find_all as find_article_list, update as save_article, find_by_info_id as find_article_list_by_info_id, \
-    delete as delete_article, delete_by_info as delete_article_by_info, delete_by_category as delete_article_by_category
-from kokemomo.plugins.blog.model.km_blog_comment import KMBlogComment, update as update_comment, find_by_article_id as find_comment_by_article
+from kokemomo.plugins.blog.model.km_blog_info import KMBlogInfo
+from kokemomo.plugins.blog.model.km_blog_category import KMBlogCategory
+from kokemomo.plugins.blog.model.km_blog_article import KMBlogArticle
+from kokemomo.plugins.blog.model.km_blog_comment import KMBlogComment
 from kokemomo.plugins.admin import KMAdmin
+
 
 '''
 ブログ
@@ -34,8 +24,6 @@ from kokemomo.plugins.admin import KMAdmin
 '''
 
 DATA_DIR_PATH = "/kokemomo/data/blog/"
-
-from kokemomo.plugins.engine.controller.km_storage import storage
 
 
 class KMBlog(KMAdmin):
@@ -134,48 +122,56 @@ class KMBlog(KMAdmin):
         blog admin page
         :return: template
         '''
-        try:
-            session = storage.adapter.session
-            type = self.data.get_request_parameter('type', default='dashboard')
-            id = self.data.get_request_parameter('id', default='None')
-            if self.data.get_request_parameter('delete', default=False):
-                self.delete(type, id, session)
-            values = {}
-            # branched by type
-            if type == 'dashboard':
-                values['info'] = find_info_list(session)
-            elif type == 'info':
-                values['info'] = create_info(id, session);
-            elif type == 'category_list':
-                values['info'] = find_info_list(session)
-                values['category'] = find_category_list(session);
-            elif type == 'category':
-                values['info'] = find_info_list(session)
-                values['category'] = create_category(id, session);
-            elif type == 'article_list':
-                values['info'] = find_info_list(session)
-                for info in values['info']:
-                    info.articles = find_article_list_by_info_id(info.id, session)
-            elif type == 'article':
-                info_id = self.data.get_request_parameter('info_id')
-                values['info'] = find_info(info_id, session)
-                values['category'] = find_category_by_info(info_id, session)
-                values['article'] = create_article(id, session)
-            return self.get_template(type, values)
-        finally:
-            session.close()
-
-
-    def delete(self, type, id, session):
+        type = self.data.get_request_parameter('type', default='dashboard')
+        id = self.data.get_request_parameter('id', default=None)
+        if self.data.get_request_parameter('delete', default=False):
+            self.delete(type, id)
+        values = {}
+        # branched by type
         if type == 'dashboard':
-            delete_info(id, session)
-            delete_category_by_info(id, session)
-            delete_article_by_info(id, session)
+            values['info'] = KMBlogInfo.all()
+        elif type == 'info':
+            if id is None:
+                info = KMBlogInfo()
+            else:
+                info = KMBlogInfo.get(id=id)
+            values['info'] = info
         elif type == 'category_list':
-            delete_category(id, session)
-            delete_article_by_category(id, session)
+            values['info'] = KMBlogInfo.all()
+            values['category'] = KMBlogCategory.all()
+        elif type == 'category':
+            values['info'] = KMBlogInfo.all()
+            if id is None:
+                category = KMBlogCategory()
+            else:
+                category = KMBlogCategory.get(id=id)
+            values['category'] = category
         elif type == 'article_list':
-            delete_article(id, session)
+            values['info'] = KMBlogInfo.all()
+            for info in values['info']:
+                info.articles = KMBlogArticle.find(info_id=info.id)
+        elif type == 'article':
+            info_id = self.data.get_request_parameter('info_id')
+            values['info'] = KMBlogInfo.get(id=info_id)
+            values['category'] = KMBlogCategory.find(info_id=info_id)
+            if id is None:
+                article = KMBlogArticle()
+            else:
+                article = KMBlogArticle.get(id=id)
+            values['article'] = article
+        return self.get_template(type, values)
+
+
+    def delete(self, type, id):
+        if type == 'dashboard':
+            KMBlogInfo.delete(id)
+            KMBlogCategory.delete_by_condition(info_id=id)
+            KMBlogArticle.delete_by_condition(info_id=id)
+        elif type == 'category_list':
+            KMBlogCategory.delete(id)
+            KMBlogArticle.delete_by_condition(category_id=id)
+        elif type == 'article_list':
+            KMBlogArticle.delete(id)
 
 
     def get_template(self, type, values):
@@ -191,40 +187,23 @@ class KMBlog(KMAdmin):
         Create Blog Information.
         :return:
         '''
-        try:
-            session = storage.adapter.session
-            values = self.create_info_values(self.data.get_request(), session)
-            if len(values['errors']) == 0:
-                save_info(values['info'], session)
-                type = 'result'
-            else:
-                type = 'info'
-            return self.get_template(type, values)
-        finally:
-            session.close()
-
-
-    def create_info_values(self,request, session):
-        '''
-        Create Blog Information Values.
-        :param request:
-        :return:
-        '''
         values = {}
-        errors = {}
-        id = request.params.get('id', default='None')
-        values['message'] = 'ブログを新規作成しました。' if id == 'None' else 'ブログを更新しました。'
-        info = create_info(id, session)
-        info.name = request.forms.get('name', default='').decode(CHARACTER_SET)
-        if info.name == '':
-            errors['name'] = 'ブログ名は必須です。'
-        info.url = request.forms.get('url', default='')
-        if info.url == '':
-            errors['url'] = 'URLは必須です。'
-        info.description = request.forms.get('description', default='').decode(CHARACTER_SET)
-        values['info'] = info
-        values['errors'] = errors
-        return values
+        id = self.data.get_request_parameter('id', default=None)
+        if id is None:
+            info = KMBlogInfo(self.data)
+        else:
+            info = KMBlogInfo.get(id=id)
+            info.set_data(self.data)
+        if info.validate():
+            info.save()
+            type = 'result'
+            values['info'] = info
+            values['message'] = 'ブログ情報を保存しました。'
+        else:
+            type = 'info'
+            values['info'] = info
+            values['error'] = info.error
+        return self.get_template(type, values)
 
 
     @log_error
@@ -233,37 +212,23 @@ class KMBlog(KMAdmin):
         Create Blog Category.
         :return:
         '''
-        try:
-            session = storage.adapter.session
-            values = self.create_category_values(self.data.get_request(), session)
-            if len(values['errors']) == 0:
-                save_category(values['category'], session)
-                type = 'result'
-            else:
-                type = 'category'
-            return self.get_template(type, values)
-        finally:
-            session.close()
-
-
-    def create_category_values(self, request, session):
-        '''
-        Create Blog Information Values.
-        :param request:
-        :return:
-        '''
         values = {}
-        errors = {}
-        id = request.params.get('id', default='None')
-        values['message'] = 'カテゴリを新規作成しました。' if id == 'None' else 'カテゴリを更新しました。'
-        category = create_category(id, session)
-        category.name = request.forms.get('name', default='').decode(CHARACTER_SET)
-        category.info_id = request.forms.get('info', default='None')
-        if category.name == '':
-            errors['name'] = 'カテゴリ名は必須です。'
+        id = self.data.get_request_parameter('id', default=None)
+        if id is None:
+            category = KMBlogCategory(self.data)
+        else:
+            category = KMBlogCategory.get(id=id)
+            category.set_data(self.data)
         values['category'] = category
-        values['errors'] = errors
-        return values
+        if category.validate():
+            category.save()
+            type = 'result'
+            values['message'] = 'カテゴリを保存しました。'
+        else:
+            type = 'category'
+            values['info'] = KMBlogInfo.all()
+            values['error'] = category.error
+        return self.get_template(type, values)
 
 
     @log_error
@@ -272,42 +237,26 @@ class KMBlog(KMAdmin):
         Create Blog Article.
         :return:
         '''
-        try:
-            session = storage.adapter.session
-            values = self.create_article_values(self.data.get_request(), session)
-            if len(values['errors']) == 0:
-                save_article(values['article'], session)
-                type = 'result'
-            else:
-                type = 'article'
-                values['category'] = find_category_list(session)
-            return self.get_template(type, values)
-        finally:
-            session.close()
-
-
-    def create_article_values(self, request, session):
-        '''
-        Create Blog Information Values.
-        :param request:
-        :return:
-        '''
         values = {}
-        errors = {}
-        id = request.params.get('id', default='None')
-        article = create_article(id, session)
-        values['message'] = '記事を新規作成しました。' if id == 'None' else '記事を更新しました。'
-        article.info_id = request.forms.get('info_id')
-        article.category_id = request.forms.get('category')
-        article.title = request.forms.get('title', default='').decode(CHARACTER_SET)
-        if article.title == '':
-            errors['title'] = '記事名は必須です。'
-        article.article = request.forms.get('article', default='').decode(CHARACTER_SET)
-        if article.article == '':
-            errors['article'] = '記事は必須です。'
+        id = self.data.get_request_parameter('id', default=None)
+        info_id = self.data.get_request_parameter('info_id')
+        if id is None:
+            article = KMBlogArticle(self.data)
+        else:
+            article = KMBlogArticle.get(id=id)
+            article.set_data(self.data)
+        values['info'] = KMBlogInfo.get(info_id)
         values['article'] = article
-        values['errors'] = errors
-        return values
+        if article.validate():
+            article.save()
+            type = 'result'
+            values['message'] = '記事を保存しました。'
+        else:
+            type = 'article'
+            values['category'] = KMBlogCategory.all()
+            values['error'] = article.error
+        return self.get_template(type, values)
+
 
 
     '''
@@ -318,16 +267,12 @@ class KMBlog(KMAdmin):
 
     @log_error
     def blog_page(self, blog_url):
-        try:
-            session = storage.adapter.session
-            info = find_info_by_url(blog_url, session)
-            info.articles = find_article_list_by_info_id(info.id, session)
-            for article in info.articles:
-                article.comments = find_comment_by_article(article.id, session)
-            values = {'info': info}
-            return self.render('kokemomo/plugins/blog/view/template/normal/normal', url=self.get_url, values=values, blog_url=blog_url)
-        finally:
-            session.close()
+        info = KMBlogInfo.find(url=blog_url)[0]
+        info.articles = KMBlogArticle.find(info_id=info.id)
+        for article in info.articles:
+            article.comments = KMBlogComment.find(article_id=article.id)
+        values = {'info': info}
+        return self.render('kokemomo/plugins/blog/view/template/normal/normal', url=self.get_url, values=values, blog_url=blog_url)
 
 
     @log_error
@@ -342,17 +287,9 @@ class KMBlog(KMAdmin):
 
     @log_error
     def blog_add_comment(self, blog_url):
-        try:
-            session = storage.adapter.session
-            blob_comment = KMBlogComment()
-            article_id = self.data.get_request_parameter('id', default='None')
-            comment = self.data.get_request_parameter('comment', default='').decode(CHARACTER_SET)
-            blob_comment.article_id = article_id
-            blob_comment.comment = comment
-            update_comment(blob_comment, session)
-            self.redirect('/blog/' + blog_url)
-        finally:
-            session.close()
+        blog_comment = KMBlogComment(self.data)
+        blog_comment.save()
+        self.redirect('/blog/' + blog_url)
 
     # def create_blog_file(info):
     #    path = os.path.abspath(os.curdir) + DATA_DIR_PATH + info.url

@@ -4,6 +4,7 @@
 from kokemomo.lib.bottle import Bottle, run as runner, Route
 from kokemomo.lib.bottle import request, response, redirect, template
 from kokemomo.lib.bottle import static_file, default_app
+from kokemomo.settings import SETTINGS
 
 __author__ = 'hiroki-m'
 
@@ -40,10 +41,10 @@ class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装
         cls.root_app.mount(rule, plugin.plugin.app)
 
     @classmethod
-    def run(cls):
+    def run(cls, port):
         if cls.root_app is not None:
             runner(cls.root_app, host='localhost',
-                   port=8861, debug=True, reloader=True)
+               port=port, debug=True, reloader=True)
         #        runner(app, host='localhost', port=8080, server='gunicorn', workers=1)
         else:
             raise SystemError

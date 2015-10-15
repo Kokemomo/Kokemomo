@@ -3,7 +3,7 @@
 
 import logging
 from logging.handlers import RotatingFileHandler, HTTPHandler
-from kokemomo.settings.common import LOGGER, PLUGINS
+from kokemomo.settings import SETTINGS
 
 __author__ = 'hiroki'
 
@@ -22,18 +22,18 @@ class KMLoggingHandlerList(object):
         mod = __import__('logging.handlers', fromlist=['RotatingFileHandler','HTTPHandler'])
         class_def = getattr(mod, "RotatingFileHandler")
         handler = class_def(
-            filename=LOGGER['RotatingFileHandler']['filename'],
-            maxBytes=LOGGER['RotatingFileHandler']['maxBytes'],
-            backupCount=LOGGER['RotatingFileHandler']['backupCount'])
-        formatter = logging.Formatter(LOGGER['RotatingFileHandler']['format'])
+            filename=SETTINGS.LOGGER['RotatingFileHandler']['filename'],
+            maxBytes=SETTINGS.LOGGER['RotatingFileHandler']['maxBytes'],
+            backupCount=SETTINGS.LOGGER['RotatingFileHandler']['backupCount'])
+        formatter = logging.Formatter(SETTINGS.LOGGER['RotatingFileHandler']['format'])
         handler.setFormatter(formatter)
         cls.handlers['RotatingFileHandler'] = handler
 
         class_def = getattr(mod, "HTTPHandler")
         handler = class_def(
-            host=LOGGER['HTTPHandler']['host'],
-            url=LOGGER['HTTPHandler']['url'],
-            method=LOGGER['HTTPHandler']['method'])
+            host=SETTINGS.LOGGER['HTTPHandler']['host'],
+            url=SETTINGS.LOGGER['HTTPHandler']['url'],
+            method=SETTINGS.LOGGER['HTTPHandler']['method'])
         cls.handlers['HTTPHandler'] = handler
 
         sqllogger = logging.getLogger('sqlalchemy.pool')
@@ -57,9 +57,9 @@ class KMLogger(object):
 
     def __init__(self, name):
         self.logger = logging.getLogger(name)
-        self.logger.setLevel(self.__get_level(PLUGINS[name]['level']))
+        self.logger.setLevel(self.__get_level(SETTINGS.PLUGINS[name]['level']))
         handler_list = KMLoggingHandlerList()
-        handler = handler_list.get_handler(PLUGINS[name]['logger'])
+        handler = handler_list.get_handler(SETTINGS.PLUGINS[name]['logger'])
         self.logger.addHandler(handler)
 
     def debug(self, msg, *args, **kwargs):
