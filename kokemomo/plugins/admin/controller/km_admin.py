@@ -107,7 +107,7 @@ class KMAdmin(KMEngine):
 
 
     def login_auth(self):
-        return login_auth(self.data, storage)
+        pass #login_auth(self.data, session)
 
 
     def logout(self):
@@ -161,7 +161,9 @@ class KMAdmin(KMEngine):
                 if json_data[id] == "":
                     KMGroup.delete(id)
                 else:
-                    group = KMGroup()
+                    group = KMGroup.get(id)
+                    if not group:
+                        group = KMGroup()
                     group.name = json_data[id]["name"]
                     group.parent_id = json_data[id]["parent_id"]
                     group.save()
@@ -187,9 +189,11 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
             for id in json_data:
                 if json_data[id] == "":
-                    role_delete(id, session)  # delete
+                    KMRole.delete(id)
                 else:
-                    role = KMRole()
+                    role = KMRole.get(id)
+                    if not role:
+                        role = KMRole()
                     role.name = json_data[id]["name"]
                     role.target = json_data[id]["target"]
                     role.is_allow = json_data[id]["is_allow"].lower() in ("true", "1")
@@ -216,9 +220,13 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
             for key in json_data:
                 if json_data[key] == "":
-                    delete_parameter(key, session)  # delete
+                    KMParameter.delete(key)
                 else:
-                    parameter = KMParameter()
+                    parameters = KMParameter.find(key=key)
+                    if not parameters:
+                        parameter = KMParameter()
+                    else:
+                        parameter = parameter[0]
                     parameter.key = key
                     parameter.json = json_data[key]
                     parameter.save()
