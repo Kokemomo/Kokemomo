@@ -31,7 +31,7 @@ def search_parameter():
 class KMParameter(adapter.Model):
     __tablename__ = 'km_parameter'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
-    key = adapter.Column(adapter.String(50))
+    key = adapter.Column(adapter.String(50), index=True, unique=True)
     json = adapter.Column(adapter.Text())
 
     def __repr__(self):
