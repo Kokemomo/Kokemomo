@@ -3,7 +3,7 @@ import unittest
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from kokemomo.plugins.engine.controller.km_storage import initialize
+from kokemomo.plugins.engine.model.km_storage import initialize
 from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter, Transaction, rollback
 
 # TODO: ErrorもRDBAdapter内に実装する
