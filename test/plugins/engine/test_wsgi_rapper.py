@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
+from unittest import TestCase
 from mox import Mox, ExpectedMethodCallsError
 from nose.tools import ok_, eq_, raises, with_setup
 from kokemomo.plugins.engine.controller.km_wsgi_rapper import WSGI_Bottle
@@ -15,7 +15,7 @@ km_wsgi_rapperのテスト.
 
 """
 
-class TestWSGIRapper:
+class WSGIRapperTestCase(TestCase):
 
     @classmethod
     def setup_class(clazz):
@@ -25,7 +25,7 @@ class TestWSGIRapper:
     def teardown_class(clazz):
         pass
 
-    def setup(self):
+    def setUp(self):
         self.mocker = Mox()
         plugins.clear()
 

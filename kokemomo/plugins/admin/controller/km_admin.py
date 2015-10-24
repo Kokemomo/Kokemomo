@@ -5,13 +5,13 @@ import os, json
 
 from kokemomo.plugins.engine.controller.km_engine import KMEngine
 from kokemomo.plugins.engine.controller.km_exception import log as log_error
-from kokemomo.plugins.engine.controller.km_login import logout, login_auth
+from kokemomo.plugins.engine.controller.km_login import KMLogin
 
 from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
-from kokemomo.plugins.engine.model.km_user_table import find_all as user_find_all, delete as user_delete, update as user_update, KMUser
-from kokemomo.plugins.engine.model.km_group_table import find_all as group_find_all, delete as group_delete, update as group_update, KMGroup
-from kokemomo.plugins.engine.model.km_role_table import find_all as role_find_all, delete as role_delete, update as role_update, KMRole
-from kokemomo.plugins.engine.model.km_parameter_table import find_all as find_parameter, delete as delete_parameter, update as update_parameter, KMParameter
+from kokemomo.plugins.engine.model.km_user_table import KMUser
+from kokemomo.plugins.engine.model.km_group_table import KMGroup
+from kokemomo.plugins.engine.model.km_role_table import KMRole
+from kokemomo.plugins.engine.model.km_parameter_table import KMParameter
 
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
@@ -107,11 +107,11 @@ class KMAdmin(KMEngine):
 
 
     def login_auth(self):
-        pass #login_auth(self.data, session)
+        return KMLogin.login_auth(self.data)
 
 
     def logout(self):
-        logout()
+        KMLogin.logout(self.data)
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
 

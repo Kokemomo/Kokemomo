@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
+from unittest import TestCase
 from mox import Mox, ExpectedMethodCallsError
 from nose.tools import ok_, eq_, raises, with_setup
 from kokemomo.plugins.engine.controller.km_wsgi_rapper import WSGI_Bottle
@@ -15,7 +15,7 @@ km_plugin_managerのテスト.
 
 """
 
-class TestPluginManager:
+class PluginManagerTestCase(TestCase):
 
     @classmethod
     def setup_class(clazz):
@@ -25,11 +25,11 @@ class TestPluginManager:
     def teardown_class(clazz):
         pass
 
-    def setup(self):
+    def setUp(self):
         self.mocker = Mox()
         plugins.clear()
 
-    def teardown(self):
+    def tearDown(self):
         plugins.clear()
 
     def test_create_base_plugin(self):
