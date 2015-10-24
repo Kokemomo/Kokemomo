@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from kokemomo.plugins.engine.model.km_user_table import KMUser, add
+from kokemomo.plugins.engine.model.km_user_table import KMUser
 
 __author__ = 'hiroki'
 
@@ -32,4 +32,4 @@ def entry_model(model, session):
     :param model:
     :return:
     """
-    add(model, session)
+    model.save()

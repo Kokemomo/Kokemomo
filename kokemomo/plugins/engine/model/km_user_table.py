@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import bcrypt
 from kokemomo.plugins.engine.utils.km_model_utils import *
 from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
-
+from kokemomo.settings import SETTINGS
 
 __author__ = 'hiroki'
 
@@ -51,78 +52,6 @@ class KMUser(adapter.Model):
     def get_json(self):
         return create_json(self)
 
-
-def find(user_id, session):
-    """
-    Find the user.
-    :param id: user id.
-    :param session: session
-    :return: user data.
-    """
-    users = KMUser.all()
-    result = None
-    for user in session.query(KMUser).filter_by(user_id=user_id).all():
-        result = user
-    return result
-
-
-def find_all(session):
-    pass
-    """
-    Find all the users.
-    :param session: session
-    :return: user data.
-    """
-    result = []
-    fetch = session.query(KMUser)
-    for user in fetch.all():
-        result.append(user)
-    return result
-
-def add(user, session):
-    pass
-    """
-    Add the user.
-    :param user: user model.
-    :param session: session
-    :return:
-    """
-    try:
-        session.add(user)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def update(user, session):
-    pass
-    """
-    Update the user.
-    :param user: user model.
-    :param session: session
-    :return:
-    """
-    try:
-        session.merge(user)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
-
-def delete(id, session):
-    pass
-    """
-    Delete the user.
-    :param id: user id
-    :param session: session
-    """
-    fetch_object = session.query(KMUser).filter_by(id=id).one()
-    try:
-        session.delete(fetch_object)
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        raise e
-
+    def save(self, validate=True):
+        self.password = bcrypt.hashpw(self.password.encode(SETTINGS.CHARACTER_SET), bcrypt.gensalt())
+        super(KMUser, self).save()
