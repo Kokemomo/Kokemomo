@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-from ..model.km_user_table import find
+import bcrypt
+from ..model.km_user_table import KMUser
 from kokemomo.settings import SETTINGS
 from .km_session_manager import add_value_to_session, delete_value_to_session
 
@@ -14,54 +14,64 @@ It is a certification class for KOKEMOMO.
 __author__ = 'hiroki'
 
 
-# TODO authインターフェースへ変更
-# TODO ユーザーの取得などはモデルへ移行
-# TODO セッションマネージャ関連もラップできないか検討
+class KMLogin():
+
+    RESULT_SUCCESS = "SUCCESS"
+    RESULT_FAIL = "FAIL"
+
+    # テスト用ユーザー
+    test_user = "admin"
+    test_password = "admin"
+    test_user2 = "admin2"
+    test_password2 = "admin2"
+
+    @classmethod
+    def logout(cls, km_data):
+        request = km_data.get_request()
+        cls.remove_session(request)
 
 
-RESULT_SUCCESS = "SUCCESS"
-RESULT_FAIL = "FAIL"
-
-# テスト用ユーザー
-test_user = "admin"
-test_password = "admin"
-test_user2 = "admin2"
-test_password2 = "admin2"
-
-
-def logout(data):
-    request = data.get_request()
-    delete_value_to_session(request, 'user_id')
+    @classmethod
+    def login_auth(cls, km_data):
+        for login_info in km_data.get_request().forms:
+            login_args = login_info.split(':')
+        result = cls.auth(
+            km_data.get_request(), login_args[0], login_args[1])
+        return result
 
 
-def login_auth(km_data, db_manager):
-    for login_info in km_data.get_request().forms:
-        login_args = login_info.split(':')
-    result = auth(
-        km_data.get_request(), db_manager, login_args[0], login_args[1])
-    return result
-
-
-def auth(request, db_manager, id, password):
-    result = RESULT_FAIL
-    try:
-        session = db_manager.adapter.session
-        user = find(id, session)
+    @classmethod
+    def auth(cls, request, id, password):
+        result = cls.RESULT_FAIL
+        user = cls.get_user(id)
         if user is not None:
-            user_password = user.password
-            if user_password == password:
+            enc_password = password.encode(SETTINGS.CHARACTER_SET)
+            enc_user_password = user.password.encode(SETTINGS.CHARACTER_SET)
+            if bcrypt.hashpw(enc_password, enc_user_password) == enc_user_password:
                 # create web_session
-                result = RESULT_SUCCESS
+                result = cls.RESULT_SUCCESS
 
         # テスト用
         if SETTINGS.TEST_LOGIN == True:
-            if id == test_user and password == test_password:
-                result = RESULT_SUCCESS
-            if id == test_user2 and password == test_password2:
-                result = RESULT_SUCCESS
+            if id == cls.test_user and password == cls.test_password:
+                result = cls.RESULT_SUCCESS
+            if id == cls.test_user2 and password == cls.test_password2:
+                result = cls.RESULT_SUCCESS
 
-        if result == RESULT_SUCCESS:
-            add_value_to_session(request, 'user_id', id)
-    finally:
-        session.close()
-    return result
+        if result == cls.RESULT_SUCCESS:
+            cls.save_session(request, id)
+        return result
+
+    @classmethod
+    def get_user(cls, user_id):
+        return KMUser.find(user_id=user_id)[0]
+
+
+    @classmethod
+    def save_session(cls, request, id):
+        add_value_to_session(request, 'user_id', id)
+
+
+    @classmethod
+    def remove_session(cls, request):
+        delete_value_to_session(request, 'user_id')
