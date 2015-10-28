@@ -32,8 +32,8 @@ class SimpleTestCase(unittest.TestCase):
         user = User.find(name='kokemomo')[0]
         self.assertEqual('kokemomo', user.name)
 
-    def test_delete(self):
-        User.delete(id=self.user.id)
+    def test_delete_by_id(self):
+        User.delete_by_id(id=self.user.id)
         self.assertEqual(0, len(User.all()))
 
     def test_rollback(self):
