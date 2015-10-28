@@ -36,6 +36,11 @@ class SimpleTestCase(unittest.TestCase):
         User.delete_by_id(id=self.user.id)
         self.assertEqual(0, len(User.all()))
 
+    def test_delete(self):
+        user = User.get(id=self.user.id)
+        user.delete()
+        self.assertEqual(0, len(User.all()))
+
     def test_rollback(self):
         self.user.name = 'steve'
         self.assertEqual('steve', self.user.name)
