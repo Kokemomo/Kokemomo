@@ -68,13 +68,3 @@ class SimpleTestCase(unittest.TestCase):
         john = User(id=999,name='jonh')
         john.save()
         self.assertEqual(2, len(User.all()))
-
-    def test_validation(self):
-        steve = User(name='STEVE')
-        steve.save()
-        self.assertEqual('steve', steve.name)
-
-    def test_no_validation(self):
-        steve = User(name='STEVE')
-        steve.save(validate=False)
-        self.assertNotEqual('steve', steve.name)
