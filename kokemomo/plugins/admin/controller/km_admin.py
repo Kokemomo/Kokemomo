@@ -126,7 +126,7 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
             for id in json_data:
                 if json_data[id] == "":
-                    KMUser.delete(id)
+                    KMUser.delete_by_id(id)
                 else:
                     user = KMUser()
                     user.user_id = json_data[id]['user_id']
@@ -159,7 +159,7 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
             for id in json_data:
                 if json_data[id] == "":
-                    KMGroup.delete(id)
+                    KMGroup.delete_by_id(id)
                 else:
                     group = KMGroup.get(id)
                     if not group:
@@ -189,7 +189,7 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
             for id in json_data:
                 if json_data[id] == "":
-                    KMRole.delete(id)
+                    KMRole.delete_by_id(id)
                 else:
                     role = KMRole.get(id)
                     if not role:
@@ -220,7 +220,7 @@ class KMAdmin(KMEngine):
             json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
             for key in json_data:
                 if json_data[key] == "":
-                    KMParameter.delete(key)
+                    KMParameter.delete_by_id(key)
                 else:
                     parameters = KMParameter.find(key=key)
                     if not parameters:

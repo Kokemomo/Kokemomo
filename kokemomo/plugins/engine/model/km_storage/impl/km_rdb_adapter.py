@@ -47,7 +47,7 @@ class BaseModel(object):
         return adapter.session.query(cls).filter(cls.id == id).first()
 
     @classmethod
-    def delete(cls, id):
+    def delete_by_id(cls, id):
         try:
             elem = cls.get(id)
             adapter.delete(elem)

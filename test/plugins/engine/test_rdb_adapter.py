@@ -32,8 +32,13 @@ class SimpleTestCase(unittest.TestCase):
         user = User.find(name='kokemomo')[0]
         self.assertEqual('kokemomo', user.name)
 
+    def test_delete_by_id(self):
+        User.delete_by_id(id=self.user.id)
+        self.assertEqual(0, len(User.all()))
+
     def test_delete(self):
-        User.delete(id=self.user.id)
+        user = User.get(id=self.user.id)
+        user.delete()
         self.assertEqual(0, len(User.all()))
 
     def test_rollback(self):
@@ -68,13 +73,3 @@ class SimpleTestCase(unittest.TestCase):
         john = User(id=999,name='jonh')
         john.save()
         self.assertEqual(2, len(User.all()))
-
-    def test_validation(self):
-        steve = User(name='STEVE')
-        steve.save()
-        self.assertEqual('steve', steve.name)
-
-    def test_no_validation(self):
-        steve = User(name='STEVE')
-        steve.save(validate=False)
-        self.assertNotEqual('steve', steve.name)

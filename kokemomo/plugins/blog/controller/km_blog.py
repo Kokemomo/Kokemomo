@@ -164,14 +164,14 @@ class KMBlog(KMAdmin):
 
     def delete(self, type, id):
         if type == 'dashboard':
-            KMBlogInfo.delete(id)
+            KMBlogInfo.delete_by_id(id)
             KMBlogCategory.delete_by_condition(info_id=id)
             KMBlogArticle.delete_by_condition(info_id=id)
         elif type == 'category_list':
-            KMBlogCategory.delete(id)
+            KMBlogCategory.delete_by_id(id)
             KMBlogArticle.delete_by_condition(category_id=id)
         elif type == 'article_list':
-            KMBlogArticle.delete(id)
+            KMBlogArticle.delete_by_id(id)
 
 
     def get_template(self, type, values):
