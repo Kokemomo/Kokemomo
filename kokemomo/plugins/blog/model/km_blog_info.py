@@ -56,3 +56,11 @@ class KMBlogInfo(adapter.Model):
             return True
         else:
             return False
+
+    @classmethod
+    def get(self, id):
+        if id is None:
+            info = KMBlogInfo()
+        else:
+            info = super(KMBlogInfo, self).get(id=id)
+        return info
