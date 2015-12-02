@@ -131,21 +131,13 @@ class KMBlog(KMAdmin):
         if type == 'dashboard':
             values['info'] = KMBlogInfo.all()
         elif type == 'info':
-            if id is None:
-                info = KMBlogInfo()
-            else:
-                info = KMBlogInfo.get(id=id)
-            values['info'] = info
+            values['info'] = KMBlogInfo.get(id=id)
         elif type == 'category_list':
             values['info'] = KMBlogInfo.all()
             values['category'] = KMBlogCategory.all()
         elif type == 'category':
             values['info'] = KMBlogInfo.all()
-            if id is None:
-                category = KMBlogCategory()
-            else:
-                category = KMBlogCategory.get(id=id)
-            values['category'] = category
+            values['category'] = KMBlogCategory.get(id=id)
         elif type == 'article_list':
             values['info'] = KMBlogInfo.all()
             for info in values['info']:
@@ -154,11 +146,7 @@ class KMBlog(KMAdmin):
             info_id = self.data.get_request_parameter('info_id')
             values['info'] = KMBlogInfo.get(id=info_id)
             values['category'] = KMBlogCategory.find(info_id=info_id)
-            if id is None:
-                article = KMBlogArticle()
-            else:
-                article = KMBlogArticle.get(id=id)
-            values['article'] = article
+            values['article'] = KMBlogArticle.get(id=id)
         return self.get_template(type, values)
 
 
@@ -175,7 +163,7 @@ class KMBlog(KMAdmin):
 
 
     def get_template(self, type, values):
-        user_id = get_value_to_session(self.data.get_request(), 'user_id')
+        user_id = self.data.get_user_id()
         menu_list = get_menu_list()
         return self.render('kokemomo/plugins/blog/view/admin', url=self.get_url, user_id=user_id, menu_list=menu_list, type=type,
                         values=values)
