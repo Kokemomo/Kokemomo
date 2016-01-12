@@ -52,3 +52,11 @@ class KMBlogCategory(adapter.Model):
             return True
         else:
             return False
+
+    @classmethod
+    def get(self, id):
+        if id is None:
+            info = KMBlogCategory()
+        else:
+            info = super(KMBlogCategory, self).get(id=id)
+        return info

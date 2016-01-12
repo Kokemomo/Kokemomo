@@ -17,6 +17,7 @@ from kokemomo.plugins.engine.controller.km_plugin_manager import mount, run, get
 from kokemomo.plugins.engine.utils.km_logging import KMLogger
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.model.km_storage import initialize
+import application
 
 initialize()
 
