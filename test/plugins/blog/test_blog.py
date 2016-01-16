@@ -220,6 +220,35 @@ class BlogTest(TestCase):
         self.mocker.UnsetStubs()
         self.mocker.VerifyAll()
 
+
+    def test_delete_type_dashboard(self):
+        id = self.values3['info'].id
+        info = KMBlogInfo.get(id)
+        category = KMBlogCategory.find(info_id=id)
+        article = KMBlogArticle.find(info_id=id)
+        eq_(info is not None, True)
+        eq_(len(category), 1)
+        eq_(len(article), 1)
+        blog = KMBlog()
+        blog.delete('dashboard', id)
+        info = KMBlogInfo.get(id)
+        category = KMBlogCategory.find(info_id=id)
+        article = KMBlogArticle.find(info_id=id)
+        eq_(info is None, True)
+        eq_(len(category), 0)
+        eq_(len(article), 0)
+
+
+
+    def test_delete_type_category_list(self):
+        id = self.values3['info'].id
+        pass
+
+
+    def test_delete_type_article_list(self):
+        id = self.values3['info'].id
+        pass
+
 class TestRequest():
 
     def __init__(self):
