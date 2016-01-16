@@ -29,7 +29,6 @@ class KMAdmin(KMEngine):
     def get_name(self):
         return 'admin'
 
-
     def get_route_list(self):
         list = super(KMAdmin, self).get_route_list() # import engine route list
         list = list + (
@@ -81,7 +80,6 @@ class KMAdmin(KMEngine):
         :return: static path.
         """
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/img')
-
 
     def top(self):
         self.logger.debug("load top")

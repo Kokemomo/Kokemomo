@@ -14,6 +14,10 @@ from kokemomo.plugins.admin import KMAdmin
 
 
 '''
+ブログプラグイン
+
+管理画面でブログの操作を行えるようにadminプラグインを継承しています。
+
 ブログ
 ├info ブログの情報
 ├subscription 購読情報
@@ -117,6 +121,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin(self):
         '''
         blog admin page
@@ -126,30 +131,29 @@ class KMBlog(KMAdmin):
         id = self.data.get_request_parameter('id', default=None)
         if self.data.get_request_parameter('delete', default=False):
             self.delete(type, id)
-        values = {}
         # branched by type
         if type == 'dashboard':
-            values['info'] = KMBlogInfo.all()
+            self.result['info'] = KMBlogInfo.all()
         elif type == 'info':
-            values['info'] = KMBlogInfo.get(id=id)
+            self.result['info'] = KMBlogInfo.get(id=id)
         elif type == 'category_list':
-            values['info'] = KMBlogInfo.all()
-            values['category'] = KMBlogCategory.all()
+            self.result['info'] = KMBlogInfo.all()
+            self.result['category'] = KMBlogCategory.all()
         elif type == 'category':
-            values['info'] = KMBlogInfo.all()
-            values['category'] = KMBlogCategory.get(id=id)
+            self.result['info'] = KMBlogInfo.all()
+            self.result['category'] = KMBlogCategory.get(id=id)
         elif type == 'article_list':
-            values['info'] = KMBlogInfo.all()
-            for info in values['info']:
+            self.result['info'] = KMBlogInfo.all()
+            for info in self.result['info']:
                 info.articles = KMBlogArticle.find(info_id=info.id)
         elif type == 'article':
             info_id = self.data.get_request_parameter('info_id')
-            values['info'] = KMBlogInfo.get(id=info_id)
-            values['category'] = KMBlogCategory.find(info_id=info_id)
-            values['article'] = KMBlogArticle.get(id=id)
-        return self.get_template(type, values)
+            self.result['info'] = KMBlogInfo.get(id=info_id)
+            self.result['category'] = KMBlogCategory.find(info_id=info_id)
+            self.result['article'] = KMBlogArticle.get(id=id)
+        self.result['menu_list'] = get_menu_list()
 
-
+    @KMAdmin.action
     def delete(self, type, id):
         if type == 'dashboard':
             KMBlogInfo.delete_by_id(id)
@@ -162,11 +166,11 @@ class KMBlog(KMAdmin):
             KMBlogArticle.delete_by_id(id)
 
 
-    def get_template(self, type, values):
-        user_id = self.data.get_user_id()
-        menu_list = get_menu_list()
-        return self.render('kokemomo/plugins/blog/view/admin', url=self.get_url, user_id=user_id, menu_list=menu_list, type=type,
-                        values=values)
+    # def get_template(self, type, values):
+    #     user_id = self.data.get_user_id()
+    #     menu_list = get_menu_list()
+    #     return self.render('kokemomo/plugins/blog/view/admin', url=self.get_url, user_id=user_id, menu_list=menu_list, type=type,
+    #                     values=values)
 
 
     @log_error

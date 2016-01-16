@@ -5,9 +5,9 @@
                    [<a href="/blog/admin?type=info">ブログを作成</a>]
                 </div>
                 <div class="box">
-                % if 'info' in values and len(values['info']) != 0:
+                % if 'info' in values and len(result['info']) != 0:
                     <ul>
-                    % for info in values['info']:
+                    % for info in result['info']:
                         <li>
                             <a href="/blog/{{info.url}}">{{info.name}}</a>
                             [<a href="/blog/admin?type=info&id={{info.id}}">編集</a>]
