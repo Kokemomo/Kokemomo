@@ -1,6 +1,6 @@
         <section class="container">
-            % category = values['category']
-            % info_list = values['info']
+            % category = result['category']
+            % info_list = result['info']
             <div class="col-sm-12">
                 <h3>カテゴリ作成</h3>
                 <div class="box">
@@ -25,8 +25,8 @@
                                 <th width="100px">カテゴリ名<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="name" id="name" value="{{category.name}}">
-                                    % if 'error' in values and values['error'].have('name'):
-                                        <label class="error">{{values['error'].get('name')['message']}}</label>
+                                    % if 'error' in result and result['error'].have('name'):
+                                        <label class="error">{{result['error'].get('name')['message']}}</label>
                                     % end
                                 </td>
                             </tr>
