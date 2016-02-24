@@ -8,28 +8,28 @@
             <div class="col-sm-3">
                 <div class="jumbotron">
                     <ul>
-                        <li><a href="/blog/admin?type=dashboard">ダッシュボード</a></li>
-                        <li><a href="/blog/admin?type=category_list">カテゴリ一覧</a></li>
-                        <li><a href="/blog/admin?type=article_list">記事一覧</a></li>
-                        <li><a href="/blog/admin?type=subscription">購読一覧</a></li>
+                        <li><a href="/blog/admin">ダッシュボード</a></li>
+                        <li><a href="/blog/admin/category_list">カテゴリ一覧</a></li>
+                        <li><a href="/blog/admin/article_list">記事一覧</a></li>
+                        <li><a href="/blog/admin/subscription">購読一覧</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-sm-9">
                 <div class="jumbotron">
-                    % if type == 'dashboard':
+                    % if result['type'] == 'dashboard':
                         % include kokemomo/plugins/blog/view/dashboard url=result['url'], result=result
-                    % elif type == 'info':
+                    % elif result['type'] == 'info':
                         % include kokemomo/plugins/blog/view/info url=result['url'], result=result
-                    % elif type == 'category_list':
+                    % elif result['type'] == 'category_list':
                         % include kokemomo/plugins/blog/view/category_list url=result['url'], result=result
-                    % elif type == 'category':
+                    % elif result['type'] == 'category':
                         % include kokemomo/plugins/blog/view/category url=result['url'], result=result
-                    % elif type == 'article_list':
+                    % elif result['type'] == 'article_list':
                         % include kokemomo/plugins/blog/view/article_list url=result['url'], result=result
-                    % elif type == 'article':
+                    % elif result['type'] == 'article':
                         % include kokemomo/plugins/blog/view/article url=result['url'], result=result
-                    % elif type == 'result':
+                    % elif result['type'] == 'result':
                         % include kokemomo/plugins/blog/view/result url=result['url'], result=result
                     % end
                 </div>

@@ -64,3 +64,13 @@ class KMBlogInfo(adapter.Model):
         else:
             info = super(KMBlogInfo, self).get(id=id)
         return info
+
+    def save(self, id, data):
+        if id is None:
+            info = KMBlogInfo(data)
+        else:
+            info = KMBlogInfo.get(id=id)
+            info.set_data(data)
+        if info.validate():
+            info.save()
+        return info

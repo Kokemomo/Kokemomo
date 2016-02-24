@@ -48,6 +48,11 @@ class KMBlog(KMAdmin):
             {'rule': '/blog-js/tinymce/<child>/<grandchild>/<great_grandchild>/<filename>', 'method': 'GET', 'target': self.blog_js_tiny_great_grandchild_static, 'name': 'blog_static_tiny_js_great_grandchild'},
             {'rule': '/blog-css/<filename>', 'method': 'GET', 'target': self.blog_css_static, 'name': 'blog_static_css'},
             {'rule': '/admin', 'method': 'GET', 'target': self.blog_admin},
+            {'rule': '/admin/info', 'method': 'GET', 'target': self.blog_admin_info},
+            {'rule': '/admin/category_list', 'method': 'GET', 'target': self.blog_admin_category_list},
+            {'rule': '/admin/category', 'method': 'GET', 'target': self.blog_admin_category},
+            {'rule': '/admin/article_list', 'method': 'GET', 'target': self.blog_admin_article_list},
+            {'rule': '/admin/article', 'method': 'GET', 'target': self.blog_admin_article},
             {'rule': '/admin/create_info', 'method': 'POST', 'target': self.blog_admin_create_info},
             {'rule': '/admin/create_category', 'method': 'POST', 'target': self.blog_admin_create_category},
             {'rule': '/admin/create_article', 'method': 'POST', 'target': self.blog_admin_create_article},
@@ -127,31 +132,98 @@ class KMBlog(KMAdmin):
         blog admin page
         :return: template
         '''
-        type = self.data.get_request_parameter('type', default='dashboard')
-        id = self.data.get_request_parameter('id', default=None)
-        if self.data.get_request_parameter('delete', default=False):
-            self.delete(type, id)
-        # branched by type
-        if type == 'dashboard':
-            self.result['info'] = KMBlogInfo.all()
-        elif type == 'info':
-            self.result['info'] = KMBlogInfo.get(id=id)
-        elif type == 'category_list':
-            self.result['info'] = KMBlogInfo.all()
-            self.result['category'] = KMBlogCategory.all()
-        elif type == 'category':
-            self.result['info'] = KMBlogInfo.all()
-            self.result['category'] = KMBlogCategory.get(id=id)
-        elif type == 'article_list':
-            self.result['info'] = KMBlogInfo.all()
-            for info in self.result['info']:
-                info.articles = KMBlogArticle.find(info_id=info.id)
-        elif type == 'article':
-            info_id = self.data.get_request_parameter('info_id')
-            self.result['info'] = KMBlogInfo.get(id=info_id)
-            self.result['category'] = KMBlogCategory.find(info_id=info_id)
-            self.result['article'] = KMBlogArticle.get(id=id)
+        self.result['info'] = KMBlogInfo.all()
+        self.result['type'] = 'dashboard'
         self.result['menu_list'] = get_menu_list()
+
+
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_info(self):
+        '''
+        blog admin page
+        :return: template
+        '''
+        id = self.data.get_request_parameter('id', default=None)
+        self.result['info'] = KMBlogInfo.get(id=id)
+        self.result['type'] = 'info'
+        self.result['menu_list'] = get_menu_list()
+
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_category_list(self):
+        '''
+        blog admin page
+        :return: template
+        '''
+        id = self.data.get_request_parameter('id', default=None)
+        self.result['info'] = KMBlogInfo.all()
+        self.result['category'] = KMBlogCategory.all()
+        self.result['type'] = 'category_list'
+        self.result['menu_list'] = get_menu_list()
+
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_category(self):
+        '''
+        blog admin page
+        :return: template
+        '''
+        id = self.data.get_request_parameter('id', default=None)
+        self.result['info'] = KMBlogInfo.get(id=id)
+        self.result['type'] = 'category'
+        self.result['menu_list'] = get_menu_list()
+
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_article_list(self):
+        '''
+        blog admin page
+        :return: template
+        '''
+        id = self.data.get_request_parameter('id', default=None)
+        self.result['info'] = KMBlogInfo.all()
+        for info in self.result['info']:
+            info.articles = KMBlogArticle.find(info_id=info.id)
+        self.result['type'] = 'article_list'
+        self.result['menu_list'] = get_menu_list()
+
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_article(self):
+        '''
+        blog admin page
+        :return: template
+        '''
+        id = self.data.get_request_parameter('id', default=None)
+        info_id = self.data.get_request_parameter('info_id')
+        self.result['info'] = KMBlogInfo.get(id=info_id)
+        self.result['category'] = KMBlogCategory.find(info_id=info_id)
+        self.result['article'] = KMBlogArticle.get(id=id)
+        self.result['type'] = 'article'
+        self.result['menu_list'] = get_menu_list()
+
+
+        # type = self.data.get_request_parameter('type', default='dashboard')
+        # id = self.data.get_request_parameter('id', default=None)
+        # if self.data.get_request_parameter('delete', default=False):
+        #     self.delete(type, id)
+        # # branched by type
+        # if type == 'dashboard':
+        #     self.result['info'] = KMBlogInfo.all()
+        # elif type == 'info':
+        #     self.result['info'] = KMBlogInfo.get(id=id)
+        # elif type == 'category_list':
+        #     self.result['info'] = KMBlogInfo.all()
+        #     self.result['category'] = KMBlogCategory.all()
+        # elif type == 'category':
+        #     self.result['info'] = KMBlogInfo.all()
+        #     self.result['category'] = KMBlogCategory.get(id=id)
+        # elif type == 'article_list':
+        #     self.result['info'] = KMBlogInfo.all()
+        #     for info in self.result['info']:
+        #         info.articles = KMBlogArticle.find(info_id=info.id)
+        # elif type == 'article':
+        #     info_id = self.data.get_request_parameter('info_id')
+        #     self.result['info'] = KMBlogInfo.get(id=info_id)
+        #     self.result['category'] = KMBlogCategory.find(info_id=info_id)
+        #     self.result['article'] = KMBlogArticle.get(id=id)
+        # self.result['menu_list'] = get_menu_list()
 
     @KMAdmin.action
     def delete(self, type, id):
@@ -174,6 +246,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_info(self):
         '''
         Create Blog Information.
@@ -181,22 +254,7 @@ class KMBlog(KMAdmin):
         '''
         values = {}
         id = self.data.get_request_parameter('id', default=None)
-        if id is None:
-            info = KMBlogInfo(self.data)
-        else:
-            info = KMBlogInfo.get(id=id)
-            info.set_data(self.data)
-        if info.validate():
-            info.save()
-            type = 'result'
-            values['info'] = info
-            values['message'] = 'ブログ情報を保存しました。'
-        else:
-            type = 'info'
-            values['info'] = info
-            values['error'] = info.error
-        return self.get_template(type, values)
-
+        self.result['info'] = KMBlogInfo.save(id, self.data);
 
     @log_error
     def blog_admin_create_category(self):
