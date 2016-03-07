@@ -65,7 +65,8 @@ class KMBlogInfo(adapter.Model):
             info = super(KMBlogInfo, self).get(id=id)
         return info
 
-    def save(self, id, data):
+    @classmethod
+    def save_data(self, id, data):
         if id is None:
             info = KMBlogInfo(data)
         else:
