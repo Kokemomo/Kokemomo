@@ -167,7 +167,8 @@ class KMBlog(KMAdmin):
         :return: template
         '''
         id = self.data.get_request_parameter('id', default=None)
-        self.result['info'] = KMBlogInfo.get(id=id)
+        self.result['info'] = KMBlogInfo.all()
+        self.result['category'] = KMBlogCategory.get(id=id)
         self.result['type'] = 'category'
         self.result['menu_list'] = get_menu_list()
 
@@ -252,36 +253,27 @@ class KMBlog(KMAdmin):
         Create Blog Information.
         :return:
         '''
-        values = {}
         id = self.data.get_request_parameter('id', default=None)
-        self.result['info'] = KMBlogInfo.save(id, self.data);
+        self.result['info'] = KMBlogInfo.save_data(id, self.data);
+        self.result['type'] = 'info'
+        self.result['menu_list'] = get_menu_list()
 
     @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_category(self):
         '''
         Create Blog Category.
         :return:
         '''
-        values = {}
         id = self.data.get_request_parameter('id', default=None)
-        if id is None:
-            category = KMBlogCategory(self.data)
-        else:
-            category = KMBlogCategory.get(id=id)
-            category.set_data(self.data)
-        values['category'] = category
-        if category.validate():
-            category.save()
-            type = 'result'
-            values['message'] = 'カテゴリを保存しました。'
-        else:
-            type = 'category'
-            values['info'] = KMBlogInfo.all()
-            values['error'] = category.error
-        return self.get_template(type, values)
+        self.result['info'] = KMBlogInfo.all();
+        self.result['category'] = KMBlogCategory.save_data(id, self.data);
+        self.result['type'] = 'category'
+        self.result['menu_list'] = get_menu_list()
 
 
     @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_article(self):
         '''
         Create Blog Article.
@@ -290,22 +282,10 @@ class KMBlog(KMAdmin):
         values = {}
         id = self.data.get_request_parameter('id', default=None)
         info_id = self.data.get_request_parameter('info_id')
-        if id is None:
-            article = KMBlogArticle(self.data)
-        else:
-            article = KMBlogArticle.get(id=id)
-            article.set_data(self.data)
-        values['info'] = KMBlogInfo.get(info_id)
-        values['article'] = article
-        if article.validate():
-            article.save()
-            type = 'result'
-            values['message'] = '記事を保存しました。'
-        else:
-            type = 'article'
-            values['category'] = KMBlogCategory.all()
-            values['error'] = article.error
-        return self.get_template(type, values)
+        self.result['info'] = KMBlogInfo.get(info_id);
+        self.result['article'] = KMBlogArticle.save_data(id, self.data);
+        self.result['type'] = 'article'
+        self.result['menu_list'] = get_menu_list()
 
 
 

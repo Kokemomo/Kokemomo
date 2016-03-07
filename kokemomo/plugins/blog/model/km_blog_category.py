@@ -60,3 +60,14 @@ class KMBlogCategory(adapter.Model):
         else:
             info = super(KMBlogCategory, self).get(id=id)
         return info
+
+    @classmethod
+    def save_data(self, id, data):
+        if id is None:
+            category = KMBlogCategory(data)
+        else:
+            category = KMBlogCategory.get(id=id)
+            category.set_data(data)
+        if category.validate():
+            category.save()
+        return category

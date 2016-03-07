@@ -72,3 +72,14 @@ class KMBlogArticle(adapter.Model):
         else:
             info = super(KMBlogArticle, self).get(id=id)
         return info
+
+    @classmethod
+    def save_data(self, id, data):
+        if id is None:
+            article = KMBlogArticle(data)
+        else:
+            article = KMBlogArticle.get(id=id)
+            article.set_data(data)
+        if article.validate():
+            article.save()
+        return article
