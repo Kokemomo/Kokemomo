@@ -11,7 +11,7 @@
                         <li>
                             <a href="/blog/{{info.url}}">{{info.name}}</a>
                             [<a href="/blog/admin/info?id={{info.id}}">編集</a>]
-                            [<a href="/blog/admin/dashboard?id={{info.id}}&delete=true">削除</a>]
+                            [<a href="/blog/admin/delete_info?id={{info.id}}">削除</a>]
                         </li>
                     % end
                     </ul>

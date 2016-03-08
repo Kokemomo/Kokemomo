@@ -16,7 +16,7 @@
                             <li>
                                 <span>{{category.name}}</span>
                                 [<a href="/blog/admin/category?id={{category.id}}">編集</a>]
-                                [<a href="/blog/admin/category_list?id={{category.id}}&delete=true">削除</a>]
+                                [<a href="/blog/admin/delete_category?id={{category.id}}">削除</a>]
                             </li>
                         % end
                         </ul>
