@@ -17,7 +17,7 @@
                                 <li>
                                     <span>{{article.title}}</span>
                                     [<a href="/blog/admin/article?info_id={{info.id}}&id={{article.id}}">編集</a>]
-                                    [<a href="/blog/admin/article_list?info_id={{info.id}}&id={{article.id}}&delete=true">削除</a>]
+                                    [<a href="/blog/admin/delete_article?id={{article.id}}">削除</a>]
                                 </li>
                             % end
                             </ul>

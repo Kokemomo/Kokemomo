@@ -56,6 +56,9 @@ class KMBlog(KMAdmin):
             {'rule': '/admin/create_info', 'method': 'POST', 'target': self.blog_admin_create_info},
             {'rule': '/admin/create_category', 'method': 'POST', 'target': self.blog_admin_create_category},
             {'rule': '/admin/create_article', 'method': 'POST', 'target': self.blog_admin_create_article},
+            {'rule': '/admin/delete_info', 'method': 'GET', 'target': self.blog_admin_delete_info},
+            {'rule': '/admin/delete_category', 'method': 'GET', 'target': self.blog_admin_delete_category},
+            {'rule': '/admin/delete_article', 'method': 'GET', 'target': self.blog_admin_delete_article},
 
             {'rule': '/<blog_url>', 'method': 'GET', 'target': self.blog_page},
             {'rule': '/template/normal/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name':'blog_static_normal_css'},
@@ -200,50 +203,28 @@ class KMBlog(KMAdmin):
         self.result['menu_list'] = get_menu_list()
 
 
-        # type = self.data.get_request_parameter('type', default='dashboard')
-        # id = self.data.get_request_parameter('id', default=None)
-        # if self.data.get_request_parameter('delete', default=False):
-        #     self.delete(type, id)
-        # # branched by type
-        # if type == 'dashboard':
-        #     self.result['info'] = KMBlogInfo.all()
-        # elif type == 'info':
-        #     self.result['info'] = KMBlogInfo.get(id=id)
-        # elif type == 'category_list':
-        #     self.result['info'] = KMBlogInfo.all()
-        #     self.result['category'] = KMBlogCategory.all()
-        # elif type == 'category':
-        #     self.result['info'] = KMBlogInfo.all()
-        #     self.result['category'] = KMBlogCategory.get(id=id)
-        # elif type == 'article_list':
-        #     self.result['info'] = KMBlogInfo.all()
-        #     for info in self.result['info']:
-        #         info.articles = KMBlogArticle.find(info_id=info.id)
-        # elif type == 'article':
-        #     info_id = self.data.get_request_parameter('info_id')
-        #     self.result['info'] = KMBlogInfo.get(id=info_id)
-        #     self.result['category'] = KMBlogCategory.find(info_id=info_id)
-        #     self.result['article'] = KMBlogArticle.get(id=id)
-        # self.result['menu_list'] = get_menu_list()
-
-    @KMAdmin.action
-    def delete(self, type, id):
-        if type == 'dashboard':
-            KMBlogInfo.delete_by_id(id)
-            KMBlogCategory.delete_by_condition(info_id=id)
-            KMBlogArticle.delete_by_condition(info_id=id)
-        elif type == 'category_list':
-            KMBlogCategory.delete_by_id(id)
-            KMBlogArticle.delete_by_condition(category_id=id)
-        elif type == 'article_list':
-            KMBlogArticle.delete_by_id(id)
+    @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_delete_info(self):
+        id = self.data.get_request_parameter('id', default=None)
+        KMBlogInfo.delete_by_id(id)
+        KMBlogCategory.delete_by_condition(info_id=id)
+        KMBlogArticle.delete_by_condition(info_id=id)
 
 
-    # def get_template(self, type, values):
-    #     user_id = self.data.get_user_id()
-    #     menu_list = get_menu_list()
-    #     return self.render('kokemomo/plugins/blog/view/admin', url=self.get_url, user_id=user_id, menu_list=menu_list, type=type,
-    #                     values=values)
+    @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_delete_category(self):
+        id = self.data.get_request_parameter('id', default=None)
+        KMBlogCategory.delete_by_id(id)
+        KMBlogArticle.delete_by_condition(category_id=id)
+
+
+    @log_error
+    @KMAdmin.action('kokemomo/plugins/blog/view/admin')
+    def blog_admin_delete_article(self):
+        id = self.data.get_request_parameter('id', default=None)
+        KMBlogArticle.delete_by_id(id)
 
 
     @log_error
