@@ -12,7 +12,7 @@ __author__ = 'hiroki'
 It is blog article table to be used in the KOKEMOMO.
 [Table Layouts]
     id:Integer
-    info_id:Integer
+    category_id:Integer
     title:Text
     article:Text
     post_date:DateTime
@@ -33,8 +33,6 @@ class KMBlogArticle(adapter.Model):
 
     def __init__(self, data=None):
         if data is None:
-            self.info_id = 0
-            self.category_id = 0
             self.title = ""
             self.article = ""
             self.post_date = datetime.datetime.now()
@@ -51,7 +49,7 @@ class KMBlogArticle(adapter.Model):
     def set_data(self, data):
         self.error = None
         self.info_id = data.get_request_parameter('info_id')
-        self.category_id = data.get_request_parameter('category')
+        self.category_id = data.get_request_parameter('category_id')
         self.title = data.get_request_parameter('title', default='', decode=True)
         self.article = data.get_request_parameter('article', default='', decode=True)
 
