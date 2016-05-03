@@ -274,8 +274,6 @@ class KMBlog(KMAdmin):
     Templates
 
     '''
-
-
     @log_error
     def blog_page(self, blog_url):
         info = KMBlogInfo.find(url=blog_url)[0]
