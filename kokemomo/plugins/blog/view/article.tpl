@@ -1,7 +1,7 @@
         <section class="container">
-            % info = values['info']
-            % article = values['article']
-            % categories = values['category']
+            % info = result['info']
+            % article = result['article']
+            % categories = result['category']
             <div class="col-sm-12">
                 <h3>記事作成</h3>
                 <div class="box">
@@ -13,8 +13,8 @@
                                 <th width="100px">記事名<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="title" id="title" value="{{article.title}}">
-                                    % if 'error' in values and values['error'].have('title'):
-                                        <label class="error">{{values['error'].get('title')['message']}}</label>
+                                    % if 'error' in result and result['error'].have('title'):
+                                        <label class="error">{{result['error'].get('title')['message']}}</label>
                                     % end
                                 </td>
                             </tr>
