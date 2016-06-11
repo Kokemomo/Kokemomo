@@ -2,6 +2,7 @@
 .idea/
 *.pyc
 *.log
+*.log.*
 application/
 session_data/
 *.db

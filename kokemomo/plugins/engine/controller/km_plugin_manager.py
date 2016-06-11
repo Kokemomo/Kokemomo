@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 from abc import ABCMeta, abstractmethod
 from urlparse import urljoin
+from functools import wraps
 from kokemomo.settings import SETTINGS
 from ..utils.km_logging import KMLogger
 from .km_data import KMData
@@ -70,6 +72,7 @@ def get_plugin(name):
         raise Exception('Target plugin not found.')
 
 
+
 class KMBaseController(object):
     __metaclass__ = ABCMeta
 
@@ -77,6 +80,7 @@ class KMBaseController(object):
         self.name = self.get_name()
         self.logger = KMLogger(self.get_name());
         self.data = KMData(self)
+        self.result = {}
         self.plugin = create_base_plugin(self.name)
         for route in self.get_route_list():
             if 'name' in route:
@@ -84,6 +88,26 @@ class KMBaseController(object):
             else:
                 self.add_route(route['rule'], route['method'], route['target'])
 
+    @staticmethod
+    def action(template=None):
+        '''
+
+        :param template:
+        :return:
+        '''
+        def _action(callback):
+            @wraps(callback)
+            def wrapper(*args, **kwargs):
+                res = callback(*args, **kwargs)
+                if template is None:
+                    return res
+                else:
+                    # args[0]はself
+                    args[0].result['url'] = args[0].get_url
+                    args[0].result['user_id'] = args[0].data.get_user_id()
+                    return args[0].render(template, result=args[0].result)
+            return wrapper
+        return _action
 
     @abstractmethod
     def get_name(self):

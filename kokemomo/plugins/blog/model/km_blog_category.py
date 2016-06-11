@@ -47,7 +47,7 @@ class KMBlogCategory(adapter.Model):
     def validate(self):
         self.error = KMValidateError()
         if self.name == '':
-            self.error.add_data(id='name', message='ブログ名は必須です。')
+            self.error.add_data(id='name', message='カテゴリ名は必須です。')
         if self.error.size() == 0:
             return True
         else:
@@ -60,3 +60,14 @@ class KMBlogCategory(adapter.Model):
         else:
             info = super(KMBlogCategory, self).get(id=id)
         return info
+
+    @classmethod
+    def save_data(self, id, data):
+        if id is None:
+            category = KMBlogCategory(data)
+        else:
+            category = KMBlogCategory.get(id=id)
+            category.set_data(data)
+        if category.validate():
+            category.save()
+        return category

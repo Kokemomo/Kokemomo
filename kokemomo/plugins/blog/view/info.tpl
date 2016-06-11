@@ -1,5 +1,5 @@
         <section class="container">
-            % info = values['info']
+            % info = result['info']
             <div class="col-sm-12">
                 <h3>ブログ作成</h3>
                 <div class="box">
@@ -10,8 +10,8 @@
                                 <th width="100px">ブログ名<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="name" id="name" value="{{info.name}}">
-                                    % if 'error' in values and values['error'].have('name'):
-                                        <label class="error">{{values['error'].get('name')['message']}}</label>
+                                    % if 'error' in result and result['error'].have('name'):
+                                        <label class="error">{{result['error'].get('name')['message']}}</label>
                                     % end
                                 </td>
                             </tr>
@@ -19,8 +19,8 @@
                                 <th width="100px">URL<span class="required">*</span></th>
                                 <td>
                                     <input type="text" name="url" id="url" value="{{info.url}}">(/blog/入力したurlになります。)
-                                    % if 'error' in values and values['error'].have('url'):
-                                        <label class="error">{{values['error'].get('url')['message']}}</label>
+                                    % if 'error' in result and result['error'].have('url'):
+                                        <label class="error">{{result['error'].get('url')['message']}}</label>
                                     % end
                                 </td>
                             </tr>

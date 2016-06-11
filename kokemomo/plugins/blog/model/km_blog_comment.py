@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 from kokemomo.plugins.engine.utils.km_model_utils import *
 from kokemomo.plugins.engine.model.km_storage.impl.km_rdb_adapter import adapter
-from kokemomo.plugins.engine.model.km_validate_error import KMValidateError
 
 __author__ = 'hiroki'
 
@@ -26,9 +25,7 @@ class KMBlogComment(adapter.Model):
 
     def __init__(self, data=None):
         if data is None:
-            self.name = ''
-            self.url = ''
-            self.description = ''
+            self.comment = ''
         else:
             self.set_data(data)
 
@@ -41,7 +38,7 @@ class KMBlogComment(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.article_id = data.get_request_parameter('id', default='', decode=True)
+        self.article_id = data.get_request_parameter('article_id', default='', decode=True)
         self.comment = data.get_request_parameter('comment', default='', decode=True)
 
     def validate(self):
