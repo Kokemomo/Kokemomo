@@ -64,7 +64,10 @@ class KMLogin():
 
     @classmethod
     def get_user(cls, user_id):
-        return KMUser.find(user_id=user_id)[0]
+        users = KMUser.find(user_id=user_id)
+        if len(users) == 0:
+            return None
+        return users[0]
 
 
     @classmethod
