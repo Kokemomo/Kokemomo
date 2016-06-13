@@ -95,5 +95,5 @@ class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装
     def load_static_file(self, filename, root):
         return static_file(filename, root=root)
 
-    def redirect(self, url):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
-        redirect(url)
+    def redirect(self, url, code):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
+        redirect(url, code)

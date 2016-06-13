@@ -134,5 +134,5 @@ class KMBaseController(object):
         # TODO 他のプラグインからの読み込みに対応する必要がある
         return self.plugin.load_static_file(filename, root)
 
-    def redirect(self, url):
-        self.plugin.redirect(url)
+    def redirect(self, url, code=None):
+        self.plugin.redirect(url, code)

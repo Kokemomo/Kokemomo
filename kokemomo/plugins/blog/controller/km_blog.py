@@ -298,7 +298,7 @@ class KMBlog(KMAdmin):
     def blog_add_comment(self, blog_url):
         blog_comment = KMBlogComment(self.data)
         blog_comment.save()
-        self.redirect('/blog/' + blog_url)
+        return self.blog_page(blog_url)
 
     # def create_blog_file(info):
     #    path = os.path.abspath(os.curdir) + DATA_DIR_PATH + info.url
