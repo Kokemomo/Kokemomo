@@ -40,7 +40,7 @@
                         <div class="comment"><span>{{blog_comment.created_at}} : {{blog_comment.comment}}</span></div>
                     % end
                     <form id="form" action="/blog/{{blog_url}}/add_comment" method="post">
-                    <input type="hidden" name="id" id="id" value="{{article.id}}">
+                    <input type="hidden" name="article_id" id="article_id" value="{{article.id}}">
                     <div class="comment">
                         <input type="text" name="comment" id="comment">
                         <input type="submit" value="コメントする">
