@@ -24,22 +24,22 @@
 ### 依存モジュールをインストールする
 pip install -r requirements.txt
 ### 開発用サーバーを起動する
-python simple_cms.py -s common
+python simple_cms.py -s common  
 
-※commonはデフォルトの設定ファイル名です。
-任意の設定ファイルを追加し、切り替えることが出来ます。
+※commonはデフォルトの設定ファイル名です。  
+任意の設定ファイルを追加し、切り替えることが出来ます。  
 
 ### CMSへアクセスする
-http://localhost:8861/admin/login
+http://localhost:8861/admin/login  
 ※テスト用にadmin/adminでログイン可
 
 ### ディレクトリ構成
   root  
-  ├application … 開発したアプリケーションの格納先
-  │　├data … ファイルアップロードデータ
-  │　├lib … 外部ライブラリ
-  │　├plugins … プラグイン
-  ├kokemomo … KOKEMOMO本体
+  ├application … 開発したアプリケーションの格納先  
+  │　├data … ファイルアップロードデータ  
+  │　├lib … 外部ライブラリ  
+  │　├plugins … プラグイン  
+  ├kokemomo … KOKEMOMO本体  
   │　├data … ファイルアップロードデータ  
   │　├lib … 外部ライブラリ  
   │　├plugins … プラグイン  
@@ -57,5 +57,5 @@ http://localhost:8861/admin/login
   0.0.5.0 レコメンドエンジン追加  
   0.0.6.0 汎用エントリ機能追加
 
-### 対応予定
-  0.1.0.0 ベータリリース(現在開発中)
+### リリース予定
+  0.1.0.0 ベータ　開発しやすいようにアーキテクチャの変更、管理画面、ブログプラグイン
