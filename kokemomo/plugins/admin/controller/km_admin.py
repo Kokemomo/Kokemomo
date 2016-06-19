@@ -35,7 +35,7 @@ class KMAdmin(KMEngine):
             {'rule': '/admin-js/<filename>', 'method': 'GET', 'target': self.admin_js_static, 'name': 'admin_static_js'},
             {'rule': '/admin-css/<filename>', 'method': 'GET', 'target': self.admin_css_static, 'name': 'admin_static_css'},
             {'rule': '/admin-img/<filename>', 'method': 'GET', 'target': self.admin_img_static, 'name': 'admin_static_img'},
-            {'rule': '/', 'method': 'GET', 'target': self.top},
+            {'rule': '/', 'method': 'GET', 'target': self.admin_info},
             {'rule': '/login', 'method': 'GET', 'target': self.login},
             {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
             {'rule': '/logout', 'method': 'GET', 'target': self.logout},
@@ -80,6 +80,17 @@ class KMAdmin(KMEngine):
         :return: static path.
         """
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/img')
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/info')
+    def admin_info(self):
+        '''
+        admin info page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+
 
     def top(self):
         self.logger.debug("load top")
