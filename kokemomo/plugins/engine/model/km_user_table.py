@@ -46,11 +46,29 @@ class KMUser(adapter.Model):
     group_id = adapter.Column(adapter.Integer)
     role_id = adapter.Column(adapter.Integer)
 
+    def __init__(self, data=None):
+        if data is None:
+            self.user_id= ''
+            self.name = ''
+            self.password = ''
+            self.mail_address = ''
+        else:
+            self.set_data(data)
+
     def __repr__(self):
         return create_repr_str(self)
 
     def get_json(self):
         return create_json(self)
+
+    def set_data(self, data):
+        self.error = None
+        self.user_id = data.get_request_parameter('user_id', default='')
+        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.password = data.get_request_parameter('password', default='')
+        self.mail_address = data.get_request_parameter('mail_address', default='')
+        self.group_id = data.get_request_parameter('group_id', default=None)
+        self.role_id = data.get_request_parameter('role_id', default=None)
 
     def save(self, validate=True):
         self.password = bcrypt.hashpw(self.password.encode(SETTINGS.CHARACTER_SET), bcrypt.gensalt())
