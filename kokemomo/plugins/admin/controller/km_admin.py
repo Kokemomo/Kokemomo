@@ -39,15 +39,20 @@ class KMAdmin(KMEngine):
             {'rule': '/login', 'method': 'GET', 'target': self.login},
             {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
             {'rule': '/logout', 'method': 'GET', 'target': self.logout},
-            {'rule': '/top', 'method': 'GET', 'target': self.top},
+            {'rule': '/top', 'method': 'GET', 'target': self.admin_info},
+            {'rule': '/user', 'method': 'POST', 'target': self.save_user},
             {'rule': '/user/save', 'method': 'POST', 'target': self.save_user},
             {'rule': '/user/search', 'method': 'GET', 'target': self.search_user},
+            {'rule': '/group', 'method': 'GET', 'target': self.search_group},
             {'rule': '/group/save', 'method': 'POST', 'target': self.save_group},
             {'rule': '/group/search', 'method': 'GET', 'target': self.search_group},
+            {'rule': '/role', 'method': 'GET', 'target': self.save_role},
             {'rule': '/role/save', 'method': 'POST', 'target': self.save_role},
             {'rule': '/role/search', 'method': 'GET', 'target': self.search_role},
+            {'rule': '/parameter', 'method': 'GET', 'target': self.search_parameter},
             {'rule': '/parameter/save', 'method': 'POST', 'target': self.save_parameter},
             {'rule': '/parameter/search', 'method': 'GET', 'target': self.search_parameter},
+            {'rule': '/file', 'method': 'GET', 'target': self.admin_file},
             {'rule': '/file/upload', 'method': 'POST', 'target': self.upload},
             {'rule': '/file/remove', 'method': 'POST', 'target': self.remove_file},
             {'rule': '/file/change_dir', 'method': 'POST', 'target': self.select_dir},
@@ -92,23 +97,22 @@ class KMAdmin(KMEngine):
         self.result['menu_list'] = get_menu_list()
 
 
-    def top(self):
-        self.logger.debug("load top")
-        type = self.data.get_request_parameter('type', default='info')
-        menu_list = get_menu_list()
-        user_id = self.data.get_user_id()
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/file')
+    def admin_file(self):
         dirs = []
         files = []
-        if type == "file":
-            for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
-                for dir_name in dir_list:
-                    dir_path = root + os.sep + dir_name
-                    dirs.append(dir_path[len(DATA_DIR_PATH):])
-            files = os.listdir(DATA_DIR_PATH + dirs[0])
-            for file_name in files:
-                if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
-                    files.remove(file_name)
-        return self.render('kokemomo/plugins/admin/view/' + type, url=self.get_url, user_id=user_id, type=type, menu_list=menu_list, dirs=dirs, files=files)
+        for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
+            for dir_name in dir_list:
+                dir_path = root + os.sep + dir_name
+                dirs.append(dir_path[len(DATA_DIR_PATH):])
+        files = os.listdir(DATA_DIR_PATH + dirs[0])
+        for file_name in files:
+            if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
+                files.remove(file_name)
+        self.result['menu_list'] = get_menu_list()
+        self.result['dirs'] = dirs
+        self.result['files'] = files
 
 
     def login(self):
