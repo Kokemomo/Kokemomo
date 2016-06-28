@@ -7,20 +7,33 @@
                     <input type="button" value="検索" id="km_user_search"/>
                     <input type="button" value="更新" id="km_user_save"/>
                     <input type="button" value="行追加" id="km_user_add_row"/>
-                    <table class="table" id="km_user_list">
-                        <thead>
-                            <tr>
-                                <td class="column_delete">削除</td>
-                                <td class="column_normal">ID</td>
-                                <td class="column_normal">ユーザーID</td>
-                                <td class="column_normal">ユーザー名</td>
-                                <td class="column_normal">パスワード</td>
-                                <td class="column_normal">メールアドレス</td>
-                                <td class="column_normal">グループID</td>
-                                <td class="column_normal">ロールID</td>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="box">
+                    <ul>
+                        <li>
+                            <span>削除</span>
+                            <span>ID</span>
+                            <span>ユーザーID</span>
+                            <span>ユーザー名</span>
+                            <span>パスワード</span>
+                            <span>メールアドレス</span>
+                            <span>グループID</span>
+                            <span>ロールID</span>
+                        </li>
+                    </ul>
+                    <ul>
+                        % for user in result['users']:
+                            <li>
+                                <input type='checkbox' id='km_user_check_" + user.id + "'>
+                                <input type='text' id='km_user_id_" + user.id + "' value="{{user.id}}" readonly>
+                                <input type='text' id='km_user_user_id_" + user.id + "' value="{{user.user_id}}">
+                                <input type='text' id='km_user_name_" + user.id + "' value="{{user.name}}">
+                                <input type='text' id='km_user_password_" + user.id + "' value="{{user.password}}">
+                                <input type='text' id='km_user_mail_address_" + user.id + "' value="{{user.mail_address}}">
+                                <input type='text' id='km_user_group_id_" + user.id + "' value="{{user.group_id}}">
+                                <input type='text' id='km_user_role_id_" + user.id + "' value="{{user.role_id}}">
+                            </li>
+                        % end
+                    </ul>
                 </div>
             </div>
         </section>
