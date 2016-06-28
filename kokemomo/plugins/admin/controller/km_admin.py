@@ -40,7 +40,7 @@ class KMAdmin(KMEngine):
             {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
             {'rule': '/logout', 'method': 'GET', 'target': self.logout},
             {'rule': '/top', 'method': 'GET', 'target': self.admin_info},
-            {'rule': '/user', 'method': 'POST', 'target': self.save_user},
+            {'rule': '/user', 'method': 'GET', 'target': self.admin_user},
             {'rule': '/user/save', 'method': 'POST', 'target': self.save_user},
             {'rule': '/user/search', 'method': 'GET', 'target': self.search_user},
             {'rule': '/group', 'method': 'GET', 'target': self.search_group},
@@ -113,6 +113,16 @@ class KMAdmin(KMEngine):
         self.result['menu_list'] = get_menu_list()
         self.result['dirs'] = dirs
         self.result['files'] = files
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/user')
+    def admin_user(self):
+        '''
+        admin user page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+        self.result['users'] = KMUser.all()
 
 
     def login(self):
