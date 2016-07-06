@@ -19,3 +19,34 @@ div.background {
 .column_normal {
     width: 10%;
 }
+
+.list ul {
+    list-style: none;
+}
+
+.header li {
+    padding: 0.5em;
+}
+
+.header li span {
+    display: block;
+    float: left;
+    width: 9em;
+    padding-left: 1em;
+    background: antiquewhite;
+}
+
+.body li {
+    padding: 0.5em;
+}
+
+.body li span {
+    display: block;
+    float: left;
+    width: 9em;
+    padding-left: 1em;
+}
+
+.body li span input{
+    width: 8em;
+}
