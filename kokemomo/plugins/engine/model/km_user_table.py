@@ -73,3 +73,11 @@ class KMUser(adapter.Model):
     def save(self, validate=True):
         self.password = bcrypt.hashpw(self.password.encode(SETTINGS.CHARACTER_SET), bcrypt.gensalt())
         super(KMUser, self).save()
+
+    @classmethod
+    def get(cls, id):
+        if id is None:
+            info = KMUser()
+        else:
+            info = super(KMUser, cls).get(id=id)
+        return info
