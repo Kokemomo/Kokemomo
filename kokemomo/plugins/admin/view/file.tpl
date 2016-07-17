@@ -1,4 +1,4 @@
-% include kokemomo/plugins/admin/view/header url=url, user_id=user_id, menu_list=menu_list
+% include kokemomo/plugins/admin/view/header url=result['url'], user_id=result['user_id'], menu_list=result['menu_list']
         <section class="container">
             <h3>ファイル管理</h3>
             <div class="row">
@@ -6,7 +6,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <select id="dirList" name="dirList">
-                                %for dir in dirs:
+                                %for dir in result['dirs']:
                                 <option>{{dir}}</option>
                                 %end
                             </select>
@@ -14,7 +14,7 @@
                         <div class="panel-footer">
                             <ul id="fileList" class="nav nav-list">
                                 <li class="nav-header">files</li>
-                                %for file in files:
+                                %for file in result['files']:
                                 <li>{{file}}</li>
                                 %end
                             </ul>

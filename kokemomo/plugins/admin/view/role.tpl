@@ -1,4 +1,4 @@
-% include kokemomo/plugins/admin/view/header url=url, user_id=user_id, menu_list=menu_list
+% include kokemomo/plugins/admin/view/header url=result['url'], user_id=result['user_id'], menu_list=result['menu_list']
         <section class="container">
             <h3>ロール管理</h3>
             <div class="row">
