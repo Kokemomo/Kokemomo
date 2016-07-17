@@ -18,13 +18,13 @@ DATA_BASE = 'sqlite:///data.db'
 
 ADMIN_MENU = {
 # name=url
-    'ユーザー':'/admin/top?type=user',
-    'グループ':'/admin/top?type=group',
-    'ロール':'/admin/top?type=role',
-    'パラメータ':'/admin/top?type=parameter',
-    'ファイル':'/admin/top?type=file',
-    'プラグイン':'/admin/top?type=plugin',
-    'ログ':'/admin/top?type=log',
+    'ユーザー':'/admin/user',
+    'グループ':'/admin/group',
+    'ロール':'/admin/role',
+    'パラメータ':'/admin/parameter',
+    'ファイル':'/admin/file',
+    'プラグイン':'/admin/plugin',
+    'ログ':'/admin/log',
     'ブログ':'/blog/admin',
 }
 

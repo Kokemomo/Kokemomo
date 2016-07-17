@@ -19,3 +19,54 @@ div.background {
 .column_normal {
     width: 10%;
 }
+
+.list ul {
+    list-style: none;
+}
+
+.header li {
+    padding: 0.5em;
+    height: 2em;
+}
+
+.header li span {
+    display: block;
+    float: left;
+    width: 9em;
+    height: 2em;
+    padding-left: 1em;
+    background: antiquewhite;
+}
+
+.body li {
+    padding: 0.5em;
+    height: 2em;
+}
+
+.body li span {
+    display: block;
+    float: left;
+    width: 9em;
+    padding-left: 1em;
+}
+
+.body li span input{
+    width: 8em;
+}
+
+.detail li {
+    list-style: none;
+    padding: 0.5em;
+    height: 2em;
+}
+
+.detail li span {
+    display: block;
+    float: left;
+    width: 9em;
+    padding-left: 1em;
+}
+
+.detail li span.detail-header {
+    background: antiquewhite;
+}

@@ -35,19 +35,24 @@ class KMAdmin(KMEngine):
             {'rule': '/admin-js/<filename>', 'method': 'GET', 'target': self.admin_js_static, 'name': 'admin_static_js'},
             {'rule': '/admin-css/<filename>', 'method': 'GET', 'target': self.admin_css_static, 'name': 'admin_static_css'},
             {'rule': '/admin-img/<filename>', 'method': 'GET', 'target': self.admin_img_static, 'name': 'admin_static_img'},
-            {'rule': '/', 'method': 'GET', 'target': self.top},
+            {'rule': '/', 'method': 'GET', 'target': self.admin_info},
             {'rule': '/login', 'method': 'GET', 'target': self.login},
             {'rule': '/login_auth', 'method': 'POST', 'target': self.login_auth},
             {'rule': '/logout', 'method': 'GET', 'target': self.logout},
-            {'rule': '/top', 'method': 'GET', 'target': self.top},
-            {'rule': '/user/save', 'method': 'POST', 'target': self.save_user},
-            {'rule': '/user/search', 'method': 'GET', 'target': self.search_user},
+            {'rule': '/top', 'method': 'GET', 'target': self.admin_info},
+            {'rule': '/user', 'method': 'GET', 'target': self.admin_user},
+            {'rule': '/user/edit', 'method': 'GET', 'target': self.admin_user_edit},
+            {'rule': '/user/save', 'method': 'POST', 'target': self.admin_user_save},
+            {'rule': '/group', 'method': 'GET', 'target': self.search_group},
             {'rule': '/group/save', 'method': 'POST', 'target': self.save_group},
             {'rule': '/group/search', 'method': 'GET', 'target': self.search_group},
+            {'rule': '/role', 'method': 'GET', 'target': self.save_role},
             {'rule': '/role/save', 'method': 'POST', 'target': self.save_role},
             {'rule': '/role/search', 'method': 'GET', 'target': self.search_role},
+            {'rule': '/parameter', 'method': 'GET', 'target': self.search_parameter},
             {'rule': '/parameter/save', 'method': 'POST', 'target': self.save_parameter},
             {'rule': '/parameter/search', 'method': 'GET', 'target': self.search_parameter},
+            {'rule': '/file', 'method': 'GET', 'target': self.admin_file},
             {'rule': '/file/upload', 'method': 'POST', 'target': self.upload},
             {'rule': '/file/remove', 'method': 'POST', 'target': self.remove_file},
             {'rule': '/file/change_dir', 'method': 'POST', 'target': self.select_dir},
@@ -81,24 +86,74 @@ class KMAdmin(KMEngine):
         """
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/img')
 
-    def top(self):
-        self.logger.debug("load top")
-        type = self.data.get_request_parameter('type', default='info')
-        menu_list = get_menu_list()
-        user_id = self.data.get_user_id()
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/info')
+    def admin_info(self):
+        '''
+        admin info page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/file')
+    def admin_file(self):
         dirs = []
         files = []
-        if type == "file":
-            for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
-                for dir_name in dir_list:
-                    dir_path = root + os.sep + dir_name
-                    dirs.append(dir_path[len(DATA_DIR_PATH):])
-            files = os.listdir(DATA_DIR_PATH + dirs[0])
-            for file_name in files:
-                if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
-                    files.remove(file_name)
-        return self.render('kokemomo/plugins/admin/view/' + type, url=self.get_url, user_id=user_id, type=type, menu_list=menu_list, dirs=dirs, files=files)
+        for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
+            for dir_name in dir_list:
+                dir_path = root + os.sep + dir_name
+                dirs.append(dir_path[len(DATA_DIR_PATH):])
+        files = os.listdir(DATA_DIR_PATH + dirs[0])
+        for file_name in files:
+            if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
+                files.remove(file_name)
+        self.result['menu_list'] = get_menu_list()
+        self.result['dirs'] = dirs
+        self.result['files'] = files
 
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/user_list')
+    def admin_user(self):
+        '''
+        admin user page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+        self.result['users'] = KMUser.all()
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/user_edit')
+    def admin_user_edit(self):
+        '''
+        admin user page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("km_user_edit_id");
+        self.result['menu_list'] = get_menu_list()
+        self.result['user'] = KMUser.get(id)
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/user_list')
+    def admin_user_save(self):
+        '''
+        admin user page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("id");
+        delete = self.data.get_request_parameter("km_user_delete", default=None);
+        if delete is None:
+            user = KMUser.get(id)
+            user.set_data(self.data)
+            user.save()
+        else:
+            KMUser.delete_by_id(id)
+        self.result['menu_list'] = get_menu_list()
+        self.result['users'] = KMUser.all()
 
     def login(self):
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
@@ -111,40 +166,6 @@ class KMAdmin(KMEngine):
     def logout(self):
         KMLogin.logout(self.data)
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
-
-
-    def save_user(self):
-        """
-        Save the user.
-        will save the json string in the following formats.
-        Format: 'keyName':{"hoge":"fuga"}
-
-        """
-        for save_user in self.data.get_request().forms:
-            json_data = json.loads(save_user.decode(SETTINGS.CHARACTER_SET))
-            for id in json_data:
-                if json_data[id] == "":
-                    KMUser.delete_by_id(id)
-                else:
-                    user = KMUser()
-                    user.user_id = json_data[id]['user_id']
-                    user.name = json_data[id]["name"]
-                    user.password = json_data[id]["password"]
-                    user.mail_address = json_data[id]["mail_address"]
-                    user.group_id = json_data[id]["group_id"]
-                    user.role_id = json_data[id]["role_id"]
-                    user.save()
-
-
-    def search_user(self):
-        """
-        Find all the user.
-        :return: users.
-        """
-        result = KMUser.all()
-        return create_result_4_array(result)
-
-
 
     def save_group(self):
         """
