@@ -43,12 +43,12 @@ class KMAdmin(KMEngine):
             {'rule': '/user', 'method': 'GET', 'target': self.admin_user},
             {'rule': '/user/edit', 'method': 'GET', 'target': self.admin_user_edit},
             {'rule': '/user/save', 'method': 'POST', 'target': self.admin_user_save},
-            {'rule': '/group', 'method': 'GET', 'target': self.search_group},
-            {'rule': '/group/save', 'method': 'POST', 'target': self.save_group},
-            {'rule': '/group/search', 'method': 'GET', 'target': self.search_group},
-            {'rule': '/role', 'method': 'GET', 'target': self.save_role},
-            {'rule': '/role/save', 'method': 'POST', 'target': self.save_role},
-            {'rule': '/role/search', 'method': 'GET', 'target': self.search_role},
+            {'rule': '/group', 'method': 'GET', 'target': self.admin_group},
+            {'rule': '/group/edit', 'method': 'GET', 'target': self.admin_group_edit},
+            {'rule': '/group/save', 'method': 'POST', 'target': self.admin_group_save},
+            {'rule': '/role', 'method': 'GET', 'target': self.admin_role},
+            {'rule': '/role/edit', 'method': 'GET', 'target': self.admin_role_edit},
+            {'rule': '/role/save', 'method': 'POST', 'target': self.admin_role_save},
             {'rule': '/parameter', 'method': 'GET', 'target': self.search_parameter},
             {'rule': '/parameter/save', 'method': 'POST', 'target': self.save_parameter},
             {'rule': '/parameter/search', 'method': 'GET', 'target': self.search_parameter},
@@ -145,7 +145,7 @@ class KMAdmin(KMEngine):
         :return: template
         '''
         id = self.data.get_request_parameter("id");
-        delete = self.data.get_request_parameter("km_user_delete", default=None);
+        delete = self.data.get_request_parameter("delete", default=None);
         if delete is None:
             user = KMUser.get(id)
             user.set_data(self.data)
@@ -154,6 +154,89 @@ class KMAdmin(KMEngine):
             KMUser.delete_by_id(id)
         self.result['menu_list'] = get_menu_list()
         self.result['users'] = KMUser.all()
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/group_list')
+    def admin_group(self):
+        '''
+        admin group page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+        self.result['groups'] = KMGroup.all()
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/group_edit')
+    def admin_group_edit(self):
+        '''
+        admin group page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("km_group_edit_id");
+        self.result['menu_list'] = get_menu_list()
+        self.result['group'] = KMGroup.get(id)
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/group_list')
+    def admin_group_save(self):
+        '''
+        admin group page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("id");
+        delete = self.data.get_request_parameter("delete", default=None);
+        if delete is None:
+            group = KMGroup.get(id)
+            group.set_data(self.data)
+            group.save()
+        else:
+            KMGroup.delete_by_id(id)
+        self.result['menu_list'] = get_menu_list()
+        self.result['groups'] = KMGroup.all()
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/role_list')
+    def admin_role(self):
+        '''
+        admin role page
+        :return: template
+        '''
+        self.result['menu_list'] = get_menu_list()
+        self.result['roles'] = KMRole.all()
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/role_edit')
+    def admin_role_edit(self):
+        '''
+        admin role page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("km_role_edit_id");
+        self.result['menu_list'] = get_menu_list()
+        self.result['role'] = KMRole.get(id)
+
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/role_list')
+    def admin_role_save(self):
+        '''
+        admin user page
+        :return: template
+        '''
+        id = self.data.get_request_parameter("id");
+        delete = self.data.get_request_parameter("delete", default=None);
+        if delete is None:
+            role = KMRole.get(id)
+            role.set_data(self.data)
+            role.save()
+        else:
+            KMRole.delete_by_id(id)
+        self.result['menu_list'] = get_menu_list()
+        self.result['roles'] = KMRole.all()
+
 
     def login(self):
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
@@ -167,65 +250,6 @@ class KMAdmin(KMEngine):
         KMLogin.logout(self.data)
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
-    def save_group(self):
-        """
-        Save the Group.
-        will save the json string in the following formats.
-        Format: 'keyName':{"hoge":"fuga"}
-
-        """
-        for save_group in self.data.get_request().forms:
-            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
-            for id in json_data:
-                if json_data[id] == "":
-                    KMGroup.delete_by_id(id)
-                else:
-                    group = KMGroup.get(id)
-                    if not group:
-                        group = KMGroup()
-                    group.name = json_data[id]["name"]
-                    group.parent_id = json_data[id]["parent_id"]
-                    group.save()
-
-
-    def search_group(self):
-        """
-        Find all the group.
-        :return: groups.
-        """
-        result = KMGroup.all()
-        return create_result_4_array(result)
-
-
-    def save_role(self):
-        """
-        Save the role.
-        will save the json string in the following formats.
-        Format: 'keyName':{"hoge":"fuga"}
-
-        """
-        for save_group in self.data.get_request().forms:
-            json_data = json.loads(save_group.decode(SETTINGS.CHARACTER_SET))
-            for id in json_data:
-                if json_data[id] == "":
-                    KMRole.delete_by_id(id)
-                else:
-                    role = KMRole.get(id)
-                    if not role:
-                        role = KMRole()
-                    role.name = json_data[id]["name"]
-                    role.target = json_data[id]["target"]
-                    role.is_allow = json_data[id]["is_allow"].lower() in ("true", "1")
-                    role.save()
-
-
-    def search_role(self):
-        """
-        Find all the role.
-        :return: roles.
-        """
-        result = KMRole.all()
-        return create_result_4_array(result)
 
 
     def save_parameter(self):
