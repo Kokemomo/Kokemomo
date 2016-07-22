@@ -77,7 +77,7 @@ class KMUser(adapter.Model):
     @classmethod
     def get(cls, id):
         if id is None:
-            info = KMUser()
+            user = KMUser()
         else:
-            info = super(KMUser, cls).get(id=id)
-        return info
+            user = super(KMUser, cls).get(id=id)
+        return user
