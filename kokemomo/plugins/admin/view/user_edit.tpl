@@ -4,13 +4,12 @@
             <h3>ユーザー管理</h3>
             <div class="row">
                 <div class="col-sm-12">
-                    <p>ユーザー情報</p>
                     <form action="/admin/user/save" method="post" id="user_save">
                         <input type="submit" value="更新">
                         <div class="detail">
                             <ul>
                                 <li>
-                                    <span class="detail-header">削除</span><span><input type="checkbox" id="user_delete" name="km_user_delete" value="{{user.id}}"></span>
+                                    <span class="detail-header">削除</span><span><input type="checkbox" id="delete" name="delete"></span>
                                 </li>
                                 <li>
                                     <span class="detail-header">ID</span><span><input type="label" value="{{user.id}}" readonly><input type="hidden" id="id" name="id" value="{{user.id}}"></span>

@@ -38,8 +38,35 @@ class KMRole(adapter.Model):
     target = adapter.Column(adapter.String(100))
     is_allow = adapter.Column(adapter.Boolean)
 
+
+    def __init__(self, data=None):
+        if data is None:
+            self.name = ''
+            self.target = ''
+            self.is_allow = False
+        else:
+            self.set_data(data)
+
+
     def __repr__(self):
         return create_repr_str(self)
 
+
     def get_json(self):
         return create_json(self)
+
+
+    def set_data(self, data):
+        self.error = None
+        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.target = data.get_request_parameter('target', default='')
+        self.is_allow = data.get_request_parameter('is_allow', default=False)
+
+
+    @classmethod
+    def get(cls, id):
+        if id is None:
+            role = KMRole()
+        else:
+            role = super(KMRole, cls).get(id=id)
+        return role

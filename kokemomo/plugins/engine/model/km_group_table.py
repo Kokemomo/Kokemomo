@@ -36,8 +36,33 @@ class KMGroup(adapter.Model):
     name = adapter.Column(adapter.String(50))
     parent_id = adapter.Column(adapter.Integer)
 
+
+    def __init__(self, data=None):
+        if data is None:
+            self.name = ''
+            self.parent_id = -1
+        else:
+            self.set_data(data)
+
+
     def __repr__(self):
         return create_repr_str(self)
 
+
     def get_json(self):
         return create_json(self)
+
+
+    def set_data(self, data):
+        self.error = None
+        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.parent_id = data.get_request_parameter('parent_id', default=-1)
+
+
+    @classmethod
+    def get(cls, id):
+        if id is None:
+            group = KMGroup()
+        else:
+            group = super(KMGroup, cls).get(id=id)
+        return group
