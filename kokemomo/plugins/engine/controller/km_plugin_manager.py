@@ -3,7 +3,7 @@
 
 import sys
 from abc import ABCMeta, abstractmethod
-from urlparse import urljoin
+from urllib.parse import urljoin
 from functools import wraps
 from kokemomo.settings import SETTINGS
 from ..utils.km_logging import KMLogger

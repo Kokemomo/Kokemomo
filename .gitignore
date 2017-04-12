@@ -1,4 +1,4 @@
-.DS_Store/
+.DS_Store
 .idea/
 *.pyc
 *.log
@@ -6,3 +6,4 @@
 application/
 session_data/
 *.db
+*.python-version
