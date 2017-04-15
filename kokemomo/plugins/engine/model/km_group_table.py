@@ -55,7 +55,7 @@ class KMGroup(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.name = data.get_request_parameter('name', default='')
         self.parent_id = data.get_request_parameter('parent_id', default=-1)
 
 

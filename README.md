@@ -13,12 +13,8 @@
 + ブログ
 
 ## 動作環境
-+ Python 2.7.6
-+ pip 1.5.4
-+ SQLAlchemy 0.9.4
-+ Beaker 1.6.4
-+ bottle-auth 0.3.3
-+ nose 1.3.4(テストのみ)
++ Python 3.6.1
++ 使用ライブラリはrequirements.txtを参照
 
 ## セットアップ
 ### 依存モジュールをインストールする

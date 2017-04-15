@@ -1,8 +1,10 @@
-.DS_Store/
+.DS_Store
 .idea/
+.vscode/
 *.pyc
 *.log
 *.log.*
 application/
 session_data/
 *.db
+*.python-version
