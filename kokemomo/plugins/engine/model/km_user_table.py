@@ -64,7 +64,7 @@ class KMUser(adapter.Model):
     def set_data(self, data):
         self.error = None
         self.user_id = data.get_request_parameter('user_id', default='')
-        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.name = data.get_request_parameter('name', default='')
         self.password = data.get_request_parameter('password', default='')
         self.mail_address = data.get_request_parameter('mail_address', default='')
         self.group_id = data.get_request_parameter('group_id', default=None)
