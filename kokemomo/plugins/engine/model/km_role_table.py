@@ -58,7 +58,7 @@ class KMRole(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.name = data.get_request_parameter('name', default='')
         self.target = data.get_request_parameter('target', default='')
         self.is_allow = data.get_request_parameter('is_allow', default=False)
 
