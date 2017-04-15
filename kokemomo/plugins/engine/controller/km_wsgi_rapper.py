@@ -44,7 +44,11 @@ class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装
     def run(cls, port):
         if cls.root_app is not None:
             runner(cls.root_app, host='localhost',
+<<<<<<< HEAD
                port=port, debug=SETTINGS.DEBUG, reloader=SETTINGS.RELOAD)
+=======
+               port=port, debug=True, reloader=True)
+>>>>>>> 5c8646360378ea0754c6b3bff188b18847c60719
         #        runner(app, host='localhost', port=8080, server='gunicorn', workers=1)
         else:
             raise SystemError
