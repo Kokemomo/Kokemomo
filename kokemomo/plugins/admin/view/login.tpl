@@ -28,19 +28,33 @@
         <section class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="jumbotron top_space">
-                        <h1>Login</h1>
-                        <div class="input-group">
-                            <div class="form-group" id="input_form">
-                                <label class="control-label hidden" for="user_id" id="error_label">Input with error</label>
-                                <input type="text" class="form-control" placeholder="Username" id="user_id">
-                                <input type="text" class="form-control" placeholder="Password" id="password">
-                            </div>
-                            <p><a class="btn btn-primary btn-lg top_space" role="button" id="login">Login</a></p>
-                            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-                            </fb:login-button>
-                        </div>
-                     </div>
+                    <div class="jumbotron">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <legend>Kokemomo Admin Login</legend>
+                                <div class="form-group">
+                                    <label for="user_id" class="col-lg-2 control-label">ユーザー名</label>
+                                    <div class="col-lg-10">
+                                        <label class="control-label hidden" for="user_id" id="error_label">Input with error</label>
+                                        <input type="text" class="form-control" id="user_id" name="user_id" placeholder="ユーザー名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="col-lg-2 control-label">パスワード</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" class="form-control" id="password" name="password" placeholder="パスワード">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><a class="btn btn-primary btn-lg top_space" role="button" id="login">Login</a></p>
+                                        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+                                        </fb:login-button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
