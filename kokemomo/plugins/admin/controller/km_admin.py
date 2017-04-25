@@ -135,6 +135,8 @@ class KMAdmin(KMEngine):
         id = self.data.get_request_parameter("km_user_edit_id");
         self.result['menu_list'] = get_menu_list()
         self.result['user'] = KMUser.get(id)
+        self.result['groups'] = KMGroup.all()
+        self.result['roles'] = KMRole.all()
 
 
     @log_error
@@ -176,6 +178,7 @@ class KMAdmin(KMEngine):
         id = self.data.get_request_parameter("km_group_edit_id");
         self.result['menu_list'] = get_menu_list()
         self.result['group'] = KMGroup.get(id)
+        self.result['groups'] = KMGroup.all()
 
 
     @log_error
