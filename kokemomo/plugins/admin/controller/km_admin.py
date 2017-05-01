@@ -12,6 +12,8 @@ from kokemomo.plugins.engine.model.km_user_table import KMUser
 from kokemomo.plugins.engine.model.km_group_table import KMGroup
 from kokemomo.plugins.engine.model.km_role_table import KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import KMParameter
+from kokemomo.plugins.admin.model.km_user_admin import KMUserAdmin
+from kokemomo.plugins.admin.model.km_parameter_admin import KMParameterAdmin
 
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
@@ -49,13 +51,13 @@ class KMAdmin(KMEngine):
             {'rule': '/role', 'method': 'GET', 'target': self.admin_role},
             {'rule': '/role/edit', 'method': 'GET', 'target': self.admin_role_edit},
             {'rule': '/role/save', 'method': 'POST', 'target': self.admin_role_save},
-            {'rule': '/parameter', 'method': 'GET', 'target': self.search_parameter},
-            {'rule': '/parameter/save', 'method': 'POST', 'target': self.save_parameter},
-            {'rule': '/parameter/search', 'method': 'GET', 'target': self.search_parameter},
+            {'rule': '/parameter', 'method': 'GET', 'target': self.admin_parameter},
+            {'rule': '/parameter/edit', 'method': 'GET', 'target': self.admin_parameter_edit},
+            {'rule': '/parameter/save', 'method': 'POST', 'target': self.admin_parameter_save},
             {'rule': '/file', 'method': 'GET', 'target': self.admin_file},
-            {'rule': '/file/upload', 'method': 'POST', 'target': self.upload},
-            {'rule': '/file/remove', 'method': 'POST', 'target': self.remove_file},
-            {'rule': '/file/change_dir', 'method': 'POST', 'target': self.select_dir},
+            {'rule': '/file/upload', 'method': 'POST', 'target': self.admin_file_upload},
+            {'rule': '/file/remove', 'method': 'POST', 'target': self.admin_file_remove},
+            {'rule': '/file/change_dir', 'method': 'POST', 'target': self.admin_select_dir},
         )
         return list
 
@@ -146,14 +148,7 @@ class KMAdmin(KMEngine):
         admin user page
         :return: template
         '''
-        id = self.data.get_request_parameter("id");
-        delete = self.data.get_request_parameter("delete", default=None);
-        if delete is None:
-            user = KMUser.get(id)
-            user.set_data(self.data)
-            user.save()
-        else:
-            KMUser.delete_by_id(id)
+        KMUserAdmin.save_user(self.data)
         self.result['menu_list'] = get_menu_list()
         self.result['users'] = KMUser.all()
 
@@ -188,14 +183,7 @@ class KMAdmin(KMEngine):
         admin group page
         :return: template
         '''
-        id = self.data.get_request_parameter("id");
-        delete = self.data.get_request_parameter("delete", default=None);
-        if delete is None:
-            group = KMGroup.get(id)
-            group.set_data(self.data)
-            group.save()
-        else:
-            KMGroup.delete_by_id(id)
+        KMUserAdmin.save_group(self.data)
         self.result['menu_list'] = get_menu_list()
         self.result['groups'] = KMGroup.all()
 
@@ -229,14 +217,7 @@ class KMAdmin(KMEngine):
         admin user page
         :return: template
         '''
-        id = self.data.get_request_parameter("id");
-        delete = self.data.get_request_parameter("delete", default=None);
-        if delete is None:
-            role = KMRole.get(id)
-            role.set_data(self.data)
-            role.save()
-        else:
-            KMRole.delete_by_id(id)
+        KMUserAdmin.save_role(self.data)
         self.result['menu_list'] = get_menu_list()
         self.result['roles'] = KMRole.all()
 
@@ -254,40 +235,32 @@ class KMAdmin(KMEngine):
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
 
-
-    def save_parameter(self):
-        """
-        Save the parameter.
-        will save the json string in the following formats.
-        Format: 'keyName':{"hoge":"fuga"}
-
-        """
-        for save_params in self.data.get_request().forms:
-            json_data = json.loads(save_params.decode(SETTINGS.CHARACTER_SET))
-            for key in json_data:
-                if json_data[key] == "":
-                    KMParameter.delete_by_id(key)
-                else:
-                    parameters = KMParameter.find(key=key)
-                    if not parameters:
-                        parameter = KMParameter()
-                    else:
-                        parameter = parameter[0]
-                    parameter.key = key
-                    parameter.json = json_data[key]
-                    parameter.save()
-
-
-    def search_parameter(self):
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/parameter_list')
+    def admin_parameter(self):
         """
         Find all the parameters.
         :return: parameters.
         """
-        result = KMParameter.all()
-        return create_result_4_array(result)
+        self.result['menu_list'] = get_menu_list()
+        self.result['parameters'] = KMParameter.all()
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/parameter_edit')
+    def admin_parameter_edit(self):
+        id = self.data.get_request_parameter("km_parameter_edit_id")
+        self.result['menu_list'] = get_menu_list()
+        self.result['parameter'] = KMParameter.get(id)
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/parameter_list')
+    def admin_parameter_save(self):
+        KMParameterAdmin.save_parameter(self.data)
+        self.result['menu_list'] = get_menu_list()
+        self.result['parameters'] = KMParameter.all()
 
 
-    def upload(self):
+    def admin_file_upload(self):
         """
         Save the file that is specified in the request.
         """
@@ -303,7 +276,7 @@ class KMAdmin(KMEngine):
         self.redirect("/admin/top")
 
 
-    def remove_file(self):
+    def admin_file_remove(self):
         """
         Remove the file.
         """
@@ -313,7 +286,7 @@ class KMAdmin(KMEngine):
             print("remove. " + DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
 
 
-    def select_dir(self):
+    def admin_select_dir(self):
         """
         Return the directory list for designated.
 

@@ -78,7 +78,7 @@ class KMBaseController(object):
 
     def __init__(self):
         self.name = self.get_name()
-        self.logger = KMLogger(self.get_name());
+        self.logger = KMLogger(self.get_name())
         self.data = KMData(self)
         self.result = {}
         self.plugin = create_base_plugin(self.name)
