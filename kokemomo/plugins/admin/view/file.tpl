@@ -1,4 +1,5 @@
-% include kokemomo/plugins/admin/view/header url=result['url'], user_id=result['user_id'], menu_list=result['menu_list']<section class="container">
+% include kokemomo/plugins/admin/view/header url=result['url'], user_id=result['user_id'], menu_list=result['menu_list']
+<section class="container">
     <h3>ファイル管理</h3>
     <div class="row">
         <div class="col-sm-3">

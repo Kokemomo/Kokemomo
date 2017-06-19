@@ -63,3 +63,6 @@ PLUGINS = {
         'level':'INFO'
     }
 }
+
+DATA_DIR_PATH = "./kokemomo/data/test/"
+

@@ -1,30 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, json
-
 from kokemomo.plugins.engine.controller.km_engine import KMEngine
 from kokemomo.plugins.engine.controller.km_exception import log as log_error
 from kokemomo.plugins.engine.controller.km_login import KMLogin
 
-from kokemomo.plugins.engine.controller.km_session_manager import get_value_to_session
 from kokemomo.plugins.engine.model.km_user_table import KMUser
 from kokemomo.plugins.engine.model.km_group_table import KMGroup
 from kokemomo.plugins.engine.model.km_role_table import KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import KMParameter
 from kokemomo.plugins.admin.model.km_user_admin import KMUserAdmin
 from kokemomo.plugins.admin.model.km_parameter_admin import KMParameterAdmin
+from kokemomo.plugins.admin.model.km_file_admin import KMFileAdmin
 
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
-from kokemomo.plugins.engine.utils.km_utils import create_result, create_result_4_array
 
 
 __author__ = 'hiroki-m'
-
-
-DATA_DIR_PATH = "./kokemomo/data/test/"# TODO: 実行する場所によって変わる為、外部ファイルでHOMEを定義するような仕組みへ修正する
-
 
 class KMAdmin(KMEngine):
 
@@ -100,23 +93,6 @@ class KMAdmin(KMEngine):
 
 
     @log_error
-    @KMEngine.action('kokemomo/plugins/admin/view/file')
-    def admin_file(self):
-        dirs = []
-        files = []
-        for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
-            for dir_name in dir_list:
-                dir_path = root + os.sep + dir_name
-                dirs.append(dir_path[len(DATA_DIR_PATH):])
-        files = os.listdir(DATA_DIR_PATH + dirs[0])
-        for file_name in files:
-            if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
-                files.remove(file_name)
-        self.result['menu_list'] = get_menu_list()
-        self.result['dirs'] = dirs
-        self.result['files'] = files
-
-    @log_error
     @KMEngine.action('kokemomo/plugins/admin/view/user_list')
     def admin_user(self):
         '''
@@ -134,7 +110,7 @@ class KMAdmin(KMEngine):
         admin user page
         :return: template
         '''
-        id = self.data.get_request_parameter("km_user_edit_id");
+        id = self.data.get_request_parameter("km_user_edit_id")
         self.result['menu_list'] = get_menu_list()
         self.result['user'] = KMUser.get(id)
         self.result['groups'] = KMGroup.all()
@@ -170,7 +146,7 @@ class KMAdmin(KMEngine):
         admin group page
         :return: template
         '''
-        id = self.data.get_request_parameter("km_group_edit_id");
+        id = self.data.get_request_parameter("km_group_edit_id")
         self.result['menu_list'] = get_menu_list()
         self.result['group'] = KMGroup.get(id)
         self.result['groups'] = KMGroup.all()
@@ -205,7 +181,7 @@ class KMAdmin(KMEngine):
         admin role page
         :return: template
         '''
-        id = self.data.get_request_parameter("km_role_edit_id");
+        id = self.data.get_request_parameter("km_role_edit_id")
         self.result['menu_list'] = get_menu_list()
         self.result['role'] = KMRole.get(id)
 
@@ -260,30 +236,53 @@ class KMAdmin(KMEngine):
         self.result['parameters'] = KMParameter.all()
 
 
+
+    @log_error
+    @KMEngine.action('kokemomo/plugins/admin/view/file')
+    def admin_file(self):
+        # dirs = []
+        # files = []
+        # for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
+        #     for dir_name in dir_list:
+        #         dir_path = root + os.sep + dir_name
+        #         dirs.append(dir_path[len(DATA_DIR_PATH):])
+        # files = os.listdir(DATA_DIR_PATH + dirs[0])
+        # for file_name in files:
+        #     if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
+        #         files.remove(file_name)
+        dirs, files = KMFileAdmin.list(self.data)
+        self.result['menu_list'] = get_menu_list()
+        self.result['dirs'] = dirs
+        self.result['files'] = files
+
+
+    @log_error
     def admin_file_upload(self):
         """
         Save the file that is specified in the request.
         """
-        directory_path = self.data.get_request().forms.get('directory').decode(SETTINGS.CHARACTER_SET)
-        data = self.data.get_request().files
-        file_obj = data.get('files')
-        file_name = file_obj.filename
-        file_name = file_name.decode(SETTINGS.CHARACTER_SET)
-        save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
-        with open(save_path, "wb") as open_file:
-            open_file.write(file_obj.file.read())
-    #        logging.info("file upload. name=" + save_path);
-        self.redirect("/admin/top")
+        KMFileAdmin.upload(self.data)
+    #     directory_path = self.data.get_request().forms.get('directory').decode(SETTINGS.CHARACTER_SET)
+    #     data = self.data.get_request().files
+    #     file_obj = data.get('files')
+    #     file_name = file_obj.filename
+    #     file_name = file_name.decode(SETTINGS.CHARACTER_SET)
+    #     save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
+    #     with open(save_path, "wb") as open_file:
+    #         open_file.write(file_obj.file.read())
+    # #        logging.info("file upload. name=" + save_path)
+    #     self.redirect("/admin/top")
 
 
     def admin_file_remove(self):
         """
         Remove the file.
         """
-        for remove_target in self.data.get_request().forms:
-            target = remove_target.split(',')
-            os.remove(DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
-            print("remove. " + DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
+        pass
+    #     for remove_target in self.data.get_request().forms:
+    #         target = remove_target.split(',')
+    #         os.remove(DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
+    #         print("remove. " + DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
 
 
     def admin_select_dir(self):
@@ -295,17 +294,18 @@ class KMAdmin(KMEngine):
 
         :return: "dir1,dir2,dir3"
         """
-        dirs = os.listdir(DATA_DIR_PATH)
-        # dir only
-        for dir_name in dirs:
-            if os.path.isfile(dir_name):
-                dirs.remove(dir_name)
-        files = []
-        for selectDir in self.data.get_request().forms:
-            files = os.listdir(DATA_DIR_PATH + os.sep + selectDir)
-        result = ""
-        for file_name in files:
-            if not file_name.startswith("."):
-                result = result + file_name + ","
-        result = result[0:len(result) - 1]
-        return create_result(result)
+        pass
+    #     dirs = os.listdir(DATA_DIR_PATH)
+    #     # dir only
+    #     for dir_name in dirs:
+    #         if os.path.isfile(dir_name):
+    #             dirs.remove(dir_name)
+    #     files = []
+    #     for selectDir in self.data.get_request().forms:
+    #         files = os.listdir(DATA_DIR_PATH + os.sep + selectDir)
+    #     result = ""
+    #     for file_name in files:
+    #         if not file_name.startswith("."):
+    #             result = result + file_name + ","
+    #     result = result[0:len(result) - 1]
+    #     return create_result(result)
