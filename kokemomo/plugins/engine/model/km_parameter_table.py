@@ -8,7 +8,7 @@ It is the accessor to generic parameters table to be used in the KOKEMOMO.
 [Table Layouts]
     id:Integer(Automatic Increment)
     key:String
-    json:String
+    data:String
     create_at:DateTime(Automatic Updates)
     update_at:DateTime(Automatic Updates)
 
@@ -32,10 +32,35 @@ class KMParameter(adapter.Model):
     __tablename__ = 'km_parameter'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
     key = adapter.Column(adapter.String(50), index=True, unique=True)
-    json = adapter.Column(adapter.Text())
+    data = adapter.Column(adapter.Text())
+
+
+    def __init__(self, data=None):
+        if data is None:
+            self.key = ''
+            self.data = '{}'
+        else:
+            self.set_data(data)
+
 
     def __repr__(self):
         return create_repr_str(self)
 
+
     def get_json(self):
         return create_json(self)
+
+
+    def set_data(self, data):
+        self.error = None
+        self.key = data.get_request_parameter('key', default='')
+        self.data = data.get_request_parameter('data', default='{}')
+
+
+    @classmethod
+    def get(cls, id):
+        if id is None:
+            parameter = KMParameter()
+        else:
+            parameter = super(KMParameter, cls).get(id=id)
+        return parameter
