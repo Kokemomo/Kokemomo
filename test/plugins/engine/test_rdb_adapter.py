@@ -73,3 +73,9 @@ class SimpleTestCase(unittest.TestCase):
         john = User(id=999,name='jonh')
         john.save()
         self.assertEqual(2, len(User.all()))
+
+    def test_delete_transaction(self):
+        with Transaction.begin():
+            user = User.get(id=self.user.id)
+            Transaction.delete(user)
+        self.assertEqual(0, len(User.all()))

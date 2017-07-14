@@ -129,6 +129,10 @@ class Transaction(object):
         adapter.session.add(*args, **kwargs)
 
     @classmethod
+    def delete(cls, *args, **kwargs):
+        adapter.session.delete(*args, **kwargs)
+
+    @classmethod
     def commit(cls):
         adapter.session.commit()
 
