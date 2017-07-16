@@ -247,8 +247,8 @@ class KMBlog(KMAdmin):
         :return:
         '''
         id = self.data.get_request_parameter('id', default=None)
-        self.result['info'] = KMBlogInfo.all();
-        self.result['category'] = KMBlogCategory.save_data(id, self.data);
+        self.result['info'] = KMBlogInfo.all()
+        self.result['category'] = KMBlogCategory.save_data(id, self.data)
         self.result['type'] = 'category'
         self.result['menu_list'] = get_menu_list()
 

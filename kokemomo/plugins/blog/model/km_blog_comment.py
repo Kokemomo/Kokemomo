@@ -38,8 +38,8 @@ class KMBlogComment(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.article_id = data.get_request_parameter('article_id', default='', decode=True)
-        self.comment = data.get_request_parameter('comment', default='', decode=True)
+        self.article_id = data.get_request_parameter('article_id', default='')
+        self.comment = data.get_request_parameter('comment', default='')
 
     def validate(self):
         return True

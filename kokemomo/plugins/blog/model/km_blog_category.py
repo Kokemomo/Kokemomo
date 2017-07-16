@@ -40,7 +40,7 @@ class KMBlogCategory(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.name = data.get_request_parameter('name', default='')
         self.info_id = data.get_request_parameter('info_id', default=None)
 
 
