@@ -83,6 +83,7 @@ function removeFile(dirPath, file){
     	request.send(dirPath + "," + file);
     	request.onreadystatechange = function() {
             if (request.readyState == 4) {
+                send(SendType[2], '/admin/file/change_dir', $("#dirList").val(), changeDir);
             }
         }
 
