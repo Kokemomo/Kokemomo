@@ -262,29 +262,17 @@ class KMAdmin(KMEngine):
         Save the file that is specified in the request.
         """
         KMFileAdmin.upload(self.data)
-    #     directory_path = self.data.get_request().forms.get('directory').decode(SETTINGS.CHARACTER_SET)
-    #     data = self.data.get_request().files
-    #     file_obj = data.get('files')
-    #     file_name = file_obj.filename
-    #     file_name = file_name.decode(SETTINGS.CHARACTER_SET)
-    #     save_path = os.path.join(DATA_DIR_PATH + os.sep + directory_path, file_name)
-    #     with open(save_path, "wb") as open_file:
-    #         open_file.write(file_obj.file.read())
-    # #        logging.info("file upload. name=" + save_path)
-    #     self.redirect("/admin/top")
 
 
+    @log_error
     def admin_file_remove(self):
         """
         Remove the file.
         """
-        pass
-    #     for remove_target in self.data.get_request().forms:
-    #         target = remove_target.split(',')
-    #         os.remove(DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
-    #         print("remove. " + DATA_DIR_PATH + os.sep + target[0] + os.sep + target[1])
+        KMFileAdmin.remove(self.data)
 
 
+    @log_error
     def admin_select_dir(self):
         """
         Return the directory list for designated.
@@ -294,18 +282,5 @@ class KMAdmin(KMEngine):
 
         :return: "dir1,dir2,dir3"
         """
-        pass
-    #     dirs = os.listdir(DATA_DIR_PATH)
-    #     # dir only
-    #     for dir_name in dirs:
-    #         if os.path.isfile(dir_name):
-    #             dirs.remove(dir_name)
-    #     files = []
-    #     for selectDir in self.data.get_request().forms:
-    #         files = os.listdir(DATA_DIR_PATH + os.sep + selectDir)
-    #     result = ""
-    #     for file_name in files:
-    #         if not file_name.startswith("."):
-    #             result = result + file_name + ","
-    #     result = result[0:len(result) - 1]
-    #     return create_result(result)
+        return KMFileAdmin.change_dir(self.data)
+
