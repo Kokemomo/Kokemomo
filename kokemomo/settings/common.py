@@ -25,7 +25,7 @@ ADMIN_MENU = {
     'パラメータ':'/admin/parameter',
     'ファイル':'/admin/file',
     'プラグイン':'/admin/plugin',
-    'ログ':'/admin/log',
+#    'ログ':'/admin/log',
     'ブログ':'/blog/admin',
 }
 
