@@ -11,7 +11,7 @@
                         <li><a href="/blog/admin">ダッシュボード</a></li>
                         <li><a href="/blog/admin/category_list">カテゴリ一覧</a></li>
                         <li><a href="/blog/admin/article_list">記事一覧</a></li>
-                        <li><a href="/blog/admin/subscription">購読一覧</a></li>
+<!--                        <li><a href="/blog/admin/subscription">購読一覧</a></li>-->
                     </ul>
                 </div>
             </div>

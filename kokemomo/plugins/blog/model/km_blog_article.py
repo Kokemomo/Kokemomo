@@ -50,8 +50,8 @@ class KMBlogArticle(adapter.Model):
         self.error = None
         self.info_id = data.get_request_parameter('info_id')
         self.category_id = data.get_request_parameter('category_id')
-        self.title = data.get_request_parameter('title', default='', decode=True)
-        self.article = data.get_request_parameter('article', default='', decode=True)
+        self.title = data.get_request_parameter('title', default='')
+        self.article = data.get_request_parameter('article', default='')
 
 
     def validate(self):

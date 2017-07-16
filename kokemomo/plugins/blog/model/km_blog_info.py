@@ -42,9 +42,9 @@ class KMBlogInfo(adapter.Model):
 
     def set_data(self, data):
         self.error = None
-        self.name = data.get_request_parameter('name', default='', decode=True)
+        self.name = data.get_request_parameter('name', default='')
         self.url = data.get_request_parameter('url', default='')
-        self.description = data.get_request_parameter('description', default='', decode=True)
+        self.description = data.get_request_parameter('description', default='')
 
     def validate(self):
         self.error = KMValidateError()
