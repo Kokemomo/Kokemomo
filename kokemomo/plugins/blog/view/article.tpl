@@ -19,6 +19,15 @@
                                 </td>
                             </tr>
                             <tr class="row">
+                                <th width="100px">見出し<span class="required">*</span></th>
+                                <td>
+                                    <input type="text" name="caption" id="caption" value="{{article.caption}}">
+                                    % if 'error' in result and result['error'].have('caption'):
+                                        <label class="error">{{result['error'].get('caption')['message']}}</label>
+                                    % end
+                                </td>
+                            </tr>
+                            <tr class="row">
                                 <th width="100px">記事<span class="required">*</span></th>
                                 <td>
                                     <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>

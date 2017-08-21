@@ -235,7 +235,7 @@ class KMBlog(KMAdmin):
         :return:
         '''
         id = self.data.get_request_parameter('id', default=None)
-        self.result['info'] = KMBlogInfo.save_data(id, self.data);
+        self.result['info'] = KMBlogInfo.save_data(id, self.data)
         self.result['type'] = 'info'
         self.result['menu_list'] = get_menu_list()
 
@@ -263,8 +263,8 @@ class KMBlog(KMAdmin):
         values = {}
         id = self.data.get_request_parameter('id', default=None)
         info_id = self.data.get_request_parameter('info_id')
-        self.result['info'] = KMBlogInfo.get(info_id);
-        self.result['article'] = KMBlogArticle.save_data(id, self.data);
+        self.result['info'] = KMBlogInfo.get(info_id)
+        self.result['article'] = KMBlogArticle.save_data(id, self.data)
         self.result['type'] = 'article'
         self.result['menu_list'] = get_menu_list()
 
