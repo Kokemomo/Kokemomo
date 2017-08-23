@@ -36,7 +36,7 @@
                             <tr class="row">
                                 <th width="100px">カテゴリ</th>
                                 <td>
-                                    <select id="category" name="category">
+                                    <select id="category_id" name="category_id">
                                         <option value="0">カテゴリなし</option>
                                     % for category in categories:
                                         % if category.id == article.category_id:

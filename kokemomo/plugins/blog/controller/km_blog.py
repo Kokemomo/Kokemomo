@@ -28,7 +28,7 @@ from kokemomo.plugins.admin import KMAdmin
 '''
 
 DATA_DIR_PATH = "/kokemomo/data/blog/"
-
+PAGE_SIZE = 10
 
 class KMBlog(KMAdmin):
 
@@ -60,9 +60,11 @@ class KMBlog(KMAdmin):
             {'rule': '/admin/delete_category', 'method': 'GET', 'target': self.blog_admin_delete_category},
             {'rule': '/admin/delete_article', 'method': 'GET', 'target': self.blog_admin_delete_article},
 
-            {'rule': '/<blog_url>', 'method': 'GET', 'target': self.blog_page},
+            {'rule': '/<blog_url>', 'method': 'GET', 'target': self.blog_top},
+            {'rule': '/<blog_url>/<id>', 'method': 'GET', 'target': self.blog_page},
             {'rule': '/template/normal/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name':'blog_static_normal_css'},
             {'rule': '/template/normal/js/<filename>', 'method': 'GET', 'target': self.blog_entry_js_static, 'name':'blog_static_normal_js'},
+            {'rule': '/template/normal/img/<filename>', 'method': 'GET', 'target': self.blog_entry_img_static, 'name':'blog_static_normal_img'},
             {'rule': '/<blog_url>/add_comment', 'method': 'POST', 'target': self.blog_add_comment},
         )
         return list
@@ -275,13 +277,31 @@ class KMBlog(KMAdmin):
 
     '''
     @log_error
-    def blog_page(self, blog_url):
+    def blog_top(self, blog_url):
+        tab = self.data.get_request_parameter('tab', default=0)
         info = KMBlogInfo.find(url=blog_url)[0]
-        info.articles = KMBlogArticle.find(info_id=info.id)
-        for article in info.articles:
-            article.comments = KMBlogComment.find(article_id=article.id)
-        values = {'info': info}
-        return self.render('kokemomo/plugins/blog/view/template/normal/normal', url=self.get_url, values=values, blog_url=blog_url)
+        categories = KMBlogCategory.find(info_id=info.id)
+        info.articles = []
+        for category in categories:
+            page = self.data.get_request_parameter('page_' + str(category.id), default=0)
+            res = KMBlogArticle.find(info_id=info.id, category_id=category.id)
+            category.page = page
+            res = res[PAGE_SIZE*page:PAGE_SIZE*page+PAGE_SIZE]
+            for article in res:
+                article.comments = KMBlogComment.find(article_id=article.id)
+            info.articles.extend(res)
+        values = {'info': info, 'categories': categories, 'tab': tab}
+        return self.render('kokemomo/plugins/blog/view/template/normal/top', url=self.get_url, values=values, blog_url=blog_url)
+
+
+    @log_error
+    def blog_page(self, blog_url, id):
+        info = KMBlogInfo.find(url=blog_url)[0]
+        article = KMBlogArticle.get(id)
+        category = KMBlogCategory.get(article.category_id)
+        article.comments = KMBlogComment.find(article_id=article.id)
+        values = {'info': info, 'article': article, 'category': category}
+        return self.render('kokemomo/plugins/blog/view/template/normal/page', url=self.get_url, values=values, blog_url=blog_url)
 
 
     @log_error
@@ -295,10 +315,16 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    def blog_entry_img_static(self, filename):
+        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/normal/img/')
+
+
+    @log_error
     def blog_add_comment(self, blog_url):
+        article_id = self.data.get_request_parameter('article_id', default=None)
         blog_comment = KMBlogComment(self.data)
         blog_comment.save()
-        return self.blog_page(blog_url)
+        return self.blog_page(blog_url, article_id)
 
     # def create_blog_file(info):
     #    path = os.path.abspath(os.curdir) + DATA_DIR_PATH + info.url

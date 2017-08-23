@@ -54,6 +54,7 @@ class KMBlogArticle(adapter.Model):
         self.title = data.get_request_parameter('title', default='')
         self.caption = data.get_request_parameter('caption', default='')
         self.article = data.get_request_parameter('article', default='')
+        self.post_date = datetime.datetime.now()
 
 
     def validate(self):
