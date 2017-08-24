@@ -26,16 +26,19 @@ class KMBlogArticle(adapter.Model):
     __tablename__ = 'km_blog_article'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
     info_id = adapter.Column(adapter.Integer)
-    category_id = adapter.Column(adapter.Integer) # カテゴリで階層をもたせる場合はタグがない方が良いらしい
+    category_id = adapter.Column(adapter.Integer)
     title = adapter.Column(adapter.Text)
     caption = adapter.Column(adapter.Text)
     article = adapter.Column(adapter.Text)
+    tag = adapter.Column(adapter.Text)
     post_date = adapter.Column(adapter.DateTime)
 
     def __init__(self, data=None):
         if data is None:
-            self.title = ""
-            self.article = ""
+            self.title = ''
+            self.caption = ''
+            self.article = ''
+            self.tag = ''
             self.post_date = datetime.datetime.now()
         else:
             self.set_data(data)
@@ -54,6 +57,7 @@ class KMBlogArticle(adapter.Model):
         self.title = data.get_request_parameter('title', default='')
         self.caption = data.get_request_parameter('caption', default='')
         self.article = data.get_request_parameter('article', default='')
+        self.tag = data.get_request_parameter('tag', default='')
         self.post_date = datetime.datetime.now()
 
 

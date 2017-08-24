@@ -31,7 +31,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <input type="submit">
+                        <button type="submit" class="btn btn-primary">保存</button>
                     </form>
                 </div>
             </div>

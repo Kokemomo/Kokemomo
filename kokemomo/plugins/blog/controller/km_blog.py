@@ -212,6 +212,8 @@ class KMBlog(KMAdmin):
         KMBlogInfo.delete_by_id(id)
         KMBlogCategory.delete_by_condition(info_id=id)
         KMBlogArticle.delete_by_condition(info_id=id)
+        self.result['type'] = 'result'
+        self.result['message'] = '削除できました。'
 
 
     @log_error
@@ -227,6 +229,8 @@ class KMBlog(KMAdmin):
     def blog_admin_delete_article(self):
         id = self.data.get_request_parameter('id', default=None)
         KMBlogArticle.delete_by_id(id)
+        self.result['type'] = 'result'
+        self.result['message'] = '削除できました。'
 
 
     @log_error
@@ -238,7 +242,8 @@ class KMBlog(KMAdmin):
         '''
         id = self.data.get_request_parameter('id', default=None)
         self.result['info'] = KMBlogInfo.save_data(id, self.data)
-        self.result['type'] = 'info'
+        self.result['type'] = 'result'
+        self.result['message'] = '保存できました。'
         self.result['menu_list'] = get_menu_list()
 
     @log_error
@@ -251,7 +256,8 @@ class KMBlog(KMAdmin):
         id = self.data.get_request_parameter('id', default=None)
         self.result['info'] = KMBlogInfo.all()
         self.result['category'] = KMBlogCategory.save_data(id, self.data)
-        self.result['type'] = 'category'
+        self.result['type'] = 'result'
+        self.result['message'] = '保存できました。'
         self.result['menu_list'] = get_menu_list()
 
 
@@ -267,7 +273,8 @@ class KMBlog(KMAdmin):
         info_id = self.data.get_request_parameter('info_id')
         self.result['info'] = KMBlogInfo.get(info_id)
         self.result['article'] = KMBlogArticle.save_data(id, self.data)
-        self.result['type'] = 'article'
+        self.result['type'] = 'result'
+        self.result['message'] = '保存できました。'
         self.result['menu_list'] = get_menu_list()
 
 

@@ -28,12 +28,6 @@
                                 </td>
                             </tr>
                             <tr class="row">
-                                <th width="100px">記事<span class="required">*</span></th>
-                                <td>
-                                    <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
-                                </td>
-                            </tr>
-                            <tr class="row">
                                 <th width="100px">カテゴリ</th>
                                 <td>
                                     <select id="category_id" name="category_id">
@@ -48,8 +42,14 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr class="row">
+                                <th width="100px">記事<span class="required">*</span></th>
+                                <td>
+                                    <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
+                                </td>
+                            </tr>
                         </table>
-                        <input type="submit">
+                        <button type="submit" class="btn btn-primary">保存</button>
                     </form>
                 </div>
             </div>

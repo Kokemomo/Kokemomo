@@ -64,7 +64,8 @@
                                 <form id="form" action="/blog/{{blog_url}}/add_comment" method="post">
                                 <input type="hidden" name="article_id" id="article_id" value="{{article.id}}">
                                 <div class="comment">
-                                    <input type="text" name="comment" id="comment" class="form-control">
+                                    <input type="text" name="contributor" id="contributor" class="form-control" placeholder="投稿者">
+                                    <textarea name="comment" id="comment" class="form-control" placeholder="コメント" rows="5"></textarea>
                                     <input type="submit" class="btn-primary" value="コメントする">
                                 </div>
                                 </form>
