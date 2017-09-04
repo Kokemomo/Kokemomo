@@ -3,6 +3,7 @@
 
 __author__ = 'hiroki-m'
 
+# Common
 WSGI_NAME='Bottle'
 PORT = 8861
 CHARACTER_SET = 'utf-8'
@@ -11,12 +12,13 @@ TEST_LOGIN = True
 DEBUG = False
 RELOAD = False
 
+# DATABASE
 ## MySQL
 ##DATA_BASE = 'mysql://user:pass@127.0.0.1:3306/dbname'
 ## SQLite
 DATA_BASE = 'sqlite:///data.db'
 
-
+# ADMIN
 ADMIN_MENU = {
 # name=url
     'ユーザー':'/admin/user',
@@ -30,6 +32,7 @@ ADMIN_MENU = {
 }
 
 
+# LOGGING
 LOGGER = {
     'RotatingFileHandler':{
         'format':'%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -44,7 +47,7 @@ LOGGER = {
     }
 }
 
-
+# PLUGINS
 PLUGINS = {
     'kokemomo':{
         'logger':'RotatingFileHandler',
@@ -64,5 +67,8 @@ PLUGINS = {
     }
 }
 
-DATA_DIR_PATH = "./kokemomo/data/test/"
+# BLOG
+BLOG_TEMPLATE = "normal"
 
+#
+DATA_DIR_PATH = "./kokemomo/data/test/"

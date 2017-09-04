@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from kokemomo.lib.bottle import Bottle, run as runner, Route
-from kokemomo.lib.bottle import request, response, redirect, template
-from kokemomo.lib.bottle import static_file, default_app
+from bottle import Bottle, run as runner, Route
+from bottle import request, response, redirect, template
+from bottle import static_file, default_app
 from kokemomo.settings import SETTINGS
 
 __author__ = 'hiroki-m'

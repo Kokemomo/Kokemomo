@@ -28,13 +28,17 @@ class KMBlogArticle(adapter.Model):
     info_id = adapter.Column(adapter.Integer)
     category_id = adapter.Column(adapter.Integer)
     title = adapter.Column(adapter.Text)
+    caption = adapter.Column(adapter.Text)
     article = adapter.Column(adapter.Text)
+    tag = adapter.Column(adapter.Text)
     post_date = adapter.Column(adapter.DateTime)
 
     def __init__(self, data=None):
         if data is None:
-            self.title = ""
-            self.article = ""
+            self.title = ''
+            self.caption = ''
+            self.article = ''
+            self.tag = ''
             self.post_date = datetime.datetime.now()
         else:
             self.set_data(data)
@@ -51,13 +55,18 @@ class KMBlogArticle(adapter.Model):
         self.info_id = data.get_request_parameter('info_id')
         self.category_id = data.get_request_parameter('category_id')
         self.title = data.get_request_parameter('title', default='')
+        self.caption = data.get_request_parameter('caption', default='')
         self.article = data.get_request_parameter('article', default='')
+        self.tag = data.get_request_parameter('tag', default='')
+        self.post_date = datetime.datetime.now()
 
 
     def validate(self):
         self.error = KMValidateError()
         if self.title == '':
             self.error.add_data(id='title', message='記事名は必須です。')
+        if self.caption == '':
+            self.error.add_data(id='caption', message='見出しは必須です。')
         if self.error.size() == 0:
             return True
         else:

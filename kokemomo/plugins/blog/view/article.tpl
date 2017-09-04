@@ -19,15 +19,18 @@
                                 </td>
                             </tr>
                             <tr class="row">
-                                <th width="100px">記事<span class="required">*</span></th>
+                                <th width="100px">見出し<span class="required">*</span></th>
                                 <td>
-                                    <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
+                                    <input type="text" name="caption" id="caption" value="{{article.caption}}">
+                                    % if 'error' in result and result['error'].have('caption'):
+                                        <label class="error">{{result['error'].get('caption')['message']}}</label>
+                                    % end
                                 </td>
                             </tr>
                             <tr class="row">
                                 <th width="100px">カテゴリ</th>
                                 <td>
-                                    <select id="category" name="category">
+                                    <select id="category_id" name="category_id">
                                         <option value="0">カテゴリなし</option>
                                     % for category in categories:
                                         % if category.id == article.category_id:
@@ -39,8 +42,14 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr class="row">
+                                <th width="100px">記事<span class="required">*</span></th>
+                                <td>
+                                    <textarea name="article" id="article" class="mceAdvanced" rows="20">{{article.article}}</textarea>
+                                </td>
+                            </tr>
                         </table>
-                        <input type="submit">
+                        <button type="submit" class="btn btn-primary">保存</button>
                     </form>
                 </div>
             </div>

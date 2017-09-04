@@ -34,4 +34,3 @@ def get_menu_list():
         item.url = SETTINGS.ADMIN_MENU[name]
         list.append(item)
     return list
-
