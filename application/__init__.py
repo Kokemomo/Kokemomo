@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from kokemomo.lib.bottle import template, route, static_file, url
+from bottle import template, route, static_file, url
 
 __author__ = 'hiroki'
 

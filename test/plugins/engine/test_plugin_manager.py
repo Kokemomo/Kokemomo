@@ -5,7 +5,7 @@ from mox import Mox, ExpectedMethodCallsError
 from nose.tools import ok_, eq_, raises, with_setup
 from kokemomo.plugins.engine.controller.km_wsgi_rapper import WSGI_Bottle
 from kokemomo.plugins.engine.controller.km_plugin_manager import create_base_plugin, add_route, plugins, get_plugin
-from kokemomo.lib.bottle import Bottle
+from bottle import Bottle
 
 __author__ = 'hiroki'
 

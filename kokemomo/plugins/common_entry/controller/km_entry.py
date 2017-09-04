@@ -1,7 +1,7 @@
 # #!/usr/bin/env python
 # # -*- coding:utf-8 -*-
 
-# from kokemomo.lib.bottle import template, route, static_file, url, request
+# from bottle import template, route, static_file, url, request
 # from kokemomo.plugins.common_entry.controller.km_entry_config import get_model, get_name, entry_model
 # from kokemomo.plugins.engine.utils.km_model_utils import *
 

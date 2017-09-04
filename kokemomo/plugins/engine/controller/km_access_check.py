@@ -3,7 +3,7 @@
 
 from functools import wraps
 
-from kokemomo.lib.bottle import redirect
+from bottle import redirect
 from kokemomo.settings import SETTINGS
 from ..model.km_user_table import find as find_user
 from ..model.km_role_table import find as find_role
@@ -85,6 +85,6 @@ def check_login(request, response):
             user_id = get_value_to_session(request, 'user_id')
             if user_id is not None:
                 return callback(*args, **kwargs)
-            return redirect('/engine/login?errorcode=0')
+            return args[0].redirect('/engine/login?errorcode=0')
         return wrapper
     return _check_login
