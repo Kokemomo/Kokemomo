@@ -6,8 +6,8 @@ from abc import ABCMeta, abstractmethod
 from urllib.parse import urljoin
 from functools import wraps
 from kokemomo.settings import SETTINGS
-from ..utils.km_logging import KMLogger
-from .km_data import KMData
+from ...utils.km_logging import KMLogger
+from ..km_data import KMData
 
 __author__ = 'hiroki-m'
 
@@ -19,58 +19,64 @@ Kokemomoプラグインマネージャ
 
 '''
 
-mod = __import__(
-    "kokemomo.plugins.engine.controller", fromlist=["km_wsgi_rapper"])
-class_def = getattr(getattr(mod, "km_wsgi_rapper"), "WSGI_" + SETTINGS.WSGI_NAME)
+class KMPluginManager():
 
-plugins = {}
+    _instance = None
 
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
 
-def get_root_plugin():
-    return class_def.get_root_app()
+        return cls._instance
 
-
-def set_root_plugin(plugin):
-    class_def.set_root_app(plugin)
-
-
-def mount(rule, plugin):
-    class_def.mount(rule, plugin)
+    def __init__(self):
+        mod = __import__("kokemomo.plugins.engine.controller.km_backend", fromlist=["km_fw_wrapper"])
+        self.class_def = getattr(getattr(mod, "km_fw_wrapper"), "BACKEND_NAME_" + SETTINGS.WSGI_NAME)
+        self.plugins = {}
 
 
-def run(port):
-    class_def.run(port)
+    def get_root_plugin(self):
+        return self.instance.get_root_app()
+
+    def set_root_plugin(self, plugin):
+        self.instance.set_root_app(plugin)
+
+    def mount(self, rule, plugin):
+        self.instance.mount(rule, plugin)
+
+    def run(self, port):
+        self.instance.run(port)
 
 
-def create_base_plugin(name):
-    '''
-    ベースプラグインを生成します。
-    :return: ベースプラグインオブジェクト
-    '''
-    plugin = class_def()
-    plugin.create_app()
-    plugins[name] = plugin
-    return plugin
+    def create_base_plugin(self, name):
+        '''
+        ベースプラグインを生成します。
+        :return: ベースプラグインオブジェクト
+        '''
+        self.instance = self.class_def()
+        self.instance.create_app()
+        self.plugins[name] = self.instance
+        return self.instance
 
 
-def add_route(name, params):
-    '''
-    プラグインにルーティングの情報を追加します。
-    必要な情報はプラグインベースオブジェクトの実装に依存します。
-    ※詳細はkm_wsgiの使用する実装クラスのドキュメントを参照。
+    def add_route(self, name, params):
+        '''
+        プラグインにルーティングの情報を追加します。
+        必要な情報はプラグインベースオブジェクトの実装に依存します。
+        ※詳細はkm_wsgiの使用する実装クラスのドキュメントを参照。
 
-    :param plugin: ベースプラグインオブジェクト
-    :param params: ルーティングの情報
-    '''
-    plugins[name].add_route(params)
+        :param plugin: ベースプラグインオブジェクト
+        :param params: ルーティングの情報
+        '''
+        self.plugins[name].add_route(params)
 
 
-def get_plugin(name):
-    if name in plugins:
-        return plugins[name]
-    else:
-        raise Exception('Target plugin not found.')
-
+    def get_plugin(self, name):
+        if name in self.plugins:
+            return self.plugins[name]
+        else:
+            raise Exception('Target plugin not found.')
 
 
 class KMBaseController(object):
@@ -81,7 +87,7 @@ class KMBaseController(object):
         self.logger = KMLogger(self.get_name())
         self.data = KMData(self)
         self.result = {}
-        self.plugin = create_base_plugin(self.name)
+        self.plugin = KMPluginManager.get_instance().create_base_plugin(self.name)
         for route in self.get_route_list():
             if 'name' in route:
                 self.add_route(route['rule'], route['method'], route['target'], route['name'])
@@ -122,8 +128,7 @@ class KMBaseController(object):
                        self.plugin.app.get_url(routename, filename=filename))
 
     def add_route(self, rule, method, target, name=None):
-        add_route(
-            self.name,
+        self.plugin.add_route(
             {'rule': rule, 'method': method, 'target': target, 'name': name}
         )
 

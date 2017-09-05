@@ -1,6 +1,6 @@
 # KOKEMOMO CMS
 
-これはPython Bottle Frameworkを使ったCMSです。
+これはPython Bottle Frameworkを使ったCMSです。  
 
 ## 現在の機能
 + ファイルアップロード
@@ -24,6 +24,9 @@ python simple_cms.py -s common
 
 ※commonはデフォルトの設定ファイル名です。  
 任意の設定ファイルを追加し、切り替えることが出来ます。  
+※gunicornなどのサーバーで動作させる場合はcommonが使用されます。  
+その場合は下記のようにオプションは指定できません。  
+python simple_cms.py  
 
 ### CMSへアクセスする
 http://localhost:8861/admin/login  
@@ -48,6 +51,7 @@ http://localhost:8861/admin/login
 ### 履歴
   0.1.0 ベータ　開発しやすいようにアーキテクチャの変更、管理画面、ブログプラグイン  
   0.1.1 ブログプラグインのカスタマイズ、軽微な修正  
+  0.1.2 gunicornへの対応、フレームワークラッパーの修正 
 
 ### リリース予定
-  0.1.2 セットアップ周りの改善、既存プラグインの修正  
+  0.1.3 セットアップ周りの改善、既存プラグインの修正  

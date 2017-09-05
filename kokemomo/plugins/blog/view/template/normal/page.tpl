@@ -30,7 +30,7 @@
             <nav class="navbar navbar-default header-nav">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Home</a>
+                        <a class="navbar-brand" href="/blog/{{info.name}}">Home</a>
                     </div>
                 </div>
             </nav>
@@ -44,7 +44,7 @@
                 <div class="bs-component">
                     <div class="row">
                         <ul class="breadcrumb">
-                            <li><a href="#">Home</a></li>
+                            <li><a href="/blog/{{info.name}}">Home</a></li>
                             <li class="active">{{category.name}}</li>
                         </ul>
                     </div>

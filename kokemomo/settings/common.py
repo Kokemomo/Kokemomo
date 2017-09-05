@@ -4,7 +4,10 @@
 __author__ = 'hiroki-m'
 
 # Common
-WSGI_NAME='Bottle'
+BACKEND_NAME='Bottle'
+SERVER='dev' # dev, gunicorn
+WORKERS=1
+HOST_NAME = 'localhost'
 PORT = 8861
 CHARACTER_SET = 'utf-8'
 STORAGE_ADAPTER_NAME = 'SQLAlchemy'
