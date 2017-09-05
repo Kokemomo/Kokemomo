@@ -55,6 +55,7 @@ class KMAdmin(KMEngine):
         return list
 
 
+    @KMEngine.check_login()
     def admin_js_static(self, filename):
         """
         set javascript files.
@@ -64,6 +65,7 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/js')
 
 
+    @KMEngine.check_login()
     def admin_css_static(self, filename):
         """
         set css files.
@@ -73,6 +75,7 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/css')
 
 
+    @KMEngine.check_login()
     def admin_img_static(self, filename):
         """
         set image files.
@@ -83,6 +86,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/info')
     def admin_info(self):
         '''
@@ -93,6 +97,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/user_list')
     def admin_user(self):
         '''
@@ -104,6 +109,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/user_edit')
     def admin_user_edit(self):
         '''
@@ -118,6 +124,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/user_list')
     def admin_user_save(self):
         '''
@@ -129,6 +136,7 @@ class KMAdmin(KMEngine):
         self.result['users'] = KMUser.all()
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/group_list')
     def admin_group(self):
         '''
@@ -140,6 +148,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/group_edit')
     def admin_group_edit(self):
         '''
@@ -153,6 +162,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/group_list')
     def admin_group_save(self):
         '''
@@ -164,6 +174,7 @@ class KMAdmin(KMEngine):
         self.result['groups'] = KMGroup.all()
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/role_list')
     def admin_role(self):
         '''
@@ -175,6 +186,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/role_edit')
     def admin_role_edit(self):
         '''
@@ -187,6 +199,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/role_list')
     def admin_role_save(self):
         '''
@@ -206,12 +219,14 @@ class KMAdmin(KMEngine):
         return KMLogin.login_auth(self.data)
 
 
+    @KMEngine.check_login()
     def logout(self):
         KMLogin.logout(self.data)
         return self.render('kokemomo/plugins/admin/view/login', url=self.get_url)
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/parameter_list')
     def admin_parameter(self):
         """
@@ -222,6 +237,7 @@ class KMAdmin(KMEngine):
         self.result['parameters'] = KMParameter.all()
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/parameter_edit')
     def admin_parameter_edit(self):
         id = self.data.get_request_parameter("km_parameter_edit_id")
@@ -229,6 +245,7 @@ class KMAdmin(KMEngine):
         self.result['parameter'] = KMParameter.get(id)
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/parameter_list')
     def admin_parameter_save(self):
         KMParameterAdmin.save_parameter(self.data)
@@ -238,6 +255,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/file')
     def admin_file(self):
         # dirs = []
@@ -257,6 +275,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     def admin_file_upload(self):
         """
         Save the file that is specified in the request.
@@ -265,6 +284,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     def admin_file_remove(self):
         """
         Remove the file.
@@ -273,6 +293,7 @@ class KMAdmin(KMEngine):
 
 
     @log_error
+    @KMEngine.check_login()
     def admin_select_dir(self):
         """
         Return the directory list for designated.

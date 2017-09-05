@@ -115,6 +115,20 @@ class KMBaseController(object):
             return wrapper
         return _action
 
+    def check_login():
+        """
+        """
+        def _check_login(callback):
+            @wraps(callback)
+            def wrapper(*args, **kwargs):
+                user_id = args[0].data.get_user_id()
+                if user_id is not None:
+                    return callback(*args, **kwargs)
+                return args[0].redirect('/engine/error')
+            return wrapper
+        return _check_login
+
+
     @abstractmethod
     def get_name(self):
         pass
