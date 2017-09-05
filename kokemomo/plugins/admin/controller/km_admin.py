@@ -55,7 +55,6 @@ class KMAdmin(KMEngine):
         return list
 
 
-    @KMEngine.check_login()
     def admin_js_static(self, filename):
         """
         set javascript files.
@@ -65,7 +64,6 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/js')
 
 
-    @KMEngine.check_login()
     def admin_css_static(self, filename):
         """
         set css files.
@@ -75,7 +73,6 @@ class KMAdmin(KMEngine):
         return self.load_static_file(filename, root='kokemomo/plugins/admin/view/resource/css')
 
 
-    @KMEngine.check_login()
     def admin_img_static(self, filename):
         """
         set image files.
