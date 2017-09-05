@@ -3,6 +3,8 @@
 
 __author__ = 'hiroki-m'
 
+VERSION = 'Beta-0.1.2'
+
 # Common
 BACKEND_NAME='WSGI_Bottle'
 SERVER='dev' # dev, gunicorn

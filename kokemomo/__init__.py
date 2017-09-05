@@ -38,11 +38,8 @@ manager.mount('/blog', blog)
 plugin = SessionMiddleware(manager.get_root_plugin())
 manager.set_root_plugin(plugin)
 
-
-VERSION = "0.1.1"
-
 logger = KMLogger('kokemomo')
-logger.info("KOKEMOMO ver." + VERSION)
+logger.info("KOKEMOMO ver." + SETTINGS.VERSION)
 
 def app_run(port=None):
     if port is None:
