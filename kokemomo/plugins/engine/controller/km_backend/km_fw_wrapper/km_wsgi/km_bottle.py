@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from ..km_wrapper_base import KMBaseFrameworkWrapper
 from bottle import Bottle, run as runner, Route
 from bottle import request, response, redirect, template
 from bottle import static_file, default_app
@@ -20,31 +21,32 @@ name=Bottle
 '''
 
 
-class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装はファイルを分けよう
+class WSGI_Bottle(KMBaseFrameworkWrapper):
 
     '''
     Bottleのラッパー
     '''
 
-    root_app = default_app()
+    def __init__(self):
+        self.root_app = default_app()
 
-    @classmethod
-    def get_root_app(cls):
-        return cls.root_app
+    def get_root_app(self):
+        return self.root_app
 
-    @classmethod
-    def set_root_app(cls, app):
-        cls.root_app = app
+    def set_root_app(self, app):
+        self.root_app = app
 
-    @classmethod
-    def mount(cls, rule, plugin):
-        cls.root_app.mount(rule, plugin.plugin.app)
+    def mount(self, rule, plugin):
+        self.root_app.mount(rule, plugin.plugin.app)
 
-    @classmethod
-    def run(cls, port):
-        if cls.root_app is not None:
-            runner(cls.root_app, host='localhost',
-               port=port, debug=SETTINGS.DEBUG, reloader=SETTINGS.RELOAD)
+    def run(self, port):
+        if self.root_app is not None:
+            if SETTINGS.SERVER is 'dev':
+                runner(self.root_app, host=SETTINGS.HOST_NAME,
+                    port=port, debug=SETTINGS.DEBUG, reloader=SETTINGS.RELOAD)
+            else:
+                runner(self.root_app, host=SETTINGS.HOST_NAME,
+                    port=port, debug=SETTINGS.DEBUG, reloader=SETTINGS.RELOAD, server=SETTINGS.SERVER, workers=SETTINGS.WORKERS)
         #        runner(app, host='localhost', port=8080, server='gunicorn', workers=1)
         else:
             raise SystemError
@@ -77,23 +79,20 @@ class WSGI_Bottle:  # TODO WSGI_Rapperインターフェースを作って実装
 #        self.app.add_route(route)
         self.app.route(path=rule, method=method, callback=target, name=name)
 
-    def get_request(self):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
-        return request
+    def get_request(self):
+        return request # bottleのrequestは常に現在のものを返す
 
-    def get_response(self):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
-        return response
+    def get_response(self):
+        return response # bottleのresponseは常に現在のものを返す
 
-    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def get_request_parameter(self, name, default):
         return request.params.getunicode(name, default)
         
-    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def render(self, template_path, params):
         return template(template_path, params)
 
-    # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
     def load_static_file(self, filename, root):
         return static_file(filename, root=root)
 
-    def redirect(self, url, code):  # TODO static変数へのアクセスなのでクラスメソッドにするべきか？
+    def redirect(self, url, code):
         redirect(url, code)

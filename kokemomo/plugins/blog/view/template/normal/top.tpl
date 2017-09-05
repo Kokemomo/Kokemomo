@@ -30,7 +30,7 @@
             <nav class="navbar navbar-default header-nav">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Home</a>
+                        <a class="navbar-brand" href="/blog/{{info.name}}">Home</a>
                     </div>
                 </div>
             </nav>

@@ -46,7 +46,7 @@ class KMLogin():
         user = cls.get_user(id)
         if user is not None:
             enc_password = password.encode(SETTINGS.CHARACTER_SET)
-            enc_user_password = user.password.encode(SETTINGS.CHARACTER_SET)
+            enc_user_password = user.password #.encode(SETTINGS.CHARACTER_SET)
             if bcrypt.hashpw(enc_password, enc_user_password) == enc_user_password:
                 # create web_session
                 result = cls.RESULT_SUCCESS

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .km_plugin_manager import KMBaseController
+from .km_backend.km_plugin_manager import KMBaseController
 from .km_exception import log
 
 __author__ = 'hiroki'
