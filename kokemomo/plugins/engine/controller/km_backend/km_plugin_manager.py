@@ -32,7 +32,7 @@ class KMPluginManager():
 
     def __init__(self):
         mod = __import__("kokemomo.plugins.engine.controller.km_backend", fromlist=["km_fw_wrapper"])
-        self.class_def = getattr(getattr(mod, "km_fw_wrapper"), "BACKEND_NAME_" + SETTINGS.WSGI_NAME)
+        self.class_def = getattr(getattr(mod, "km_fw_wrapper"), SETTINGS.BACKEND_NAME)
         self.plugins = {}
 
 
