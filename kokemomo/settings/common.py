@@ -4,7 +4,7 @@
 __author__ = 'hiroki-m'
 
 # Common
-BACKEND_NAME='Bottle'
+BACKEND_NAME='WSGI_Bottle'
 SERVER='dev' # dev, gunicorn
 WORKERS=1
 HOST_NAME = 'localhost'
