@@ -34,8 +34,8 @@ def search_parameter():
 class KMRole(adapter.Model):
     __tablename__ = 'km_role'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
-    name = adapter.Column(adapter.String(50))
-    target = adapter.Column(adapter.String(100))
+    name = adapter.Column(adapter.String(254))
+    target = adapter.Column(adapter.String(254))
     is_allow = adapter.Column(adapter.Boolean)
 
 
