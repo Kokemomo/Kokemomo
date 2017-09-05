@@ -11,7 +11,7 @@ from kokemomo.plugins.blog.model.km_blog_category import KMBlogCategory
 from kokemomo.plugins.blog.model.km_blog_article import KMBlogArticle
 from kokemomo.plugins.blog.model.km_blog_comment import KMBlogComment
 from kokemomo.plugins.admin import KMAdmin
-
+from kokemomo.settings import SETTINGS
 
 '''
 ブログプラグイン
@@ -62,9 +62,9 @@ class KMBlog(KMAdmin):
 
             {'rule': '/<blog_url>', 'method': 'GET', 'target': self.blog_top},
             {'rule': '/<blog_url>/<id>', 'method': 'GET', 'target': self.blog_page},
-            {'rule': '/template/normal/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name':'blog_static_normal_css'},
-            {'rule': '/template/normal/js/<filename>', 'method': 'GET', 'target': self.blog_entry_js_static, 'name':'blog_static_normal_js'},
-            {'rule': '/template/normal/img/<filename>', 'method': 'GET', 'target': self.blog_entry_img_static, 'name':'blog_static_normal_img'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name':'blog_static_css'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/js/<filename>', 'method': 'GET', 'target': self.blog_entry_js_static, 'name':'blog_static_js'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/img/<filename>', 'method': 'GET', 'target': self.blog_entry_img_static, 'name':'blog_static_img'},
             {'rule': '/<blog_url>/add_comment', 'method': 'POST', 'target': self.blog_add_comment},
         )
         return list
@@ -298,7 +298,7 @@ class KMBlog(KMAdmin):
                 article.comments = KMBlogComment.find(article_id=article.id)
             info.articles.extend(res)
         values = {'info': info, 'categories': categories, 'tab': tab}
-        return self.render('kokemomo/plugins/blog/view/template/normal/top', url=self.get_url, values=values, blog_url=blog_url)
+        return self.render('kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/top', url=self.get_url, values=values, blog_url=blog_url)
 
 
     @log_error
@@ -308,22 +308,22 @@ class KMBlog(KMAdmin):
         category = KMBlogCategory.get(article.category_id)
         article.comments = KMBlogComment.find(article_id=article.id)
         values = {'info': info, 'article': article, 'category': category}
-        return self.render('kokemomo/plugins/blog/view/template/normal/page', url=self.get_url, values=values, blog_url=blog_url)
+        return self.render('kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/page', url=self.get_url, values=values, blog_url=blog_url)
 
 
     @log_error
     def blog_entry_css_static(self, filename):
-        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/normal/css/')
+        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/css/')
 
 
     @log_error
     def blog_entry_js_static(self, filename):
-        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/normal/js/')
+        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/js/')
 
 
     @log_error
     def blog_entry_img_static(self, filename):
-        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/normal/img/')
+        return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/img/')
 
 
     @log_error
