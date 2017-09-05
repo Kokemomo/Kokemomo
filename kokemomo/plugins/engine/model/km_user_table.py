@@ -39,9 +39,9 @@ def search_parameter():
 class KMUser(adapter.Model):
     __tablename__ = 'km_user'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
-    user_id = adapter.Column(adapter.String(20))
-    name = adapter.Column(adapter.String(50))
-    password = adapter.Column(adapter.String(20))
+    user_id = adapter.Column(adapter.String(50))
+    name = adapter.Column(adapter.String(254))
+    password = adapter.Column(adapter.String(254))
     mail_address = adapter.Column(adapter.String(254))
     group_id = adapter.Column(adapter.Integer)
     role_id = adapter.Column(adapter.Integer)

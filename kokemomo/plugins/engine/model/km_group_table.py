@@ -33,7 +33,7 @@ def search_parameter():
 class KMGroup(adapter.Model):
     __tablename__ = 'km_group'
     id = adapter.Column(adapter.Integer, autoincrement=True, primary_key=True)
-    name = adapter.Column(adapter.String(50))
+    name = adapter.Column(adapter.String(254))
     parent_id = adapter.Column(adapter.Integer)
 
 
