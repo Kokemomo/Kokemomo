@@ -19,8 +19,8 @@
         <![endif]-->
 
         <script src='{{url("engine_static_js", filename="communication.js")}}'></script>
-        <script src='{{url("blog_static_normal_js", filename="normal.js")}}'></script>
-        <link href='{{url("blog_static_normal_css", filename="normal.css")}}' rel="stylesheet">
+        <script src='{{url("blog_static_js", filename="normal.js")}}'></script>
+        <link href='{{url("blog_static_css", filename="normal.css")}}' rel="stylesheet">
     </head>
     <body>
         % info = values['info']
@@ -35,8 +35,9 @@
                 </div>
             </nav>
             <div class="header-wrapper">
-                <img src='{{url("blog_static_normal_img", filename="header.png")}}'>
-                <p>{{info.name}}</p>
+                <img src='{{url("blog_static_img", filename="header.png")}}'>
+                <p id="blog-name">{{info.name}}</p>
+                <p id="blog-description">{{info.description}}</p>
             </div>
         </header>
         <section class="container tab-list">
