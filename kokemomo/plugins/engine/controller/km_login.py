@@ -3,7 +3,7 @@
 import bcrypt
 from ..model.km_user_table import KMUser
 from kokemomo.settings import SETTINGS
-from .km_session_manager import add_value_to_session, delete_value_to_session
+from .km_session_manager import add_value_to_session, delete_value_to_session, get_value_to_session
 
 
 """
@@ -78,3 +78,7 @@ class KMLogin():
     @classmethod
     def remove_session(cls, request):
         delete_value_to_session(request, 'user_id')
+
+    @classmethod
+    def get_session(cls, request):
+        return get_value_to_session(request, 'user_id')

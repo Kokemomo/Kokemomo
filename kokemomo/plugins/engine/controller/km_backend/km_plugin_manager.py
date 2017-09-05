@@ -8,6 +8,7 @@ from functools import wraps
 from kokemomo.settings import SETTINGS
 from ...utils.km_logging import KMLogger
 from ..km_data import KMData
+from ..km_login import KMLogin
 
 __author__ = 'hiroki-m'
 
@@ -121,7 +122,7 @@ class KMBaseController(object):
         def _check_login(callback):
             @wraps(callback)
             def wrapper(*args, **kwargs):
-                user_id = args[0].data.get_user_id()
+                user_id = KMLogin.get_session(args[0].data.get_request())
                 if user_id is not None:
                     return callback(*args, **kwargs)
                 return args[0].redirect('/engine/error')
