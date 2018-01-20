@@ -125,7 +125,7 @@ class KMBaseController(object):
                 user_id = KMLogin.get_session(args[0].data.get_request())
                 if user_id is not None:
                     return callback(*args, **kwargs)
-                return args[0].redirect('/engine/error')
+                return args[0].redirect('/engine/auth_error')
             return wrapper
         return _check_login
 

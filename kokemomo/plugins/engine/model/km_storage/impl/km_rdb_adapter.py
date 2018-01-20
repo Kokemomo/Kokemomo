@@ -74,8 +74,9 @@ class BaseModel(object):
 
 class KMRDBAdapter(BaseAdapter):
 
-    def __init__(self, rdb_path):
+    def __init__(self, rdb_path, options):
         self.rdb_path = rdb_path
+        self.options = options
         self.Model = declarative_base(cls=BaseModel)
         self.fields = [Column, String, Integer, Boolean, Text, DateTime]
         for field in self.fields:
@@ -85,11 +86,11 @@ class KMRDBAdapter(BaseAdapter):
     def metadata(self):
         return self.Model.metadata
 
-    def init(self, rdb_path=None):
+    def init(self, rdb_path=None, options={}):
         self.session = scoped_session(sessionmaker())
         if rdb_path:
             self.rdb_path = rdb_path
-        self.engine = create_engine(self.rdb_path, echo=True)
+        self.engine = create_engine(self.rdb_path, **options)
         self.session.configure(bind=self.engine)
 
         self.metadata.create_all(self.engine)
@@ -140,6 +141,6 @@ class Transaction(object):
     def rollback(self):
         adapter.session.rollback()
 
-from kokemomo.settings.common import DATA_BASE
+from kokemomo.settings.common import DATA_BASE, DATA_BASE_OPTIONS
 
-adapter = KMRDBAdapter(DATA_BASE)
+adapter = KMRDBAdapter(DATA_BASE, DATA_BASE_OPTIONS)
