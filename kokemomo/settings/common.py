@@ -20,8 +20,13 @@ RELOAD = False
 # DATABASE
 ## MySQL
 ##DATA_BASE = 'mysql://user:pass@127.0.0.1:3306/dbname'
+##DATA_BASE_OPTIONS = {
+##    'echo': True,
+##    'pool_recycle': 3600,
+##}
 ## SQLite
 DATA_BASE = 'sqlite:///data.db'
+DATA_BASE_OPTIONS = {}
 
 # ADMIN
 ADMIN_MENU = {

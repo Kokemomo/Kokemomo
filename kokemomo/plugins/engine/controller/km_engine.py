@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 from .km_backend.km_plugin_manager import KMBaseController
 from .km_exception import log
 
@@ -19,6 +20,7 @@ class KMEngine(KMBaseController):
             {'rule': '/engine-css/<filename>', 'method': 'GET', 'target': self.engine_css_static, 'name': 'engine_static_css'},
             {'rule': '/engine-img/<filename>', 'method': 'GET', 'target': self.engine_img_static, 'name': 'engine_static_img'},
             {'rule': '/error', 'method': 'GET', 'target': self.engine_error},
+            {'rule': '/auth_error', 'method': 'GET', 'target': self.engine_auth_error},
         )
         return list
 
@@ -56,3 +58,7 @@ class KMEngine(KMBaseController):
     def engine_error(self):
         return "An error has occurred." \
                " Please contact the server administrator."
+
+    def engine_auth_error(self):
+        return "User authentication failed." \
+               " Please login again from the login page." \

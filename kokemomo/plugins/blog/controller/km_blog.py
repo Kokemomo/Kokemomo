@@ -131,6 +131,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin(self):
         '''
@@ -142,6 +143,7 @@ class KMBlog(KMAdmin):
         self.result['menu_list'] = get_menu_list()
 
 
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_info(self):
         '''
@@ -153,6 +155,7 @@ class KMBlog(KMAdmin):
         self.result['type'] = 'info'
         self.result['menu_list'] = get_menu_list()
 
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_category_list(self):
         '''
@@ -165,6 +168,7 @@ class KMBlog(KMAdmin):
         self.result['type'] = 'category_list'
         self.result['menu_list'] = get_menu_list()
 
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_category(self):
         '''
@@ -177,6 +181,8 @@ class KMBlog(KMAdmin):
         self.result['type'] = 'category'
         self.result['menu_list'] = get_menu_list()
 
+
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_article_list(self):
         '''
@@ -190,6 +196,8 @@ class KMBlog(KMAdmin):
         self.result['type'] = 'article_list'
         self.result['menu_list'] = get_menu_list()
 
+
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_article(self):
         '''
@@ -206,6 +214,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_delete_info(self):
         id = self.data.get_request_parameter('id', default=None)
@@ -217,6 +226,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_delete_category(self):
         id = self.data.get_request_parameter('id', default=None)
@@ -225,6 +235,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_delete_article(self):
         id = self.data.get_request_parameter('id', default=None)
@@ -234,6 +245,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_info(self):
         '''
@@ -246,7 +258,9 @@ class KMBlog(KMAdmin):
         self.result['message'] = '保存できました。'
         self.result['menu_list'] = get_menu_list()
 
+
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_category(self):
         '''
@@ -262,6 +276,7 @@ class KMBlog(KMAdmin):
 
 
     @log_error
+    @KMAdmin.check_login()
     @KMAdmin.action('kokemomo/plugins/blog/view/admin')
     def blog_admin_create_article(self):
         '''
