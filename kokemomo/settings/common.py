@@ -74,6 +74,10 @@ PLUGINS = {
     'blog':{
         'logger':'RotatingFileHandler',
         'level':'INFO'
+    },
+    'file_manager':{
+        'logger':'RotatingFileHandler',
+        'level':'INFO'
     }
 }
 

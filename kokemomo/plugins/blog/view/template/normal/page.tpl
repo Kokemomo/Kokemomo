@@ -7,7 +7,7 @@
         <title>{{values['info'].name}}</title>
         <!-- Bootstrap -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>        
+        <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" integrity="sha384-HzUaiJdCTIY/RL2vDPRGdEQHHahjzwoJJzGUkYjHVzTwXFQ2QN/nVgX7tzoMW3Ov" crossorigin="anonymous">
 
@@ -19,8 +19,8 @@
         <![endif]-->
 
         <script src='{{url("engine_static_js", filename="communication.js")}}'></script>
-        <script src='{{url("blog_static_js", filename="normal.js")}}'></script>
-        <link href='{{url("blog_static_css", filename="normal.css")}}' rel="stylesheet">
+        <script src='{{url("blog_template_static_js", filename="normal.js")}}'></script>
+        <link href='{{url("blog_template_static_css", filename="normal.css")}}' rel="stylesheet">
     </head>
     <body>
         % info = values['info']
@@ -35,7 +35,7 @@
                 </div>
             </nav>
             <div class="header-wrapper">
-                <img src='{{url("blog_static_img", filename="header.png")}}'>
+                <img src='{{url("blog_template_static_img", filename="header.png")}}'>
                 <p id="blog-name">{{info.name}}</p>
                 <p id="blog-description">{{info.description}}</p>
             </div>

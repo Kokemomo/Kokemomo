@@ -2,9 +2,9 @@
 # -*- coding:utf-8 -*-
 import os
 from kokemomo.settings import SETTINGS
-from kokemomo.plugins.engine.utils.km_utils import create_result 
+from kokemomo.plugins.engine.utils.km_utils import create_result
 
-class KMFileAdmin:
+class KMFile:
 
     @classmethod
     def list(cls, data):

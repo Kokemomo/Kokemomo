@@ -11,7 +11,7 @@ from kokemomo.plugins.engine.model.km_role_table import KMRole
 from kokemomo.plugins.engine.model.km_parameter_table import KMParameter
 from kokemomo.plugins.admin.model.km_user_admin import KMUserAdmin
 from kokemomo.plugins.admin.model.km_parameter_admin import KMParameterAdmin
-from kokemomo.plugins.admin.model.km_file_admin import KMFileAdmin
+from kokemomo.plugins.file_manager.model.km_file import KMFile
 
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.utils.km_utils import get_menu_list
@@ -255,17 +255,7 @@ class KMAdmin(KMEngine):
     @KMEngine.check_login()
     @KMEngine.action('kokemomo/plugins/admin/view/file')
     def admin_file(self):
-        # dirs = []
-        # files = []
-        # for (root, dir_list, files) in os.walk(DATA_DIR_PATH):
-        #     for dir_name in dir_list:
-        #         dir_path = root + os.sep + dir_name
-        #         dirs.append(dir_path[len(DATA_DIR_PATH):])
-        # files = os.listdir(DATA_DIR_PATH + dirs[0])
-        # for file_name in files:
-        #     if os.path.isdir(DATA_DIR_PATH + os.sep + dirs[0] + os.sep + file_name):
-        #         files.remove(file_name)
-        dirs, files = KMFileAdmin.list(self.data)
+        dirs, files = KMFile.list(self.data)
         self.result['menu_list'] = get_menu_list()
         self.result['dirs'] = dirs
         self.result['files'] = files
@@ -277,7 +267,7 @@ class KMAdmin(KMEngine):
         """
         Save the file that is specified in the request.
         """
-        KMFileAdmin.upload(self.data)
+        KMFile.upload(self.data)
 
 
     @log_error
@@ -286,7 +276,7 @@ class KMAdmin(KMEngine):
         """
         Remove the file.
         """
-        KMFileAdmin.remove(self.data)
+        KMFile.remove(self.data)
 
 
     @log_error
@@ -300,5 +290,5 @@ class KMAdmin(KMEngine):
 
         :return: "dir1,dir2,dir3"
         """
-        return KMFileAdmin.change_dir(self.data)
+        return KMFile.change_dir(self.data)
 
