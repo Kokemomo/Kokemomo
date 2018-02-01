@@ -13,6 +13,7 @@ from kokemomo.plugins.admin import admin
 from kokemomo.plugins import common_entry
 from kokemomo.plugins import subapp
 from kokemomo.plugins.blog import blog
+from kokemomo.plugins.file_manager import file_manager
 from kokemomo.plugins.engine.utils.km_logging import KMLogger
 from kokemomo.settings import SETTINGS
 from kokemomo.plugins.engine.model.km_storage import initialize
@@ -34,6 +35,7 @@ manager = KMPluginManager.get_instance()
 manager.mount('/engine', engine)
 manager.mount('/admin', admin)
 manager.mount('/blog', blog)
+manager.mount('/file_manager', file_manager)
 
 plugin = SessionMiddleware(manager.get_root_plugin())
 manager.set_root_plugin(plugin)

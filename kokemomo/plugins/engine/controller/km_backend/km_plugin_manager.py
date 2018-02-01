@@ -110,7 +110,7 @@ class KMBaseController(object):
                     return res
                 else:
                     # args[0]はself
-                    args[0].result['url'] = args[0].get_url
+                    args[0].result['url'] = args[0].get_url # Method for calling from template.
                     args[0].result['user_id'] = args[0].data.get_user_id()
                     return args[0].render(template, result=args[0].result)
             return wrapper

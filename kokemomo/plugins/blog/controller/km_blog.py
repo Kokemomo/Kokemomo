@@ -62,9 +62,9 @@ class KMBlog(KMAdmin):
 
             {'rule': '/<blog_url>', 'method': 'GET', 'target': self.blog_top},
             {'rule': '/<blog_url>/<id>', 'method': 'GET', 'target': self.blog_page},
-            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/css/<filename>', 'method': 'GET', 'target': self.blog_entry_css_static, 'name':'blog_static_css'},
-            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/js/<filename>', 'method': 'GET', 'target': self.blog_entry_js_static, 'name':'blog_static_js'},
-            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/img/<filename>', 'method': 'GET', 'target': self.blog_entry_img_static, 'name':'blog_static_img'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/css/<filename>', 'method': 'GET', 'target': self.blog_template_css_static, 'name':'blog_template_static_css'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/js/<filename>', 'method': 'GET', 'target': self.blog_template_js_static, 'name':'blog_template_static_js'},
+            {'rule': '/template/' + SETTINGS.BLOG_TEMPLATE + '/img/<filename>', 'method': 'GET', 'target': self.blog_template_img_static, 'name':'blog_template_static_img'},
             {'rule': '/<blog_url>/add_comment', 'method': 'POST', 'target': self.blog_add_comment},
         )
         return list
@@ -327,17 +327,17 @@ class KMBlog(KMAdmin):
 
 
     @log_error
-    def blog_entry_css_static(self, filename):
+    def blog_template_css_static(self, filename):
         return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/css/')
 
 
     @log_error
-    def blog_entry_js_static(self, filename):
+    def blog_template_js_static(self, filename):
         return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/js/')
 
 
     @log_error
-    def blog_entry_img_static(self, filename):
+    def blog_template_img_static(self, filename):
         return self.load_static_file(filename, root='kokemomo/plugins/blog/view/template/' + SETTINGS.BLOG_TEMPLATE + '/img/')
 
 
@@ -347,9 +347,4 @@ class KMBlog(KMAdmin):
         blog_comment = KMBlogComment(self.data)
         blog_comment.save()
         return self.blog_page(blog_url, article_id)
-
-    # def create_blog_file(info):
-    #    path = os.path.abspath(os.curdir) + DATA_DIR_PATH + info.url
-    #    if not os.path.exists(path):
-    #        os.makedirs(path)
 
