@@ -1,61 +1,8 @@
 # *Kokemomo Tips*
-## kokemomo.iniのセクション一覧
-
-各セクションにアクセスするモジュール：kokemomo/plugins/engine/utils/config.py
-
-
-### データベース接続
-
-get_database_setting(アプリケーション名)で取得
-
-    -----------------------------
-    [Database_アプリケーション名]
-    rdbms=sqlite
-    schema=data.db
-    -----------------------------
-
-### データベースプーリング
-
-get_database_pool_setting()で取得
-
-    -----------------------------
-    [Database_Pool_アプリケーション名]
-    recycle=3600
-    -----------------------------
-
-### アプリケーション文字コード
-
-get_character_set_setting()で取得
-
-    -----------------------------
-    [Character_Set]
-    charset=utf-8
-    -----------------------------
-
 ### テスト用ログイン
 
-ログイン時にadmin/adminまたはadmin2/admin2でログインできるかどうか(falseでOFF)
-
-    -----------------------------
-    [Test_Setting]
-    test_login=true
-    -----------------------------
-
-## データベースのセッション操作
-
-モジュール：kokemomo/plugins/engine/controller/km_db_manager.py
-
-### コントローラの先頭でマネージャを定義
-
-db_manager = KMDBManager("アプリケーション名")
-
-### 各メソッドで以下のように利用
-
-    try:
-        session = db_manager.get_session()
-    ～DBアクセス～
-    finally:
-        session.close()
+設定ファイルのTEST_LOGINがTrueの場合、/admin/loginで
+admin/adminまたはadmin2/admin2でログインができます。
 
 ## エラー発生時のログ出力
 
@@ -87,16 +34,16 @@ db_manager = KMDBManager("アプリケーション名")
 
 ### アクセスチェックの仕組み
 
-ログインユーザーに紐づくロール情報(KMRole)を元にチェックを行う。  
-※KMRoleの定義  
-name:ロール名  
-target:チェック対象(/アプリケーション/機能/サブ機能まで設定可)  
-is_allow:許可するかどうか  
+ログインユーザーに紐づくロール情報(KMRole)を元にチェックを行う。
+※KMRoleの定義
+name:ロール名
+target:チェック対象(/アプリケーション/機能/サブ機能まで設定可)
+is_allow:許可するかどうか
 
-例：  
-target：/app/document/find  
-is_allow：False  
-http://localhost:8861/app/document/findでアクセスした場合はエラーになる  
+例：
+target：/app/document/find
+is_allow：False
+http://localhost:8861/app/document/findでアクセスした場合はエラーになる
 
 
 ## モデルの作成
@@ -105,43 +52,26 @@ http://localhost:8861/app/document/findでアクセスした場合はエラー�
 
 ### 以下の定義でDBマネージャとユーティリティをインポート
 
-    from kokemomo.plugins.engine.utils.km_model_utils import *
-    from kokemomo.plugins.engine.controller.km_db_manager import Base
 
 ### モデルには以下のメソッドを定義しておく
 
-    　　def __repr__(self):
-    　　　　return create_repr_str(self) # モデルの文字列表現を生成
-
-    　　def get_json(self):
-    　　　　return create_json(self) # モデルのJSONを生成
-
-
 ### 他のモデルと結合している場合はJSON生成を以下のようにする
-
-    　　def get_json(self):
-    　　　　result = "{"
-    　　　　result += '"結合元モデルクラス名":' + create_json(self)
-    　　　　result += ',"結合先モデルクラス名":' + create_json(self.モデルクラス変数)
-    　　　　result += "}"
-    　　　　return result
-
 
 ## Ajax通信
 
-モジュール：  
-kokemomo/plugins/engine/view/resource/js/communication.js  
-kokemomo/plugins/engine/util/km_utils.py  
+モジュール：
+kokemomo/plugins/engine/view/resource/js/communication.js
+kokemomo/plugins/engine/util/km_utils.py
 
-GETの場合  
+GETの場合
 
 ### クライアント側
 
-    $("#btn").click(function(){ 
+    $("#btn").click(function(){
     　　var value="hoge";
     　　send(SendType[1], '/app/action', value, func);
     });
-    
+
     function func(status, json){
     　　if(status == 200){
     　　　　// 成功処理
@@ -156,7 +86,7 @@ GETの場合
     　　result = request.params.get('value') # GETパラメータの取得
     　　return create_result(result) # 結果をJSONへ変換
 
-POSTの場合  
+POSTの場合
 
 ### クライアント側
 
@@ -164,7 +94,7 @@ POSTの場合
     　　var value="hoge";
     　　send(SendType[2], '/app/action', value, func);
     });
-    
+
     function func(status, json){
     　　if(status == 200){
     　　　　// 成功処理
@@ -179,7 +109,7 @@ POSTの場合
     　　result = request.forms.get('value') # GETパラメータの取得
     　　return create_result(result) # 結果をJSONへ変換
 
-※コールバック関数にオプションを指定する方法  
+※コールバック関数にオプションを指定する方法
 
 ### クライアント側
 
@@ -188,7 +118,7 @@ POSTの場合
     	var option = "fuga";
     　　send(SendType[2], '/app/action', value, func, option);
     });
-    
+
     function func(status, json, option){
     	console.log(option); // fuga
     　　if(status == 200){
@@ -196,17 +126,17 @@ POSTの場合
     　　}
     }
 
-※結果としてモデルのリストを返す場合  
+※結果としてモデルのリストを返す場合
 
     　list = [model1,model2]
     　return create_result_4_array(list)
 
-　結果のJSON：{"result":[model1から生成されたJSON,model2から生成されたJSON]}  
+　結果のJSON：{"result":[model1から生成されたJSON,model2から生成されたJSON]}
 
 
 ## ログインユーザーIDの取得
 
-モジュール：kokemomo/plugins/engine/view/resource/js/communication.js  
+モジュール：kokemomo/plugins/engine/view/resource/js/communication.js
 
 ### クライアント側
 
@@ -221,40 +151,40 @@ POSTの場合
 
 ・ブログは以下の様なデータで構成されます。
 
-ブログ  
-├info ブログの情報  
-├subscription 購読情報　※現在未使用  
-└category カテゴリ  
-　└article 記事  
-　└comment コメント  
+ブログ
+├info ブログの情報
+├subscription 購読情報　※現在未使用
+└category カテゴリ
+　└article 記事
+　└comment コメント
 
 ### ブログプラグインのテンプレートについて
 
 ブログプラグインのテンプレートでは以下の値が使用できます。
 
-・ブログのurl  
-blog_url  
-  
-・ブログ情報  
-info.id ブログのID  
-info.name ブログ名  
-info.url ブログのurl  
-info.description ブログの詳細  
-  
-・記事  
-info.articles 記事の配列  
-info.articles[index].id 記事のID  
-info.articles[index].info_id ブログ情報のID  
-info.articles[index].title 記事のタイトル  
-info.articles[index].article 記事の内容  
-info.articles[index].post_date 投稿日  
-  
-・コメント  
-info.articles[index].comments コメントの一覧  
-info.articles[index].comments[index].id コメントのID  
-info.articles[index].comments[index].article_id 記事のID  
-info.articles[index].comments[index].comment コメントの内容  
-info.articles[index].comments[index].created_at コメントの作成日時  
+・ブログのurl
+blog_url
+
+・ブログ情報
+info.id ブログのID
+info.name ブログ名
+info.url ブログのurl
+info.description ブログの詳細
+
+・記事
+info.articles 記事の配列
+info.articles[index].id 記事のID
+info.articles[index].info_id ブログ情報のID
+info.articles[index].title 記事のタイトル
+info.articles[index].article 記事の内容
+info.articles[index].post_date 投稿日
+
+・コメント
+info.articles[index].comments コメントの一覧
+info.articles[index].comments[index].id コメントのID
+info.articles[index].comments[index].article_id 記事のID
+info.articles[index].comments[index].comment コメントの内容
+info.articles[index].comments[index].created_at コメントの作成日時
 
 
 
