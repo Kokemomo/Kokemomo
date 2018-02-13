@@ -23,6 +23,7 @@ RELOAD = False
 ##DATA_BASE_OPTIONS = {
 ##    'echo': True,
 ##    'pool_recycle': 3600,
+##    'pool_pre_ping': True,
 ##}
 ## SQLite
 DATA_BASE = 'sqlite:///data.db'

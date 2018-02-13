@@ -39,12 +39,18 @@ class BaseModel(object):
             raise
 
     @classmethod
-    def all(cls):
-        return adapter.session.query(cls).all()
+    def all(cls, commit=True):
+        res = adapter.session.query(cls).all()
+        if commit:
+            adapter.session.commit()
+        return res
 
     @classmethod
-    def get(cls, id):
-        return adapter.session.query(cls).filter(cls.id == id).first()
+    def get(cls, id, commit=True):
+        res = adapter.session.query(cls).filter(cls.id == id).first()
+        if commit:
+            adapter.session.commit()
+        return res
 
     @classmethod
     def delete_by_id(cls, id):
@@ -68,9 +74,11 @@ class BaseModel(object):
             raise
 
     @classmethod
-    def find(cls, **kwargs):
-        return adapter.session.query(cls).filter_by(**kwargs).all()
-
+    def find(cls, commit=True, **kwargs):
+        res = adapter.session.query(cls).filter_by(**kwargs).all()
+        if commit:
+            adapter.session.commit()
+        return res
 
 class KMRDBAdapter(BaseAdapter):
 
