@@ -306,7 +306,7 @@ class KMBlog(KMAdmin):
         info.articles = []
         for category in categories:
             page = self.data.get_request_parameter('page_' + str(category.id), default=0)
-            res = KMBlogArticle.find(info_id=info.id, category_id=category.id)
+            res = KMBlogArticle.find(info_id=info.id, category_id=category.id, order=KMBlogArticle.updated_at.desc())
             category.page = page
             res = res[PAGE_SIZE*page:PAGE_SIZE*page+PAGE_SIZE]
             for article in res:

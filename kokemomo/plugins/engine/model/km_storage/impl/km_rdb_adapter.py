@@ -39,8 +39,8 @@ class BaseModel(object):
             raise
 
     @classmethod
-    def all(cls, commit=True):
-        res = adapter.session.query(cls).all()
+    def all(cls, order=None, commit=True):
+        res = adapter.session.query(cls).order_by(order).all()
         if commit:
             adapter.session.commit()
         return res
@@ -74,8 +74,8 @@ class BaseModel(object):
             raise
 
     @classmethod
-    def find(cls, commit=True, **kwargs):
-        res = adapter.session.query(cls).filter_by(**kwargs).all()
+    def find(cls, order=None, commit=True, **kwargs):
+        res = adapter.session.query(cls).order_by(order).filter_by(**kwargs).all()
         if commit:
             adapter.session.commit()
         return res
