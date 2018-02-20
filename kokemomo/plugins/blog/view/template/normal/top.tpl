@@ -87,6 +87,14 @@
             <div class="col-lg-4">
                 <div class="bs-component">
                     <div class="panel panel-default">
+                        <div class="panel-heading">新着記事</div>
+                        <div class="panel-body subcontent">
+                            % for article in info.articles[:5]:
+                                {{article.updated_at.date()}}:<a href="/blog/{{blog_url}}/{{article.id}}">{{article.title}}</a><br>
+                            % end
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
                         <div class="panel-heading">サブコンテンツのヘッダー</div>
                         <div class="panel-body subcontent">
                             サブコンテンツの内容
